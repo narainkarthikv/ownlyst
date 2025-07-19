@@ -1,37 +1,129 @@
-# Sticky-Memo
 
-Sticky-Memo is a sticky notes application built using React.js + Vite along with MUI. This documentation will guide you through the process of contributing to this project.
 
-## Tech Stack
+# 🎴 Sticky-Memo
 
-<table>
-    <tr>
-     <td>Frontend</td>
-     <td><img src="https://skillicons.dev/icons?i=react,mui,vite" /></td>
-    </tr>
-    <tr>
-     <td>CI/CD</td>
-     <td><img src="https://skillicons.dev/icons?i=netlify,githubactions" /></td>
-    </tr>
-</table>
+Welcome to **Sticky-Memo**! This project lets you create and manage sticky notes using React.js, Vite, and MUI. It's a great way to practice your frontend skills, contribute to open source, and join a friendly community. Whether you're a beginner or a pro, your contribution is welcome! 🤍🤝
 
-## Table of Contents
+[![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/sticky-memo?style=flat-square)](https://github.com/narainkarthikv/sticky-memo/issues)
+[![GitHub forks](https://img.shields.io/github/forks/narainkarthikv/sticky-memo?style=flat-square)](https://github.com/narainkarthikv/sticky-memo/network)
+[![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/sticky-memo?style=flat-square)](https://github.com/narainkarthikv/sticky-memo/stargazers)
+[![MIT License](https://img.shields.io/github/license/narainkarthikv/sticky-memo?style=flat-square)](./MIT-LICENSE.txt)
 
-- [Installation](#installation)
-  - [Clone the Repository](#clone-the-repository)
-  - [Frontend Installation](#frontend-installation)
-  <!-- - [Docker Installation](#docker-installation) -->
+---
+
+## 📚 Table of Contents
+
+- [About](#about)
+- [Demo](#demo)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [How to Contribute](#how-to-contribute)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
-  - [Forking the Repository](#forking-the-repository)
-  - [Cloning the Repository](#cloning-the-repository)
-  - [Creating a Branch](#creating-a-branch)
-  - [Making Changes](#making-changes)
-  - [Committing Changes](#committing-changes)
-  - [Pushing Changes](#pushing-changes)
-  - [Creating a Pull Request](#creating-a-pull-request)
 - [Contributors](#contributors)
 - [License](#license)
+
+---
+
+## 📝 About
+
+**Sticky-Memo** lets you:
+- Create, edit, and delete sticky notes on a digital board
+- Organize notes by boards, tables, and categories
+- Practice React, Vite, and MUI
+- Collaborate with a friendly open-source community
+
+---
+
+## 🌐 Demo
+
+👉 **[Live Preview](https://sticky-memo-dev.vercel.app/)**
+
+---
+
+## 🛠️ Tech Stack
+
+- React.js
+- Vite
+- Material UI (MUI)
+- JavaScript (ES6+)
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to get started:
+
+1. **Fork** this repository (top right of this page)
+2. **Clone** your fork:
+   ```bash
+   git clone https://github.com/<your-username>/sticky-memo.git
+   cd sticky-memo
+   ```
+3. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+4. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+5. **Open** [http://localhost:5173](http://localhost:5173) in your browser to view the app.
+
+---
+
+## 🤝 How to Contribute
+
+We welcome all contributions! Here’s a quick guide:
+
+1. **Fork** the repo and create your branch from `main` or `develop`.
+2. **Make your changes** (add features, fix bugs, improve docs, etc).
+3. **Check your changes**: Run the app locally and ensure everything works.
+4. **Commit** and **push** your changes:
+   ```bash
+   git add .
+   git commit -m "Describe your changes"
+   git push origin <your-branch-name>
+   ```
+5. **Open a Pull Request** and fill out the PR template.
+
+**Need help?** Open an [issue](https://github.com/narainkarthikv/sticky-memo/issues) or ask in the discussions!
+
+---
+
+## 📁 Project Structure
+
+```plaintext
+├── public/
+│   └── favicon.svg
+├── src/
+│   ├── components/
+│   │   ├── Board/
+│   │   ├── common/
+│   │   ├── Loading/
+│   │   ├── Note/
+│   │   └── Table/
+│   ├── context/
+│   ├── hooks/
+│   ├── pages/
+│   ├── services/
+│   ├── styles/
+│   ├── themes/
+│   ├── utils/
+│   ├── App.jsx
+│   └── main.jsx
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
+```
+
+---
+
+<p align="center">
+  <b>Happy Contributing! 🎉</b>
+</p>
+
+---
 
 ## Installation
 
