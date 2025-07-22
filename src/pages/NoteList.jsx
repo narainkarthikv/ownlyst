@@ -8,9 +8,10 @@ import React, {
 import { useRecoilState } from 'recoil';
 import { itemsState, snackbarState } from '../utils/state';
 import NoteCard from '../components/Note/NoteCard';
-import CommonFilter from '../components/common/CommonFilter';
 import CommonSnackbar from '../components/common/CommonSnackbar';
-import BoardSorter from '../components/common/BoardSorter';
+import FilterBar from '../components/common/FilterBar';
+import WorkspaceSelector from '../components/common/WorkspaceSelector';
+import ThemeToggle from '../components/common/ThemeToggle';
 import {
   Box,
   Container,
@@ -39,6 +40,10 @@ const NoteList = (props) => {
   const [items, setItems] = useRecoilState(itemsState);
   const [snackbar, setSnackbar] = useRecoilState(snackbarState);
   const [filter, setFilter] = useState('');
+  const [status, setStatus] = useState('');
+  const [date, setDate] = useState(null);
+  const [sort, setSort] = useState('az');
+  const [workspace, setWorkspace] = useState('default');
   const [draggingIndex, setDraggingIndex] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -219,14 +224,26 @@ const NoteList = (props) => {
   // Apply filtering and sorting with pinned notes at the top (no separate row)
   const processedItems = React.useMemo(() => {
     let result = filterItems(items, searchValue || filter);
-    result = multiCriteriaSort(result, checkedSort, heldSort, titleSort);
-    // Sort pinned notes to the top, but do not split into separate arrays/sections
+    // Status filter
+    if (status === 'checked') result = result.filter(i => i.checked);
+    if (status === 'held') result = result.filter(i => i.held);
+    if (status === 'unchecked') result = result.filter(i => !i.checked && !i.held);
+    // Date filter (if date is set, filter by dueDate or startDate)
+    if (date) {
+      const d = new Date(date).toDateString();
+      result = result.filter(i => (i.dueDate && new Date(i.dueDate).toDateString() === d) || (i.startDate && new Date(i.startDate).toDateString() === d));
+    }
+    // Sort
+    if (sort === 'az') result = [...result].sort((a, b) => a.title.localeCompare(b.title));
+    if (sort === 'za') result = [...result].sort((a, b) => b.title.localeCompare(a.title));
+    if (sort === 'date') result = [...result].sort((a, b) => (a.dueDate || '').localeCompare(b.dueDate || ''));
+    // Pinned to top
     result = result.slice().sort((a, b) => {
       if (a.pinned === b.pinned) return 0;
       return a.pinned ? -1 : 1;
     });
     return result;
-  }, [items, filter, searchValue, checkedSort, heldSort, titleSort]);
+  }, [items, filter, searchValue, status, date, sort]);
 
   // Sorting handlers
   const handleClearAllSorts = () => {
@@ -257,187 +274,25 @@ const NoteList = (props) => {
     setItems(updatedItems);
   }, [items, setItems]);
 
+
   return (
     <>
-      {/* App Header */}
-      <AppBar
-        position='fixed'
-        elevation={4}
-        sx={{
-          backgroundColor: theme.palette.background.paper,
-          color: theme.palette.text.primary,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-          zIndex: theme.zIndex.appBar,
-        }}>
-        <Toolbar
-          sx={{
-            justifyContent: 'space-between',
-            minHeight: { xs: 56, sm: 64 }, // Responsive AppBar height
-            px: { xs: 2, sm: 3 }, // Responsive padding
-          }}>
-          <Typography
-            variant='h6'
-            component='h1'
-            sx={{
-              fontWeight: 600,
-              color: theme.palette.primary.main,
-              fontSize: { xs: '1.1rem', sm: '1.25rem' },
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}>
-            Sticky Notes
-          </Typography>
-
-          {/* Enhanced Search */}
-          <Box
-            sx={{
-              position: 'relative',
-              borderRadius: { xs: 2, sm: 3 },
-              backgroundColor: alpha(theme.palette.action.hover, 0.1),
-              border: `1px solid ${alpha(theme.palette.action.active, 0.2)}`,
-              '&:hover': {
-                backgroundColor: alpha(theme.palette.action.hover, 0.15),
-              },
-              '&:focus-within': {
-                backgroundColor: alpha(theme.palette.action.hover, 0.2),
-                borderColor: theme.palette.primary.main,
-                boxShadow: `0 0 0 2px ${alpha(
-                  theme.palette.primary.main,
-                  0.2
-                )}`,
-              },
-              mx: { xs: 1, sm: 2 },
-              width: {
-                xs: '100%',
-                sm: 280,
-                md: 360,
-                lg: 400,
-                xl: 480,
-              },
-              maxWidth: { xs: 'none', sm: 500, lg: 600 },
-              flex: { xs: 1, sm: 'none' },
-              transition: 'all 0.2s ease-in-out',
-            }}>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                px: { xs: 1.5, sm: 2 },
-                py: { xs: 0.75, sm: 1 },
-                minHeight: { xs: 40, sm: 44 }, // Touch-friendly height
-              }}>
-              <Search
-                sx={{
-                  color: theme.palette.action.active,
-                  mr: 1,
-                  fontSize: { xs: '1.2rem', sm: '1.5rem' },
-                }}
-              />
-              <InputBase
-                placeholder='Search notes...'
-                value={searchValue}
-                onChange={(e) => handleSearchChange(e.target.value)}
-                sx={{
-                  flex: 1,
-                  fontSize: { xs: '0.9rem', sm: '1rem' },
-                  '& .MuiInputBase-input': {
-                    padding: 0,
-                    '&::placeholder': {
-                      color: theme.palette.action.active,
-                      opacity: 1,
-                    },
-                  },
-                }}
-              />
-            </Box>
-          </Box>
-
-          {/* Density Toggle */}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              ml: { xs: 1, sm: 2 },
-            }}>
-            <Tooltip
-              title={
-                isCompact
-                  ? 'Switch to comfortable view'
-                  : 'Switch to compact view'
-              }
-              arrow>
-              <IconButton
-                onClick={handleDensityToggle}
-                size={isCompact ? 'small' : 'medium'}
-                sx={{
-                  color: theme.palette.action.active,
-                  minWidth: { xs: 40, sm: 44 },
-                  minHeight: { xs: 40, sm: 44 },
-                  '&:hover': {
-                    backgroundColor: alpha(theme.palette.action.hover, 0.1),
-                    color: theme.palette.primary.main,
-                    transform: 'scale(1.05)',
-                  },
-                  transition: 'all 0.2s ease-in-out',
-                  // Touch device optimizations
-                  '@media (hover: none)': {
-                    '&:hover': {
-                      backgroundColor: 'transparent',
-                      color: theme.palette.action.active,
-                      transform: 'none',
-                    },
-                  },
-                }}>
-                {isCompact ? <ViewModule /> : <ViewList />}
-              </IconButton>
-            </Tooltip>
-          </Box>
-        </Toolbar>
-      </AppBar>
-
-      {/* Main Content */}
-      <Box
-        sx={{
-          // Add proper spacing for AppBar using toolbar mixin
-          ...theme.mixins.toolbar,
-          // Additional responsive spacing to ensure content is below AppBar
-          pt: { xs: 1, sm: 2 },
-        }}
-      />
-      <Container
-        maxWidth='xl'
-        sx={{
-          px: { xs: 1, sm: 2, md: 3, lg: 4 },
-          pb: { xs: 2, sm: 3, md: 4 },
-          minHeight: {
-            xs: `calc(100vh - 56px)`, // Mobile AppBar height
-            sm: `calc(100vh - 64px)`, // Desktop AppBar height
-          },
-          backgroundColor: theme.palette.background.default,
-        }}>
+      {/* Main Content (below navbar) */}
+      <Box />
+      <Container>
         <CommonSnackbar snackbar={snackbar} setSnackbar={setSnackbar} />
 
-        {/* Filter and Sorting Controls */}
-        <Box
-          sx={{
-            mb: { xs: 2, sm: 3 },
-            p: { xs: 1.5, sm: 2 },
-            backgroundColor: theme.palette.background.paper,
-            borderRadius: 2,
-            boxShadow: 1,
-          }}>
-          <CommonFilter filter={filter} setFilter={setFilter} />
-          <BoardSorter
-            checkedSort={checkedSort}
-            heldSort={heldSort}
-            titleSort={titleSort}
-            onCheckedSortChange={setCheckedSort}
-            onHeldSortChange={setHeldSort}
-            onTitleSortChange={setTitleSort}
-            onClearAll={handleClearAllSorts}
-            isCompact={isCompact}
-            onDensityToggle={handleDensityToggle}
+        {/* New FilterBar: horizontal, card-style, responsive */}
+        <Box sx={{ width: '100%', maxWidth: '1400px', mb: 2, mt: 10, mr: 5 }}>
+          <FilterBar
+            status={status}
+            setStatus={setStatus}
+            search={searchValue}
+            setSearch={setSearchValue}
+            date={date}
+            setDate={setDate}
+            sort={sort}
+            setSort={setSort}
           />
         </Box>
 

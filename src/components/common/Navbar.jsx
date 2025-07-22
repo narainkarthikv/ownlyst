@@ -5,7 +5,8 @@ import { useRecoilState } from 'recoil';
 import MenuIcon from "@mui/icons-material/Menu";
 import { ChevronLeft, ChevronRight, Brightness4, Brightness7 } from "@mui/icons-material";
 import DrawerItems from "./Navbar/DrawerItems";
-import ThemeSelector from "./Navbar/ThemeSelector";
+import WorkspaceSelector from '../common/WorkspaceSelector';
+import ThemeToggle from '../common/ThemeToggle';
 
 const drawerWidth = 240;
 
@@ -92,6 +93,7 @@ const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedTheme, setSelectedTheme] = useRecoilState(themeState);
   const [mode, setMode] = useRecoilState(themeModeState);
+  const [workspace, setWorkspace] = useState('default');
 
   const handleDrawerOpen = () => setDrawerOpen(true);
   const handleDrawerClose = () => setDrawerOpen(false);  
@@ -100,38 +102,33 @@ const Navbar = () => {
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       <StyledAppBar position="fixed" open={drawerOpen}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ ...(drawerOpen && { display: "none" }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-
-          <Typography
-            variant="h6"
-            noWrap
-            sx={{
-              fontWeight: '500',
-              marginLeft: 2,
-              [theme.breakpoints.down('sm')]: { fontSize: '1rem', marginLeft: 1 },
-            }}
-          >
-            Sticky Memo
-          </Typography>
-
-          <Box sx={{ flexGrow: 1 }} />
-
-          <Tooltip title={`Switch to ${mode === 'light' ? 'dark' : 'light'} mode`}>  
-            <IconButton onClick={toggleMode} color="inherit">
-              {mode === 'light' ? <Brightness4 /> : <Brightness7 />}
+        <Toolbar sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{ ...(drawerOpen && { display: "none" }) }}
+            >
+              <MenuIcon />
             </IconButton>
-          </Tooltip>
-
-          <ThemeSelector selectedTheme={selectedTheme} setSelectedTheme={setSelectedTheme} />
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{
+                fontWeight: '500',
+                marginLeft: 2,
+                [theme.breakpoints.down('sm')]: { fontSize: '1rem', marginLeft: 1 },
+              }}
+            >
+              Sticky Memo
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <WorkspaceSelector value={workspace} onChange={e => setWorkspace(e.target.value)} />
+            <ThemeToggle onToggle={toggleMode} />
+          </Box>
         </Toolbar>
       </StyledAppBar>
 

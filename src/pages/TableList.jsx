@@ -8,9 +8,10 @@ import React, {
 import { useRecoilState } from 'recoil';
 import { itemsState, snackbarState } from '../utils/state';
 import TableCard from '../components/Table/TableCard';
-import CommonFilter from '../components/common/CommonFilter';
 import CommonSnackbar from '../components/common/CommonSnackbar';
-import BoardSorter from '../components/common/BoardSorter';
+import FilterBar from '../components/common/FilterBar';
+import WorkspaceSelector from '../components/common/WorkspaceSelector';
+import ThemeToggle from '../components/common/ThemeToggle';
 import {
   Box,
   Table,
@@ -38,6 +39,10 @@ const TableList = (props) => {
   const [items, setItems] = useRecoilState(itemsState);
   const [snackbar, setSnackbar] = useRecoilState(snackbarState);
   const [filter, setFilter] = useState('');
+  const [status, setStatus] = useState('');
+  const [date, setDate] = useState(null);
+  const [sort, setSort] = useState('az');
+  const [workspace, setWorkspace] = useState('default');
   const [draggingIndex, setDraggingIndex] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -215,14 +220,26 @@ const TableList = (props) => {
   // Apply filtering and sorting with pinned rows at the top
   const processedItems = React.useMemo(() => {
     let result = filterItems(items, filter);
-    result = multiCriteriaSort(result, checkedSort, heldSort, titleSort);
-    // Sort pinned rows to the top
+    // Status filter
+    if (status === 'checked') result = result.filter(i => i.checked);
+    if (status === 'held') result = result.filter(i => i.held);
+    if (status === 'unchecked') result = result.filter(i => !i.checked && !i.held);
+    // Date filter (if date is set, filter by dueDate or startDate)
+    if (date) {
+      const d = new Date(date).toDateString();
+      result = result.filter(i => (i.dueDate && new Date(i.dueDate).toDateString() === d) || (i.startDate && new Date(i.startDate).toDateString() === d));
+    }
+    // Sort
+    if (sort === 'az') result = [...result].sort((a, b) => a.title.localeCompare(b.title));
+    if (sort === 'za') result = [...result].sort((a, b) => b.title.localeCompare(a.title));
+    if (sort === 'date') result = [...result].sort((a, b) => (a.dueDate || '').localeCompare(b.dueDate || ''));
+    // Pinned to top
     result = result.slice().sort((a, b) => {
       if (a.pinned === b.pinned) return 0;
       return a.pinned ? -1 : 1;
     });
     return result;
-  }, [items, filter, checkedSort, heldSort, titleSort]);
+  }, [items, filter, status, date, sort]);
 
   // Sorting handlers
   const handleClearAllSorts = () => {
@@ -248,31 +265,17 @@ const TableList = (props) => {
     <Box sx={boxStyles}>
       <CommonSnackbar snackbar={snackbar} setSnackbar={setSnackbar} />
 
-      {/* Header with Filter and Sorting */}
-      <Box
-        sx={{
-          width: '100%',
-          maxWidth: '1400px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          padding: 2,
-          backgroundColor: 'background.paper',
-          borderRadius: 1,
-          boxShadow: 1,
-          marginBottom: 2,
-        }}>
-        <CommonFilter filter={filter} setFilter={setFilter} />
-        <BoardSorter
-          checkedSort={checkedSort}
-          heldSort={heldSort}
-          titleSort={titleSort}
-          onCheckedSortChange={setCheckedSort}
-          onHeldSortChange={setHeldSort}
-          onTitleSortChange={setTitleSort}
-          onClearAll={handleClearAllSorts}
-          isCompact={isCompact}
-          onDensityToggle={handleDensityToggle}
+      {/* New FilterBar: horizontal, card-style, responsive */}
+      <Box sx={{ width: '100%', maxWidth: '1400px', mb: 2, mt: 10, mr: 5 }}>
+        <FilterBar
+          status={status}
+          setStatus={setStatus}
+          search={filter}
+          setSearch={setFilter}
+          date={date}
+          setDate={setDate}
+          sort={sort}
+          setSort={setSort}
         />
       </Box>
       <Grid container spacing={isCompact ? 1 : 2} sx={scrollBoxStyles}>
