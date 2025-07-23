@@ -10,6 +10,7 @@ import { itemsState, snackbarState } from '../utils/state';
 import TableCard from '../components/Table/TableCard';
 import CommonSnackbar from '../components/common/CommonSnackbar';
 import FilterBar from '../components/common/FilterBar';
+import FilterBarSection from '../components/common/FilterBarSection';
 import WorkspaceSelector from '../components/common/WorkspaceSelector';
 import ThemeToggle from '../components/common/ThemeToggle';
 import {
@@ -266,18 +267,16 @@ const TableList = (props) => {
       <CommonSnackbar snackbar={snackbar} setSnackbar={setSnackbar} />
 
       {/* New FilterBar: horizontal, card-style, responsive */}
-      <Box sx={{ width: '100%', maxWidth: '1400px', mb: 2, mt: 10, mr: 5 }}>
-        <FilterBar
-          status={status}
-          setStatus={setStatus}
-          search={filter}
-          setSearch={setFilter}
-          date={date}
-          setDate={setDate}
-          sort={sort}
-          setSort={setSort}
-        />
-      </Box>
+      <FilterBarSection
+        status={status}
+        setStatus={setStatus}
+        search={filter}
+        setSearch={setFilter}
+        date={date}
+        setDate={setDate}
+        sort={sort}
+        setSort={setSort}
+      />
       <Grid container spacing={isCompact ? 1 : 2} sx={scrollBoxStyles}>
         <Grid item xs={12}>
           <Table sx={tableStyles} size={isCompact ? 'small' : 'medium'}>

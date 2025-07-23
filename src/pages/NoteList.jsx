@@ -10,6 +10,7 @@ import { itemsState, snackbarState } from '../utils/state';
 import NoteCard from '../components/Note/NoteCard';
 import CommonSnackbar from '../components/common/CommonSnackbar';
 import FilterBar from '../components/common/FilterBar';
+import FilterBarSection from '../components/common/FilterBarSection';
 import WorkspaceSelector from '../components/common/WorkspaceSelector';
 import ThemeToggle from '../components/common/ThemeToggle';
 import {
@@ -283,18 +284,16 @@ const NoteList = (props) => {
         <CommonSnackbar snackbar={snackbar} setSnackbar={setSnackbar} />
 
         {/* New FilterBar: horizontal, card-style, responsive */}
-        <Box sx={{ width: '100%', maxWidth: '1400px', mb: 2, mt: 10, mr: 5 }}>
-          <FilterBar
-            status={status}
-            setStatus={setStatus}
-            search={searchValue}
-            setSearch={setSearchValue}
-            date={date}
-            setDate={setDate}
-            sort={sort}
-            setSort={setSort}
-          />
-        </Box>
+        <FilterBarSection
+          status={status}
+          setStatus={setStatus}
+          search={searchValue}
+          setSearch={setSearchValue}
+          date={date}
+          setDate={setDate}
+          sort={sort}
+          setSort={setSort}
+        />
 
         {/* All Notes Section */}
         <Box>
