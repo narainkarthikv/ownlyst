@@ -1,7 +1,7 @@
 import { useState, useCallback, useRef, useTransition, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { itemsState, snackbarState } from '../utils/state';
-import debounce from '../utils/debounce';
+import { debounce } from '../utils/debounce';
 import { useItemUtils } from '../utils/useItemUtils';
 
 /**
