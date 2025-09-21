@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Table, LayoutDashboard, Baseline as Timeline, Pin, Palette, Filter, StickyNote } from 'lucide-react';

@@ -159,8 +159,8 @@ export default function NotesApp() {
               onClick={() => navigate('/')}
               className="flex items-center space-x-1 sm:space-x-2 text-gray-600 hover:text-gray-900 transition-colors"
             >
-              <ArrowLeft size={20} />
-              <span className="hidden sm:inline">Back</span>
+              <ArrowLeft size={28} />
+              <span className="hidden sm:inline"></span>
             </motion.button>
             <div className="flex items-center space-x-2 sm:space-x-3">
               <Logo size={28} className="sm:w-8" />

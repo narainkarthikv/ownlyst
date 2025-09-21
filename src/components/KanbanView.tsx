@@ -14,7 +14,7 @@ interface KanbanViewProps {
   onDeleteNote: (id: string) => void;
 }
 
-type ColumnId = 'backlog' | 'in-progress' | 'completed';
+type ColumnId = 'todo' | 'in-progress' | 'done';
 
 interface Column {
   id: ColumnId;
@@ -26,8 +26,8 @@ interface Column {
 // Constants
 const COLUMNS: Column[] = [
   { 
-    id: 'backlog', 
-    title: 'Backlog', 
+    id: 'todo', 
+    title: 'To-Do', 
     color: 'from-slate-50 to-slate-100 border-slate-200',
     icon: '📋'
   },
@@ -38,14 +38,14 @@ const COLUMNS: Column[] = [
     icon: '⚡'
   },
   { 
-    id: 'completed', 
-    title: 'Completed', 
+    id: 'done', 
+    title: 'Done', 
     color: 'from-emerald-50 to-emerald-100 border-emerald-200',
     icon: '✅'
   },
 ];
 
-const COLOR_CLASSES = {
+const COLOR_CLASSES: Record<string, string> = {
   indigo: 'bg-gradient-to-br from-indigo-50 to-indigo-100 border-indigo-200 hover:from-indigo-100 hover:to-indigo-200',
   emerald: 'bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200 hover:from-emerald-100 hover:to-emerald-200',
   sky: 'bg-gradient-to-br from-sky-50 to-sky-100 border-sky-200 hover:from-sky-100 hover:to-sky-200',
@@ -109,12 +109,12 @@ const KanbanCard = memo(({ note, index, onUpdate, onDelete }: KanbanCardProps) =
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           className={`
-            relative p-3 sm:p-4 rounded-xl border backdrop-blur-sm group
+            relative p-4 rounded-lg border backdrop-blur-sm group
             ${COLOR_CLASSES[note.color]}
             transition-all duration-200 transform
             ${snapshot.isDragging 
-              ? 'shadow-2xl scale-[1.02] z-50 cursor-grabbing opacity-90' 
-              : 'shadow-sm hover:shadow-lg z-10 cursor-grab'
+              ? 'shadow-lg scale-[1.02] z-50 cursor-grabbing ring-2 ring-blue-400 opacity-90' 
+              : 'shadow hover:shadow-md hover:scale-[1.01] z-10 cursor-grab'
             }
           `}
         >
@@ -145,24 +145,24 @@ const KanbanCard = memo(({ note, index, onUpdate, onDelete }: KanbanCardProps) =
           </div>
 
           {/* Content */}
-          <div className="space-y-3 mt-8">
+          <div className="space-y-3 mt-6">
             <motion.h4 
-              className="font-bold text-base text-gray-900 leading-tight pr-16"
+              className="font-bold text-base text-gray-900 leading-snug pr-16"
               layout
             >
               {note.title}
             </motion.h4>
             <motion.p 
-              className="text-sm text-gray-600 line-clamp-3 leading-relaxed"
+              className="text-sm text-gray-600 line-clamp-3 leading-relaxed break-words"
               layout
             >
               {note.content}
             </motion.p>
             
             {/* Metadata */}
-            <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-200/50">
-              <div className="flex items-center space-x-1">
-                <Calendar size={12} />
+            <div className="flex items-center justify-between text-xs text-gray-500 pt-3 mt-2 border-t border-gray-200/50">
+              <div className="flex items-center gap-1.5">
+                <Calendar size={12} strokeWidth={2.5} />
                 <span>{formatDate(note.createdAt)}</span>
               </div>
               {note.dueDate && (
@@ -254,26 +254,27 @@ interface KanbanColumnProps {
 
 const KanbanColumn = memo(({ column, notes, onAddNote, onUpdateNote, onDeleteNote }: KanbanColumnProps) => {
   return (
-    <div className={`rounded-xl bg-gradient-to-br ${column.color} border-2 p-3 sm:p-4 min-h-[400px] md:min-h-[600px] w-full transition-all duration-300`}>
+    <div className={`flex flex-col h-[calc(100vh-12rem)] rounded-xl bg-gradient-to-br ${column.color} 
+      border shadow-sm p-4 transition-all duration-300`}>
       {/* Column Header */}
-      <div className="flex items-center justify-between mb-4 sm:mb-6">
-        <div className="flex items-center space-x-2 sm:space-x-3">
-          <span className="text-lg sm:text-xl">{column.icon}</span>
-          <div className="flex items-center space-x-2">
-            <h3 className="font-bold text-base sm:text-lg text-gray-900">{column.title}</h3>
-            <span className="inline-flex bg-white/80 backdrop-blur-sm px-2 sm:px-2.5 py-0.5 rounded-full 
-              text-xs sm:text-sm font-medium text-gray-700 shadow-sm">
+      <div className="flex items-center justify-between pb-4">
+        <div className="flex items-center gap-3">
+          <span className="text-xl">{column.icon}</span>
+          <div className="flex items-center gap-2">
+            <h3 className="font-bold text-lg text-gray-900">{column.title}</h3>
+            <span className="inline-flex items-center justify-center h-6 min-w-[1.5rem] px-2 
+              bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-700 shadow-sm">
               {notes.length}
             </span>
           </div>
         </div>
         <button
           onClick={onAddNote}
-          className="p-1.5 sm:p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md 
+          className="p-2 rounded-lg bg-white/80 backdrop-blur-sm shadow-sm
             transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 text-gray-600
-            hover:scale-110 active:scale-95"
+            hover:scale-105 active:scale-95"
         >
-          <Plus size={16} className="sm:w-[18px] sm:h-[18px]" />
+          <Plus size={18} />
         </button>
       </div>
 
@@ -284,10 +285,10 @@ const KanbanColumn = memo(({ column, notes, onAddNote, onUpdateNote, onDeleteNot
             {...provided.droppableProps}
             ref={provided.innerRef}
             className={`
-              relative space-y-4 min-h-[500px] p-4 rounded-xl border-2 border-dashed
+              flex-1 overflow-y-auto space-y-4 p-4 rounded-lg border-2 border-dashed
               transition-all duration-200 backdrop-blur-sm
               ${snapshot.isDraggingOver 
-                ? 'border-blue-400 bg-blue-50/50 shadow-lg scale-[1.01]' 
+                ? 'border-blue-400 bg-blue-50/50 shadow-md' 
                 : 'border-slate-200 bg-white/20'
               }
             `}
@@ -325,9 +326,9 @@ export default function KanbanView({ notes, onAddNote, onUpdateNote, onDeleteNot
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [columnState, setColumnState] = useState<Record<ColumnId, Note[]>>(() => {
     const initialState: Record<ColumnId, Note[]> = {
-      'backlog': [],
+      'todo': [],
       'in-progress': [],
-      'completed': []
+      'done': []
     };
     
     // Initial distribution of notes
@@ -372,32 +373,35 @@ export default function KanbanView({ notes, onAddNote, onUpdateNote, onDeleteNot
   }, []);
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-3 sm:space-y-0 mb-6">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
-            Kanban Board
-          </h2>
-          <p className="text-sm sm:text-base text-gray-600">
-            Manage your workflow with drag and drop
-          </p>
+    <div className="h-full flex flex-col overflow-hidden">
+      {/* Fixed Header */}
+      <div className="sticky top-0 z-10 bg-white pb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-3 sm:space-y-0">
+          <div>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+              Kanban Board
+            </h2>
+            <p className="text-sm sm:text-base text-gray-600">
+              Manage your workflow with drag and drop
+            </p>
+          </div>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 
+              rounded-lg hover:bg-blue-700 transition-all duration-200 hover:shadow-xl
+              hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <Plus size={20} />
+            <span>Add Note</span>
+          </button>
         </div>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="w-full sm:w-auto flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 
-            rounded-lg hover:bg-blue-700 transition-all duration-200 hover:shadow-xl
-            hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <Plus size={20} />
-          <span>Add Note</span>
-        </button>
       </div>
 
-      {/* Kanban Board */}
+      {/* Scrollable Kanban Board */}
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="flex flex-col md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto">
-          {COLUMNS.map((column) => (
+        <div className="flex-1 min-h-0 overflow-y-auto p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min">
+            {COLUMNS.map((column) => (
             <KanbanColumn
               key={column.id}
               column={column}
@@ -407,8 +411,11 @@ export default function KanbanView({ notes, onAddNote, onUpdateNote, onDeleteNot
               onDeleteNote={onDeleteNote}
             />
           ))}
+          </div>
         </div>
-      </DragDropContext>      {/* Add Note Modal */}
+      </DragDropContext>
+      
+      {/* Add Note Modal */}
       <AnimatePresence>
         {isModalOpen && (
           <NoteModal

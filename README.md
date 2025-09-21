@@ -1,7 +1,7 @@
 # 🎴 Sticky-Memo
 
 Welcome to **Sticky-Memo** — a lightweight React app to create and manage digital sticky notes.  
-Built with **React.js**, **Vite**, and **MUI**, this project is ideal for learning, experimenting, and contributing to open source. 🤍🤝
+Built with **React.ts**, **Vite**, and **TailwindCSS**, this project is ideal for learning, experimenting, and contributing to open source. 🤍🤝
 
 [![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/sticky-memo?style=flat-square)](https://github.com/narainkarthikv/sticky-memo/issues)
 [![GitHub forks](https://img.shields.io/github/forks/narainkarthikv/sticky-memo?style=flat-square)](https://github.com/narainkarthikv/sticky-memo/network)
@@ -39,10 +39,10 @@ Built with **React.js**, **Vite**, and **MUI**, this project is ideal for learni
 ---
 
 ## 🛠️ Tech Stack
-- React.js  
+- React.ts  
 - Vite  
-- Material UI (MUI)  
-- JavaScript (ES6+)  
+- TailwindCSS
+- Typescript  
 
 ---
 
