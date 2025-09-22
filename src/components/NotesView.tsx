@@ -198,7 +198,7 @@ export default function NotesView({ notes, onAddNote, onUpdateNote, onDeleteNote
                     }}
                     className="p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-gray-500 hover:text-purple-600 text-xs"
                   >
-                    <Palette size={10} />
+                    <Palette size={12} />
                   </motion.button>
                   {colorPickerNote === note.id && (
                     <ColorPicker

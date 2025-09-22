@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Pin, Tag } from 'lucide-react';
+import { X, Calendar, Pin } from 'lucide-react';
 import { Note } from '../types/Note';
 
 interface NoteModalProps {
@@ -12,7 +12,7 @@ interface NoteModalProps {
   onSave: (note: Omit<Note, 'id' | 'createdAt'>) => void;
 }
 
-const colors: Note['color'][] = ['yellow', 'green', 'blue', 'red', 'purple', 'orange', 'pink', 'gray'];
+const colors: Note['color'][] = ['indigo', 'emerald', 'sky', 'rose', 'violet', 'slate', 'cyan', 'lime', 'orange', 'teal'];
 const statuses: Note['status'][] = ['todo', 'in-progress', 'done'];
 const priorities: Note['priority'][] = ['low', 'medium', 'high'];
 
@@ -27,13 +27,13 @@ const colorClasses = {
   gray: 'bg-gray-200 border-gray-300',
 };
 
-export default function NoteModal({ 
-  isOpen, 
-  onClose, 
-  note, 
+export default function NoteModal({
+  isOpen,
+  onClose,
+  note,
   defaultStatus = 'todo',
   defaultDueDate = null,
-  onSave 
+  onSave
 }: NoteModalProps) {
   const [formData, setFormData] = useState({
     title: '',
@@ -42,9 +42,10 @@ export default function NoteModal({
     status: defaultStatus,
     priority: 'medium' as Note['priority'],
     isPinned: false,
-    dueDate: defaultDueDate,
+    dueDate: defaultDueDate as Date | null,
   });
 
+  // Load initial data when editing or creating
   useEffect(() => {
     if (note) {
       setFormData({
@@ -69,14 +70,7 @@ export default function NoteModal({
     }
   }, [note, defaultStatus, defaultDueDate]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.title.trim()) return;
-    
-    onSave(formData);
-    onClose();
-  };
-
+  // Helpers
   const formatDateForInput = (date: Date | null) => {
     if (!date) return '';
     return date.toISOString().split('T')[0];
@@ -87,6 +81,15 @@ export default function NoteModal({
       ...prev,
       dueDate: dateString ? new Date(dateString) : null,
     }));
+  };
+
+  // Submit handler
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.title.trim()) return;
+
+    onSave(formData);
+    onClose();
   };
 
   return (
@@ -107,17 +110,21 @@ export default function NoteModal({
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="note-modal-title"
             className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h2 className="text-xl font-bold text-gray-900">
+              <h2 id="note-modal-title" className="text-xl font-bold text-gray-900">
                 {note ? 'Edit Note' : 'Create Note'}
               </h2>
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={onClose}
+                aria-label="Close modal"
                 className="p-2 rounded-full hover:bg-gray-100 transition-colors"
               >
                 <X size={20} />
@@ -168,6 +175,7 @@ export default function NoteModal({
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       onClick={() => setFormData(prev => ({ ...prev, color }))}
+                      aria-label={`Select ${color} color`}
                       className={`w-12 h-12 rounded-lg border-2 ${colorClasses[color]} ${
                         formData.color === color ? 'ring-2 ring-blue-500' : ''
                       }`}
@@ -237,13 +245,13 @@ export default function NoteModal({
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setFormData(prev => ({ ...prev, isPinned: !prev.isPinned }))}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-lg border-2 transition-colors ${
-                    formData.isPinned 
-                      ? 'border-blue-500 bg-blue-50 text-blue-700' 
+                    formData.isPinned
+                      ? 'border-blue-500 bg-blue-50 text-blue-700'
                       : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
                   }`}
                 >
                   <Pin size={16} />
-                  <span className="text-sm font-medium">Pin Note</span>
+                  <span className="text-sm font-medium">{formData.isPinned ? 'Pinned' : 'Pin Note'}</span>
                 </motion.button>
               </div>
 
@@ -260,9 +268,14 @@ export default function NoteModal({
                 </motion.button>
                 <motion.button
                   type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  disabled={!formData.title.trim()}
+                  whileHover={{ scale: formData.title.trim() ? 1.02 : 1 }}
+                  whileTap={{ scale: formData.title.trim() ? 0.98 : 1 }}
+                  className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
+                    formData.title.trim()
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }`}
                 >
                   {note ? 'Update' : 'Create'}
                 </motion.button>
