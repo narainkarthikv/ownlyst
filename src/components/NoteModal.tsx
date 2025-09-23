@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Pin } from 'lucide-react';
+import { X, Calendar, Pin, Check } from 'lucide-react';
 import { Note } from '../types/Note';
 
 interface NoteModalProps {
@@ -8,23 +8,26 @@ interface NoteModalProps {
   onClose: () => void;
   note: Note | null;
   defaultStatus?: Note['status'];
-  defaultDueDate?: Date | null;
+  defaultDueDate?: Date;
   onSave: (note: Omit<Note, 'id' | 'createdAt'>) => void;
 }
 
-const colors: Note['color'][] = ['indigo', 'emerald', 'sky', 'rose', 'violet', 'slate', 'cyan', 'lime', 'orange', 'teal'];
+const colors: Note['color'][] = ['indigo', 'emerald', 'sky', 'rose', 'violet', 'amber', 'slate', 'cyan', 'lime', 'orange', 'teal'];
 const statuses: Note['status'][] = ['todo', 'in-progress', 'done'];
 const priorities: Note['priority'][] = ['low', 'medium', 'high'];
 
 const colorClasses = {
-  yellow: 'bg-yellow-200 border-yellow-300',
-  green: 'bg-green-200 border-green-300',
-  blue: 'bg-blue-200 border-blue-300',
-  red: 'bg-red-200 border-red-300',
-  purple: 'bg-purple-200 border-purple-300',
+  indigo: 'bg-indigo-200 border-indigo-300',
+  emerald: 'bg-emerald-200 border-emerald-300',
+  sky: 'bg-sky-200 border-sky-300',
+  rose: 'bg-rose-200 border-rose-300',
+  violet: 'bg-violet-200 border-violet-300',
+  amber: 'bg-amber-200 border-amber-300',
+  slate: 'bg-slate-200 border-slate-300',
+  cyan: 'bg-cyan-200 border-cyan-300',
+  lime: 'bg-lime-200 border-lime-300',
   orange: 'bg-orange-200 border-orange-300',
-  pink: 'bg-pink-200 border-pink-300',
-  gray: 'bg-gray-200 border-gray-300',
+  teal: 'bg-teal-200 border-teal-300',
 };
 
 export default function NoteModal({
@@ -32,20 +35,20 @@ export default function NoteModal({
   onClose,
   note,
   defaultStatus = 'todo',
-  defaultDueDate = null,
+  defaultDueDate = undefined,
   onSave
 }: NoteModalProps) {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    color: 'yellow' as Note['color'],
+    color: 'indigo' as Note['color'],
     status: defaultStatus,
     priority: 'medium' as Note['priority'],
     isPinned: false,
-    dueDate: defaultDueDate as Date | null,
+    dueDate: defaultDueDate as Date | undefined,
   });
 
-  // Load initial data when editing or creating
+    // Load initial data when editing or creating
   useEffect(() => {
     if (note) {
       setFormData({
@@ -55,15 +58,15 @@ export default function NoteModal({
         status: note.status,
         priority: note.priority,
         isPinned: note.isPinned,
-        dueDate: note.dueDate || null,
+        dueDate: note.dueDate,
       });
     } else {
       setFormData({
         title: '',
         content: '',
-        color: 'yellow',
+        color: 'indigo' as Note['color'],
         status: defaultStatus,
-        priority: 'medium',
+        priority: 'medium' as Note['priority'],
         isPinned: false,
         dueDate: defaultDueDate,
       });
@@ -71,7 +74,7 @@ export default function NoteModal({
   }, [note, defaultStatus, defaultDueDate]);
 
   // Helpers
-  const formatDateForInput = (date: Date | null) => {
+  const formatDateForInput = (date: Date | undefined) => {
     if (!date) return '';
     return date.toISOString().split('T')[0];
   };
@@ -79,7 +82,7 @@ export default function NoteModal({
   const handleDateChange = (dateString: string) => {
     setFormData(prev => ({
       ...prev,
-      dueDate: dateString ? new Date(dateString) : null,
+      dueDate: dateString ? new Date(dateString) : undefined,
     }));
   };
 
@@ -120,15 +123,46 @@ export default function NoteModal({
               <h2 id="note-modal-title" className="text-xl font-bold text-gray-900">
                 {note ? 'Edit Note' : 'Create Note'}
               </h2>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={onClose}
-                aria-label="Close modal"
-                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
-              >
-                <X size={20} />
-              </motion.button>
+              <div className="flex items-center gap-2">
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => setFormData(prev => ({ ...prev, isPinned: !prev.isPinned }))}
+                  aria-label={formData.isPinned ? 'Unpin note' : 'Pin note'}
+                  className={`p-2 rounded-full transition-colors ${
+                    formData.isPinned
+                      ? 'bg-blue-100 text-blue-600 hover:bg-blue-200'
+                      : 'hover:bg-gray-100 text-gray-600'
+                  }`}
+                >
+                  <Pin size={20} />
+                </motion.button>
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={handleSubmit}
+                  disabled={!formData.title.trim()}
+                  aria-label={note ? 'Update note' : 'Save note'}
+                  className={`p-2 rounded-full transition-colors ${
+                    formData.title.trim()
+                      ? 'text-emerald-600 hover:bg-emerald-100'
+                      : 'text-gray-400 cursor-not-allowed'
+                  }`}
+                >
+                  <Check size={20} />
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={onClose}
+                  aria-label="Close modal"
+                  className="p-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors"
+                >
+                  <X size={20} />
+                </motion.button>
+              </div>
             </div>
 
             {/* Form */}
@@ -237,49 +271,8 @@ export default function NoteModal({
                 </div>
               </div>
 
-              {/* Pin Toggle */}
-              <div className="flex items-center space-x-3">
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setFormData(prev => ({ ...prev, isPinned: !prev.isPinned }))}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg border-2 transition-colors ${
-                    formData.isPinned
-                      ? 'border-blue-500 bg-blue-50 text-blue-700'
-                      : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  <Pin size={16} />
-                  <span className="text-sm font-medium">{formData.isPinned ? 'Pinned' : 'Pin Note'}</span>
-                </motion.button>
-              </div>
-
-              {/* Actions */}
-              <div className="flex space-x-3 pt-4">
-                <motion.button
-                  type="button"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={onClose}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  Cancel
-                </motion.button>
-                <motion.button
-                  type="submit"
-                  disabled={!formData.title.trim()}
-                  whileHover={{ scale: formData.title.trim() ? 1.02 : 1 }}
-                  whileTap={{ scale: formData.title.trim() ? 0.98 : 1 }}
-                  className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
-                    formData.title.trim()
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
-                >
-                  {note ? 'Update' : 'Create'}
-                </motion.button>
-              </div>
+              {/* Spacer for form bottom padding */}
+              <div className="h-2" />
             </form>
           </motion.div>
         </div>

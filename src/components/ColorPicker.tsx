@@ -41,11 +41,6 @@ const colors: { id: Note['color']; label: string; class: string }[] = [
     class: 'bg-amber-400 hover:bg-amber-500'
   },
   { 
-    id: 'fuchsia', 
-    label: 'Fu', 
-    class: 'bg-fuchsia-400 hover:bg-fuchsia-500'
-  },
-  { 
     id: 'slate', 
     label: 'Sl', 
     class: 'bg-slate-400 hover:bg-slate-500'
