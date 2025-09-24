@@ -98,7 +98,7 @@ export default function ColorPicker({ currentColor, onColorSelect, onClose }: Co
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -4 }}
       transition={{ duration: 0.15 }}
-      className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg border border-gray-100 p-3 z-50 w-[280px]"
+      className="absolute bottom-full right-0 mb-1 bg-white rounded-lg shadow-lg border border-gray-100 p-3 z-50 w-[280px]"
     >
       <div className="flex items-center justify-between mb-2">
         <span className="text-sm font-medium text-gray-700">Color</span>

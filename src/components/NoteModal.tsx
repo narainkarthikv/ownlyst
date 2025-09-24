@@ -116,7 +116,7 @@ export default function NoteModal({
             role="dialog"
             aria-modal="true"
             aria-labelledby="note-modal-title"
-            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto"
+            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[80vh] overflow-y-auto"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
@@ -158,7 +158,7 @@ export default function NoteModal({
                   whileTap={{ scale: 0.9 }}
                   onClick={onClose}
                   aria-label="Close modal"
-                  className="p-2 rounded-full text-gray-600 hover:bg-gray-100 transition-colors"
+                  className="p-2 rounded-full text-red-600 hover:bg-red-100 transition-colors"
                 >
                   <X size={20} />
                 </motion.button>
@@ -201,7 +201,7 @@ export default function NoteModal({
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Color
                 </label>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-6 gap-1">
                   {colors.map((color) => (
                     <motion.button
                       key={color}
