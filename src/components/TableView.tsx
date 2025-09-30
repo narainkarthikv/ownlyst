@@ -63,45 +63,59 @@ export default function TableView({ notes, onAddNote, onUpdateNote, onDeleteNote
   const sortedAndFilteredNotes = useMemo(() => {
     let filtered = [...notes];
 
+    // Split notes into pinned and unpinned
+    let pinnedNotes = filtered.filter(note => note.isPinned);
+    let unpinnedNotes = filtered.filter(note => !note.isPinned);
+
     // Apply search filter
     if (searchTerm) {
-      filtered = filtered.filter(note =>
+      const searchFilter = (note: Note) =>
         note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        note.content.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+        note.content.toLowerCase().includes(searchTerm.toLowerCase());
+      pinnedNotes = pinnedNotes.filter(searchFilter);
+      unpinnedNotes = unpinnedNotes.filter(searchFilter);
     }
 
     // Apply filters
     if (filterStatus !== 'all') {
-      filtered = filtered.filter(note => note.status === filterStatus);
+      pinnedNotes = pinnedNotes.filter(note => note.status === filterStatus);
+      unpinnedNotes = unpinnedNotes.filter(note => note.status === filterStatus);
     }
     if (filterPriority !== 'all') {
-      filtered = filtered.filter(note => note.priority === filterPriority);
+      pinnedNotes = pinnedNotes.filter(note => note.priority === filterPriority);
+      unpinnedNotes = unpinnedNotes.filter(note => note.priority === filterPriority);
     }
 
     // Apply sorting
-    filtered.sort((a, b) => {
-      let aValue: any = a[sortField];
-      let bValue: any = b[sortField];
+    // Sort pinned and unpinned notes separately
+    const sortNotes = (notes: Note[]) => {
+      return notes.sort((a, b) => {
+        let aValue: any = a[sortField];
+        let bValue: any = b[sortField];
 
-      if (sortField === 'createdAt' || sortField === 'dueDate') {
-        aValue = aValue ? new Date(aValue).getTime() : 0;
-        bValue = bValue ? new Date(bValue).getTime() : 0;
-      }
+        if (sortField === 'createdAt' || sortField === 'dueDate') {
+          aValue = aValue ? new Date(aValue).getTime() : 0;
+          bValue = bValue ? new Date(bValue).getTime() : 0;
+        }
 
-      if (typeof aValue === 'string') {
-        aValue = aValue.toLowerCase();
-        bValue = bValue.toLowerCase();
-      }
+        if (typeof aValue === 'string') {
+          aValue = aValue.toLowerCase();
+          bValue = bValue.toLowerCase();
+        }
 
-      if (sortDirection === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
-    });
+        if (sortDirection === 'asc') {
+          return aValue > bValue ? 1 : -1;
+        } else {
+          return aValue < bValue ? 1 : -1;
+        }
+      });
+    };
 
-    return filtered;
+    const sortedPinned = sortNotes(pinnedNotes);
+    const sortedUnpinned = sortNotes(unpinnedNotes);
+
+    // Combine sorted pinned and unpinned notes
+    return [...sortedPinned, ...sortedUnpinned];
   }, [notes, sortField, sortDirection, filterStatus, filterPriority, searchTerm]);
 
   const handleSort = (field: SortField) => {
