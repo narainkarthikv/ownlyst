@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Calendar, 
   ChevronLeft, 
@@ -8,7 +8,8 @@ import {
   Clock,
   CheckCircle,
   Circle,
-  BarChart3} from 'lucide-react';
+  BarChart3,
+  LayersIcon} from 'lucide-react';
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
 
@@ -31,7 +32,6 @@ const statusColors: Record<Note['status'], string> = {
   'done': 'text-emerald-700 bg-emerald-100',
 };
 
-
 interface GanttTask {
   id: string;
   title: string;
@@ -43,16 +43,32 @@ interface GanttTask {
   isPinned: boolean;
 }
 
-export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
+type GroupingOption = 'none' | 'status' | 'priority';
+
+export default function RoadmapView({ notes, onAddNote, onUpdateNote }: RoadmapViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [viewMode, setViewMode] = useState<'month' | 'quarter'>('month');
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [zoomLevel, setZoomLevel] = useState<number>(80); // Default cell width in pixels
+  const [groupBy, setGroupBy] = useState<GroupingOption>('none');
+
+  // Group tasks by status or priority
+  const groupTasks = (tasks: GanttTask[], grouping: GroupingOption): Record<string, GanttTask[]> => {
+    if (grouping === 'none') return { '': tasks };
+    
+    return tasks.reduce((groups, task) => {
+      const key = grouping === 'status' ? task.status : task.priority;
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(task);
+      return groups;
+    }, {} as Record<string, GanttTask[]>);
+  };
 
   // Convert notes to Gantt tasks
   const ganttTasks = useMemo(() => {
-    return notes
+    const tasks = notes
       .filter(note => note.dueDate)
       .filter(note => filterStatus === 'all' || note.status === filterStatus)
       .map(note => ({
@@ -70,7 +86,9 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
         if (!a.isPinned && b.isPinned) return 1;
         return a.startDate.getTime() - b.startDate.getTime();
       });
-  }, [notes, filterStatus]);
+
+    return groupTasks(tasks, groupBy);
+  }, [notes, filterStatus, groupBy]);
 
   // Generate time periods for the timeline
   const timelineData = useMemo(() => {
@@ -79,12 +97,10 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
     const endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + (viewMode === 'quarter' ? 3 : 1), 0);
     
     if (viewMode === 'month') {
-      // Generate days for the month
       for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
         periods.push(new Date(d));
       }
     } else {
-      // Generate weeks for the quarter
       const current = new Date(startDate);
       while (current <= endDate) {
         periods.push(new Date(current));
@@ -141,29 +157,29 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
   return (
     <div className="space-y-4">
       {/* Analytics Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4 sm:mb-6 px-2 sm:px-0">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6 px-2 sm:px-0">
         {[
           { 
             label: 'Total Tasks', 
-            value: ganttTasks.length, 
+            value: Object.values(ganttTasks).flat().length,
             color: 'bg-blue-100 text-blue-800 border-blue-200',
             icon: <BarChart3 size={20} className="text-blue-600" />
           },
           { 
             label: 'In Progress', 
-            value: ganttTasks.filter(t => t.status === 'in-progress').length, 
+            value: Object.values(ganttTasks).flat().filter(t => t.status === 'in-progress').length,
             color: 'bg-amber-100 text-amber-800 border-amber-200',
             icon: <Clock size={20} className="text-amber-600" />
           },
           { 
             label: 'Completed', 
-            value: ganttTasks.filter(t => t.status === 'done').length, 
+            value: Object.values(ganttTasks).flat().filter(t => t.status === 'done').length,
             color: 'bg-emerald-100 text-emerald-800 border-emerald-200',
             icon: <CheckCircle size={20} className="text-emerald-600" />
           },
           { 
             label: 'Overdue', 
-            value: ganttTasks.filter(t => t.endDate < new Date() && t.status !== 'done').length, 
+            value: Object.values(ganttTasks).flat().filter(t => t.endDate < new Date() && t.status !== 'done').length,
             color: 'bg-rose-100 text-rose-800 border-rose-200',
             icon: <Calendar size={20} className="text-rose-600" />
           },
@@ -193,14 +209,28 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between space-y-3 sm:space-y-0">
           {/* Period Navigation */}
           <div className="flex items-center justify-between sm:justify-start w-full sm:w-auto space-x-2 sm:space-x-4">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => navigatePeriod('prev')}
-              className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <ChevronLeft size={20} className="sm:size-6 text-gray-600" />
-            </motion.button>
+            <div className="flex items-center space-x-1">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigatePeriod('prev')}
+                className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                title="Previous period"
+              >
+                <ChevronLeft size={20} className="sm:size-6 text-gray-600" />
+              </motion.button>
+              
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setCurrentDate(new Date())}
+                className="px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700 flex items-center space-x-1.5"
+                title="Go to today"
+              >
+                <Calendar size={14} />
+                <span>Today</span>
+              </motion.button>
+            </div>
             
             <h3 className="text-lg sm:text-2xl font-semibold text-gray-900 min-w-[140px] sm:min-w-[200px] text-center">
               {formatPeriodHeader()}
@@ -211,6 +241,7 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
               whileTap={{ scale: 0.95 }}
               onClick={() => navigatePeriod('next')}
               className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+              title="Next period"
             >
               <ChevronRight size={20} className="sm:size-6 text-gray-600" />
             </motion.button>
@@ -241,6 +272,40 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
               </button>
             </div>
 
+            {/* Zoom Controls */}
+            <div className="flex items-center space-x-2 px-2 py-1.5 bg-gray-100 rounded-lg">
+              <button
+                onClick={() => setZoomLevel(prev => Math.max(40, prev - 20))}
+                className="p-1 rounded hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                disabled={zoomLevel <= 40}
+                title="Zoom out"
+              >
+                <span className="font-medium text-lg leading-none">−</span>
+              </button>
+              <span className="text-sm font-medium text-gray-700 min-w-[32px] text-center">
+                {Math.round((zoomLevel / 80) * 100)}%
+              </span>
+              <button
+                onClick={() => setZoomLevel(prev => Math.min(200, prev + 20))}
+                className="p-1 rounded hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                disabled={zoomLevel >= 200}
+                title="Zoom in"
+              >
+                <span className="font-medium text-lg leading-none">+</span>
+              </button>
+            </div>
+
+            {/* Group By */}
+            <select
+              value={groupBy}
+              onChange={(e) => setGroupBy(e.target.value as GroupingOption)}
+              className="w-full sm:w-auto pl-3 pr-8 py-1.5 border border-gray-300 rounded-md text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white appearance-none"
+            >
+              <option value="none">No Grouping</option>
+              <option value="status">Group by Status</option>
+              <option value="priority">Group by Priority</option>
+            </select>
+
             {/* Status Filter */}
             <select
               value={filterStatus}
@@ -257,9 +322,14 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
       </div>
 
       {/* Gantt Chart */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto relative">
+        {/* Mobile scroll hint */}
+        <div className="md:hidden absolute right-4 top-2 text-xs text-gray-500 bg-white/80 px-2 py-1 rounded-full shadow-sm border border-gray-200 animate-pulse">
+          Scroll to view timeline →
+        </div>
+
         {/* Timeline Header */}
-        <div className="grid" style={{ gridTemplateColumns: '200px 1fr' }}>
+        <div className="grid" style={{ gridTemplateColumns: 'minmax(150px, 200px) 1fr' }}>
           <div className="sticky left-0 bg-white p-3 sm:p-4 border-r border-gray-200 z-10">
             <h4 className="font-semibold text-gray-900 text-sm">Tasks</h4>
           </div>
@@ -267,8 +337,8 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
             <div 
               className="grid border-b border-gray-200 bg-gray-50"
               style={{ 
-                gridTemplateColumns: `repeat(${timelineData.length}, minmax(80px, 1fr))`,
-                width: `max(100%, ${timelineData.length * 80}px)`
+                gridTemplateColumns: `repeat(${timelineData.length}, ${zoomLevel}px)`,
+                width: `max(100%, ${timelineData.length * zoomLevel}px)`
               }}
             >
               {timelineData.map((date) => (
@@ -278,7 +348,7 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
                     isToday(date) ? 'bg-blue-50' : ''
                   }`}
                 >
-                  <div className="text-xs sm:text-sm font-semibold text-gray-900">
+                  <div className="text-[10px] sm:text-xs md:text-sm font-semibold text-gray-900">
                     {viewMode === 'month' 
                       ? date.getDate()
                       : `W${Math.ceil(date.getDate() / 7)}`
@@ -297,7 +367,7 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
 
         {/* Tasks */}
         <div className="overflow-hidden">
-          {ganttTasks.length === 0 ? (
+          {Object.values(ganttTasks).flat().length === 0 ? (
             <div className="text-center p-6 sm:py-12">
               <Calendar size={40} className="mx-auto mb-3 sm:mb-4 text-gray-400" />
               <h3 className="text-base sm:text-lg font-medium text-gray-900 mb-2">No tasks with due dates</h3>
@@ -313,29 +383,38 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <div className="grid min-w-0" style={{ gridTemplateColumns: '200px 1fr' }}>
+              <div className="grid min-w-0" style={{ gridTemplateColumns: 'minmax(150px, 200px) 1fr' }}>
                 {/* Task Names Column */}
                 <div className="sticky left-0 bg-white z-10 border-r border-gray-200">
-                  {ganttTasks.map(task => (
-                    <div key={task.id} className="flex items-center min-h-[3rem] sm:min-h-[4rem] px-2 sm:px-4 py-2 sm:py-3 border-b border-gray-200 hover:bg-gray-50 transition-colors">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-1.5 sm:space-x-2">
-                          {React.createElement(statusIcons[task.status], {
-                            size: 14,
-                            className: `${statusColors[task.status]} p-0.5 rounded-full shrink-0`
-                          })}
-                          <span className="text-sm sm:text-base font-medium text-gray-900 truncate">
-                            {task.title}
-                          </span>
-                          {task.isPinned && (
-                            <Pin size={10} className="text-blue-600 shrink-0" />
-                          )}
+                  {Object.entries(ganttTasks).map(([groupName, tasks]) => (
+                    <React.Fragment key={groupName}>
+                      {groupBy !== 'none' && (
+                        <div className="bg-gray-50 px-4 py-2 border-b border-gray-200">
+                          <h3 className="text-sm font-medium text-gray-700 capitalize">{groupName || 'Ungrouped'}</h3>
                         </div>
-                        <div className="text-[10px] sm:text-[11px] text-gray-500 mt-0.5">
-                          {task.startDate.toLocaleDateString()} - {task.endDate.toLocaleDateString()}
+                      )}
+                      {tasks.map(task => (
+                        <div key={task.id} className="flex items-center min-h-[3rem] sm:min-h-[4rem] px-2 sm:px-4 py-2 sm:py-3 border-b border-gray-200 hover:bg-gray-50 transition-colors">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center space-x-1.5 sm:space-x-2">
+                              {React.createElement(statusIcons[task.status], {
+                                size: 14,
+                                className: `${statusColors[task.status]} p-0.5 rounded-full shrink-0`
+                              })}
+                              <span className="text-sm sm:text-base font-medium text-gray-900 truncate">
+                                {task.title}
+                              </span>
+                              {task.isPinned && (
+                                <Pin size={10} className="text-blue-600 shrink-0" />
+                              )}
+                            </div>
+                            <div className="text-[10px] sm:text-[11px] text-gray-500 mt-0.5">
+                              {task.startDate.toLocaleDateString()} - {task.endDate.toLocaleDateString()}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
+                      ))}
+                    </React.Fragment>
                   ))}
                 </div>
 
@@ -344,39 +423,96 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
                   <div 
                     className="grid bg-white"
                     style={{ 
-                      gridTemplateColumns: `repeat(${timelineData.length}, minmax(80px, 1fr))`,
-                      width: `max(100%, ${timelineData.length * 80}px)`
+                      gridTemplateColumns: `repeat(${timelineData.length}, ${zoomLevel}px)`,
+                      width: `max(100%, ${timelineData.length * zoomLevel}px)`
                     }}
                   >
-                    {ganttTasks.map(task => (
-                      <div 
-                        key={task.id}
-                        className="relative border-b border-gray-200 min-h-[3rem] sm:min-h-[4rem]"
-                        style={getTaskPosition(task)}
-                      >
-                        <motion.div
-                          initial={{ opacity: 0, scaleX: 0 }}
-                          animate={{ opacity: 1, scaleX: 1 }}
-                          transition={{ duration: 0.3 }}
-                          className={`absolute top-1/2 -translate-y-1/2 mx-1.5 sm:mx-2 h-6 sm:h-8 rounded-md shadow-sm ${
-                            task.status === 'done'
-                              ? 'bg-emerald-100'
-                              : task.status === 'in-progress'
-                              ? 'bg-blue-100'
-                              : 'bg-gray-100'
-                          }`}
-                        >
+                    {Object.entries(ganttTasks).map(([groupName, tasks]) => (
+                      <React.Fragment key={groupName}>
+                        {groupBy !== 'none' && (
                           <div 
-                            className={`h-full rounded-md transition-all duration-500 ${
-                              task.status === 'done'
-                                ? 'bg-emerald-200 w-full'
-                                : task.status === 'in-progress'
-                                ? 'bg-blue-200 w-1/2'
-                                : 'bg-gray-200 w-0'
-                            }`}
+                            className="h-10 border-b border-gray-200 bg-gray-50"
+                            style={{ 
+                              gridColumn: `1 / span ${timelineData.length}`
+                            }}
                           />
-                        </motion.div>
-                      </div>
+                        )}
+                        {tasks.map(task => (
+                          <div 
+                            key={task.id}
+                            className="relative border-b border-gray-200 min-h-[3rem] sm:min-h-[4rem] group"
+                            style={getTaskPosition(task)}
+                          >
+                            <motion.div
+                              initial={{ opacity: 0, scaleX: 0 }}
+                              animate={{ opacity: 1, scaleX: 1 }}
+                              transition={{ duration: 0.3 }}
+                              className={`absolute top-1/2 -translate-y-1/2 mx-1.5 sm:mx-2 h-6 sm:h-8 rounded-md shadow-sm ${
+                                task.status === 'done'
+                                  ? 'bg-emerald-100'
+                                  : task.status === 'in-progress'
+                                  ? 'bg-blue-100'
+                                  : 'bg-gray-100'
+                              }`}
+                            >
+                              <div 
+                                className={`h-full rounded-md transition-all duration-500 ${
+                                  task.status === 'done'
+                                    ? 'bg-emerald-200 w-full'
+                                    : task.status === 'in-progress'
+                                    ? 'bg-blue-200 w-1/2'
+                                    : 'bg-gray-200 w-0'
+                                }`}
+                              />
+                              <AnimatePresence>
+                                <motion.div 
+                                  initial={{ opacity: 0, y: 10 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: 10 }}
+                                  className="absolute hidden md:group-hover:block active:block z-20 bg-white p-3 rounded-lg shadow-lg border border-gray-200 w-64 -translate-x-1/2 left-1/2 top-full mt-2"
+                                >
+                                  <div className="text-sm space-y-2">
+                                    <div className="font-semibold text-gray-900">{task.title}</div>
+                                    <div className="flex items-center text-xs space-x-2">
+                                      {React.createElement(statusIcons[task.status], {
+                                        size: 14,
+                                        className: `${statusColors[task.status]} p-0.5 rounded-full shrink-0`
+                                      })}
+                                      <span className="capitalize">{task.status}</span>
+                                    </div>
+                                    <div className="text-xs text-gray-600">
+                                      <div className="flex justify-between">
+                                        <span>Start:</span>
+                                        <span className="font-medium">{task.startDate.toLocaleDateString()}</span>
+                                      </div>
+                                      <div className="flex justify-between mt-1">
+                                        <span>Due:</span>
+                                        <span className="font-medium">{task.endDate.toLocaleDateString()}</span>
+                                      </div>
+                                    </div>
+                                    <div className="mt-2 pt-2 border-t border-gray-100">
+                                      <div className="relative h-2 bg-gray-100 rounded-full overflow-hidden">
+                                        <div 
+                                          className={`absolute left-0 top-0 h-full rounded-full transition-all duration-300 ${
+                                            task.status === 'done'
+                                              ? 'bg-emerald-500 w-full'
+                                              : task.status === 'in-progress'
+                                              ? 'bg-blue-500 w-1/2'
+                                              : 'bg-gray-300 w-0'
+                                          }`}
+                                        />
+                                      </div>
+                                      <div className="text-[10px] text-gray-500 mt-1 text-center">
+                                        {task.status === 'done' ? '100%' : task.status === 'in-progress' ? '50%' : '0%'}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </motion.div>
+                              </AnimatePresence>
+                            </motion.div>
+                          </div>
+                        ))}
+                      </React.Fragment>
                     ))}
                   </div>
                 </div>
@@ -391,7 +527,7 @@ export default function RoadmapView({ notes, onAddNote }: RoadmapViewProps) {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         note={null}
-        defaultDueDate={selectedDate}
+        defaultDueDate={selectedDate || undefined}
         onSave={(noteData) => {
           onAddNote({
             ...noteData,
