@@ -28,36 +28,36 @@ const COLUMNS: Column[] = [
   { 
     id: 'todo', 
     title: 'To-Do', 
-    color: 'from-slate-50 to-slate-100 border-slate-200',
+    color: 'from-slate-50 to-slate-100 dark:from-slate-800/50 dark:to-slate-800 border-slate-200 dark:border-slate-700',
     icon: '📋'
   },
   { 
     id: 'in-progress', 
     title: 'In Progress', 
-    color: 'from-sky-50 to-sky-100 border-sky-200',
+    color: 'from-sky-50 to-sky-100 dark:from-sky-900/50 dark:to-sky-800 border-sky-200 dark:border-sky-700',
     icon: '⚡'
   },
   { 
     id: 'done', 
     title: 'Done', 
-    color: 'from-emerald-50 to-emerald-100 border-emerald-200',
+    color: 'from-emerald-50 to-emerald-100 dark:from-emerald-900/50 dark:to-emerald-800 border-emerald-200 dark:border-emerald-700',
     icon: '✅'
   },
 ];
 
 const COLOR_CLASSES: Record<string, string> = {
-  indigo: 'bg-gradient-to-br from-indigo-50 to-indigo-100 border-indigo-200 hover:from-indigo-100 hover:to-indigo-200',
-  emerald: 'bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200 hover:from-emerald-100 hover:to-emerald-200',
-  sky: 'bg-gradient-to-br from-sky-50 to-sky-100 border-sky-200 hover:from-sky-100 hover:to-sky-200',
-  rose: 'bg-gradient-to-br from-rose-50 to-rose-100 border-rose-200 hover:from-rose-100 hover:to-rose-200',
-  violet: 'bg-gradient-to-br from-violet-50 to-violet-100 border-violet-200 hover:from-violet-100 hover:to-violet-200',
-  amber: 'bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200 hover:from-amber-100 hover:to-amber-200',
-  fuchsia: 'bg-gradient-to-br from-fuchsia-50 to-fuchsia-100 border-fuchsia-200 hover:from-fuchsia-100 hover:to-fuchsia-200',
-  slate: 'bg-gradient-to-br from-slate-50 to-slate-100 border-slate-200 hover:from-slate-100 hover:to-slate-200',
-  cyan: 'bg-gradient-to-br from-cyan-50 to-cyan-100 border-cyan-200 hover:from-cyan-100 hover:to-cyan-200',
-  lime: 'bg-gradient-to-br from-lime-50 to-lime-100 border-lime-200 hover:from-lime-100 hover:to-lime-200',
-  orange: 'bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200 hover:from-orange-100 hover:to-orange-200',
-  teal: 'bg-gradient-to-br from-teal-50 to-teal-100 border-teal-200 hover:from-teal-100 hover:to-teal-200',
+  indigo: 'bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/50 dark:to-indigo-800 border-indigo-200 dark:border-indigo-700 hover:from-indigo-100 hover:to-indigo-200 dark:hover:from-indigo-800 dark:hover:to-indigo-700',
+  emerald: 'bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/50 dark:to-emerald-800 border-emerald-200 dark:border-emerald-700 hover:from-emerald-100 hover:to-emerald-200 dark:hover:from-emerald-800 dark:hover:to-emerald-700',
+  sky: 'bg-gradient-to-br from-sky-50 to-sky-100 dark:from-sky-900/50 dark:to-sky-800 border-sky-200 dark:border-sky-700 hover:from-sky-100 hover:to-sky-200 dark:hover:from-sky-800 dark:hover:to-sky-700',
+  rose: 'bg-gradient-to-br from-rose-50 to-rose-100 dark:from-rose-900/50 dark:to-rose-800 border-rose-200 dark:border-rose-700 hover:from-rose-100 hover:to-rose-200 dark:hover:from-rose-800 dark:hover:to-rose-700',
+  violet: 'bg-gradient-to-br from-violet-50 to-violet-100 dark:from-violet-900/50 dark:to-violet-800 border-violet-200 dark:border-violet-700 hover:from-violet-100 hover:to-violet-200 dark:hover:from-violet-800 dark:hover:to-violet-700',
+  amber: 'bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/50 dark:to-amber-800 border-amber-200 dark:border-amber-700 hover:from-amber-100 hover:to-amber-200 dark:hover:from-amber-800 dark:hover:to-amber-700',
+  fuchsia: 'bg-gradient-to-br from-fuchsia-50 to-fuchsia-100 dark:from-fuchsia-900/50 dark:to-fuchsia-800 border-fuchsia-200 dark:border-fuchsia-700 hover:from-fuchsia-100 hover:to-fuchsia-200 dark:hover:from-fuchsia-800 dark:hover:to-fuchsia-700',
+  slate: 'bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900/50 dark:to-slate-800 border-slate-200 dark:border-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-800 dark:hover:to-slate-700',
+  cyan: 'bg-gradient-to-br from-cyan-50 to-cyan-100 dark:from-cyan-900/50 dark:to-cyan-800 border-cyan-200 dark:border-cyan-700 hover:from-cyan-100 hover:to-cyan-200 dark:hover:from-cyan-800 dark:hover:to-cyan-700',
+  lime: 'bg-gradient-to-br from-lime-50 to-lime-100 dark:from-lime-900/50 dark:to-lime-800 border-lime-200 dark:border-lime-700 hover:from-lime-100 hover:to-lime-200 dark:hover:from-lime-800 dark:hover:to-lime-700',
+  orange: 'bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/50 dark:to-orange-800 border-orange-200 dark:border-orange-700 hover:from-orange-100 hover:to-orange-200 dark:hover:from-orange-800 dark:hover:to-orange-700',
+  teal: 'bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/50 dark:to-teal-800 border-teal-200 dark:border-teal-700 hover:from-teal-100 hover:to-teal-200 dark:hover:from-teal-800 dark:hover:to-teal-700',
 };
 
 const PRIORITY_COLORS: Record<Note['priority'], string> = {

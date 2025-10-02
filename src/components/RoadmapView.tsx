@@ -27,9 +27,9 @@ const statusIcons: Record<Note['status'], React.ElementType> = {
 };
 
 const statusColors: Record<Note['status'], string> = {
-  'todo': 'text-gray-700 bg-gray-100',
-  'in-progress': 'text-blue-700 bg-blue-100',
-  'done': 'text-emerald-700 bg-emerald-100',
+  'todo': 'text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700',
+  'in-progress': 'text-blue-700 dark:text-blue-200 bg-blue-100 dark:bg-blue-900/50',
+  'done': 'text-emerald-700 dark:text-emerald-200 bg-emerald-100 dark:bg-emerald-900/50',
 };
 
 interface GanttTask {
@@ -249,13 +249,13 @@ export default function RoadmapView({ notes, onAddNote, onUpdateNote }: RoadmapV
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
             {/* View Mode Toggle */}
-            <div className="flex items-center bg-gray-100 rounded-lg p-1.5 space-x-2 w-full sm:w-auto">
+            <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-lg p-1.5 space-x-2 w-full sm:w-auto">
               <button
                 onClick={() => setViewMode('month')}
                 className={`flex-1 sm:flex-none px-4 py-1.5 rounded-md text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   viewMode === 'month'
-                    ? 'bg-white shadow-sm text-gray-900'
-                    : 'text-gray-500 hover:text-gray-900'
+                    ? 'bg-white dark:bg-gray-600 shadow-sm text-gray-900 dark:text-white'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
                 Month
@@ -273,7 +273,7 @@ export default function RoadmapView({ notes, onAddNote, onUpdateNote }: RoadmapV
             </div>
 
             {/* Zoom Controls */}
-            <div className="flex items-center space-x-2 px-2 py-1.5 bg-gray-100 rounded-lg">
+            <div className="flex items-center space-x-2 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg">
               <button
                 onClick={() => setZoomLevel(prev => Math.max(40, prev - 20))}
                 className="p-1 rounded hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
@@ -282,7 +282,7 @@ export default function RoadmapView({ notes, onAddNote, onUpdateNote }: RoadmapV
               >
                 <span className="font-medium text-lg leading-none">−</span>
               </button>
-              <span className="text-sm font-medium text-gray-700 min-w-[32px] text-center">
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 min-w-[32px] text-center">
                 {Math.round((zoomLevel / 80) * 100)}%
               </span>
               <button

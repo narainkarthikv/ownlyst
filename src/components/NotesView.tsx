@@ -13,18 +13,18 @@ interface NotesViewProps {
 }
 
 const colorClasses = {
-  indigo: 'bg-indigo-200 border-indigo-300 text-indigo-900',
-  emerald: 'bg-emerald-200 border-emerald-300 text-emerald-900',
-  sky: 'bg-sky-200 border-sky-300 text-sky-900',
-  rose: 'bg-rose-200 border-rose-300 text-rose-900',
-  violet: 'bg-violet-200 border-violet-300 text-violet-900',
-  amber: 'bg-amber-200 border-amber-300 text-amber-900',
-  fuchsia: 'bg-fuchsia-200 border-fuchsia-300 text-fuchsia-900',
-  slate: 'bg-slate-200 border-slate-300 text-slate-900',
-  cyan: 'bg-cyan-200 border-cyan-300 text-cyan-900',
-  lime: 'bg-lime-200 border-lime-300 text-lime-900',
-  orange: 'bg-orange-200 border-orange-300 text-orange-900',
-  teal: 'bg-teal-200 border-teal-300 text-teal-900',
+  indigo: 'bg-indigo-200 dark:bg-indigo-900/50 border-indigo-300 dark:border-indigo-700 text-indigo-900 dark:text-indigo-100',
+  emerald: 'bg-emerald-200 dark:bg-emerald-900/50 border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-100',
+  sky: 'bg-sky-200 dark:bg-sky-900/50 border-sky-300 dark:border-sky-700 text-sky-900 dark:text-sky-100',
+  rose: 'bg-rose-200 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700 text-rose-900 dark:text-rose-100',
+  violet: 'bg-violet-200 dark:bg-violet-900/50 border-violet-300 dark:border-violet-700 text-violet-900 dark:text-violet-100',
+  amber: 'bg-amber-200 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-100',
+  fuchsia: 'bg-fuchsia-200 dark:bg-fuchsia-900/50 border-fuchsia-300 dark:border-fuchsia-700 text-fuchsia-900 dark:text-fuchsia-100',
+  slate: 'bg-slate-200 dark:bg-slate-900/50 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100',
+  cyan: 'bg-cyan-200 dark:bg-cyan-900/50 border-cyan-300 dark:border-cyan-700 text-cyan-900 dark:text-cyan-100',
+  lime: 'bg-lime-200 dark:bg-lime-900/50 border-lime-300 dark:border-lime-700 text-lime-900 dark:text-lime-100',
+  orange: 'bg-orange-200 dark:bg-orange-900/50 border-orange-300 dark:border-orange-700 text-orange-900 dark:text-orange-100',
+  teal: 'bg-teal-200 dark:bg-teal-900/50 border-teal-300 dark:border-teal-700 text-teal-900 dark:text-teal-100',
 };
 
 const priorityColors = {
