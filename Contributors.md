@@ -12,3 +12,4 @@
 - [Vimal Vinod](https://github.com/dalekvim) **Contributed**
 - [Divyansh verma](https://github.com/Divyverma) **Contributed**
 - [Yasmin Poleto](https://github.com/ypoleto) **Contributed Major UI Revamp from Traditional CSS to MUI**
+- [Omkar Phadtare](https://github.com/omkarph1) **Revamped UI/UX, Refactored & Structured codebase**

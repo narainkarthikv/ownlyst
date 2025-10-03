@@ -1,158 +1,167 @@
-# Sticky-Memo
+# 🎴 Sticky-Memo
 
-Sticky-Memo is a sticky notes application built using React.js + Vite along with MUI. This documentation will guide you through the process of contributing to this project.
+Welcome to **Sticky-Memo** — a lightweight React app to create and manage digital sticky notes.  
+Built with **React.ts**, **Vite**, and **TailwindCSS**, this project is ideal for learning, experimenting, and contributing to open source. 🤍🤝
 
-## Tech Stack
+[![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/sticky-memo?style=flat-square)](https://github.com/narainkarthikv/sticky-memo/issues)
+[![GitHub forks](https://img.shields.io/github/forks/narainkarthikv/sticky-memo?style=flat-square)](https://github.com/narainkarthikv/sticky-memo/network)
+[![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/sticky-memo?style=flat-square)](https://github.com/narainkarthikv/sticky-memo/stargazers)
+[![MIT License](https://img.shields.io/github/license/narainkarthikv/sticky-memo?style=flat-square)](./MIT-LICENSE.txt)
 
-<table>
-    <tr>
-     <td>Frontend</td>
-     <td><img src="https://skillicons.dev/icons?i=react,mui,vite" /></td>
-    </tr>
-    <tr>
-     <td>CI/CD</td>
-     <td><img src="https://skillicons.dev/icons?i=netlify,githubactions" /></td>
-    </tr>
-</table>
+---
 
-## Table of Contents
-
-- [Installation](#installation)
-  - [Clone the Repository](#clone-the-repository)
-  - [Frontend Installation](#frontend-installation)
-  <!-- - [Docker Installation](#docker-installation) -->
+## 📚 Table of Contents
+- [About](#about)
+- [Demo](#demo)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
 - [Project Structure](#project-structure)
-- [Contributing](#contributing)
-  - [Forking the Repository](#forking-the-repository)
-  - [Cloning the Repository](#cloning-the-repository)
-  - [Creating a Branch](#creating-a-branch)
-  - [Making Changes](#making-changes)
-  - [Committing Changes](#committing-changes)
-  - [Pushing Changes](#pushing-changes)
-  - [Creating a Pull Request](#creating-a-pull-request)
+- [Contribution Guide](#contribution-guide)
+- [Development Standards](#development-standards)
 - [Contributors](#contributors)
 - [License](#license)
 
-## Installation
+---
 
-### Clone the Repository
+## 📝 About
 
-1. **Fork the repository** by clicking the "Fork" button at the top right of the repository page on GitHub.
-   ![Forking the Repository](https://user-images.githubusercontent.com/github-fork-button.png)
-2. **Clone your forked repository** to your local machine:
-    ```sh
-    git clone https://github.com/your-username/Sticky-Memo.git
-    ```
-3. Navigate to the project directory:
-    ```sh
-    cd Sticky-Memo
-    ```
+**Sticky-Memo** allows you to:
+- Create, edit, and delete sticky notes  
+- Organize notes by boards, tables, and categories  
+- Practice React, Vite, and MUI  
+- Collaborate with a friendly open-source community  
 
-### Frontend Installation
+---
 
-After cloning the repository:
+## 🌐 Demo
+👉 **[Live Preview](https://sticky-memo-dev.vercel.app/)**  
 
-1. **Install the dependencies**:
-    ```sh
-    npm install
-    ```
-2. **Start the development server**:
-    ```sh
-    npm run dev
-    ```
+---
 
-<!-- ### Docker Installation
+## 🛠️ Tech Stack
+- React.ts  
+- Vite  
+- TailwindCSS
+- Typescript  
 
-If you prefer using Docker:
+---
 
-1. **Pull the Docker image**:
-    ```sh
-    docker pull narainkarthik/stickymemo:v1.0.0
-    ```
-2. **Run the Docker container**:
-    ```sh
-    docker run -d -p 3000:3000 narainkarthik/stickymemo:v1.0.0
-    ``` -->
+## 🚀 Getting Started
 
-## Project Structure
+### 1. Fork and Clone
+```bash
+git clone https://github.com/<your-username>/sticky-memo.git
+cd sticky-memo
+````
 
-The `frontend` directory contains the React application.
+### 2. Install Dependencies
 
-```
-frontend/
-├── public/                 # Public assets
-├── src/                    # Source code
-│   ├── assets/             # Static assets
-│   ├── components/         # Reusable UI components
-│   ├── pages/              # Application pages
-│   ├── styles/             # Styling files
-│   ├── utils/              # Utility functions
-│   ├── App.jsx             # Main component that sets up routes
-│   └── main.jsx            # Entry point of the React application
-├── index.html              # HTML template
-├── package.json            # Project metadata and dependencies
-└── vite.config.js          # Vite configuration
+```bash
+npm install
 ```
 
-## Contributing
+### 3. Run Locally
 
-We welcome contributions! To contribute to Sticky-Memo, follow these steps:
+```bash
+npm run dev
+```
 
-### Forking the Repository
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-1. Fork the repository by clicking the "Fork" button at the top right of the repository page on GitHub.
-   ![Forking the Repository](https://user-images.githubusercontent.com/github-fork-button.png)
+---
 
-### Cloning the Repository
+## 📁 Project Structure
 
-2. Clone your forked repository to your local machine:
-    ```sh
-    git clone https://github.com/your-username/Sticky-Memo.git
-    ```
-3. Navigate to the project directory:
-    ```sh
-    cd Sticky-Memo
-    ```
+```plaintext
+├── public/
+│   └── favicon.svg
+├── src/
+│   ├── components/
+│   │   ├── Board/
+│   │   ├── common/
+│   │   ├── Loading/
+│   │   ├── Note/
+│   │   └── Table/
+│   ├── context/
+│   ├── hooks/
+│   ├── pages/
+│   ├── services/
+│   ├── styles/
+│   ├── themes/
+│   ├── utils/
+│   ├── App.jsx
+│   └── main.jsx
+├── index.html
+├── package.json
+├── vite.config.js
+└── README.md
+```
 
-### Creating a Branch
+---
 
-4. Create a new branch for your feature or bug fix (create a branch according to the issue working on):
-    ```sh
-    git switch -c your-branch-name
-    ```
+## 🤝 Contribution Guide
 
-### Making Changes
+We welcome contributions of all kinds — features, bug fixes, documentation, or ideas!
 
-5. Make your changes to the codebase. You can edit the files using your preferred code editor.
+1. **Fork** the repo and create a branch from `main` or `develop`.
+2. **Make your changes** and test locally.
+3. **Commit & push** with a clear message:
 
-### Committing Changes
+```bash
+git add .
+git commit -m "feat: add new board component"
+git push origin <your-branch>
+```
 
-6. Add the changes to the staging area:
-    ```sh
-    git add .
-    ```
-7. Commit the changes with a descriptive message:
-    ```sh
-    git commit -m "Description of your changes"
-    ```
+4. **Open a Pull Request** and fill out the PR template.
 
-### Pushing Changes
+Need help? Open an [issue](https://github.com/narainkarthikv/sticky-memo/issues) or join the discussions.
 
-8. Push the changes to your forked repository:
-    ```sh
-    git push origin your-branch-name
-    ```
+---
 
-### Creating a Pull Request
+## 🧑‍💻 Development Standards
 
-9. Create a pull request from your forked repository to the main repository. Go to the "Pull Requests" tab on the main repository, and click "New Pull Request". Follow the instructions to create your pull request.
+### Code Style
 
-## Contributors
+* ESLint + Prettier for linting/formatting
+* EditorConfig for consistent style
+* 2-space indentation, max line length 100
 
-We appreciate the contributions of the following individuals: [Contributors](https://github.com/narainkarthikv/Sticky-Memo/blob/main/Contributors.md)
+### Documentation
 
-This is just the beginning! I look forward to making more meaningful contributions and collaborating with this amazing community. Let's build something great together and make Sticky-Memo the best it can be! ❤️🤝
+* Use JSDoc for functions and components
+* Comment complex logic
+* Keep README and docs updated
 
-## License
+### Git Workflow
 
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/narainkarthikv/Sticky-Memo/blob/main/MIT-LICENSE.txt) file for details.
+* Feature branches: `feature/short-description`
+* Bugfix branches: `fix/short-description`
+* Follow [Conventional Commits](https://www.conventionalcommits.org/)
+
+### Testing
+
+* Maintain ≥80% coverage
+* Test components in isolation
+* Include positive and negative test cases
+
+---
+
+## 👥 Contributors
+
+Thanks to all our amazing contributors! ❤️
+[View Contributors →](https://github.com/narainkarthikv/Sticky-Memo/blob/main/Contributors.md)
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
+See the [MIT-LICENSE.txt](https://github.com/narainkarthikv/Sticky-Memo/blob/main/MIT-LICENSE.txt) for details.
+
+---
+
+<p align="center"><b>Happy Contributing! 🎉</b></p>
+```
+
+---
