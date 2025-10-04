@@ -2,7 +2,18 @@ export interface Note {
   id: string;
   title: string;
   content: string;
-  color: 'indigo' | 'emerald' | 'sky' | 'rose' | 'violet' | 'amber' | 'slate' | 'cyan' | 'lime' | 'orange' | 'teal';
+  color:
+    | 'indigo'
+    | 'emerald'
+    | 'sky'
+    | 'rose'
+    | 'violet'
+    | 'amber'
+    | 'slate'
+    | 'cyan'
+    | 'lime'
+    | 'orange'
+    | 'teal';
   priority: 'low' | 'medium' | 'high';
   status: 'todo' | 'in-progress' | 'done';
   isPinned: boolean;

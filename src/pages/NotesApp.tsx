@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { StickyNote, Table, LayoutDashboard, Baseline as Timeline, ArrowLeft, Search } from 'lucide-react';
+import {
+  StickyNote,
+  Table,
+  LayoutDashboard,
+  Baseline as Timeline,
+  ArrowLeft,
+  Search,
+} from 'lucide-react';
 import NotesView from '../components/NotesView';
 import KanbanView from '../components/KanbanView';
 import TableView from '../components/TableView';
@@ -14,7 +21,12 @@ import { useMemo } from 'react';
 
 const views = [
   { id: 'notes', name: 'Notes', icon: StickyNote, color: 'text-green-600' },
-  { id: 'kanban', name: 'Boards', icon: LayoutDashboard, color: 'text-blue-600' },
+  {
+    id: 'kanban',
+    name: 'Boards',
+    icon: LayoutDashboard,
+    color: 'text-blue-600',
+  },
   { id: 'table', name: 'Table', icon: Table, color: 'text-cyan-600' },
   { id: 'roadmap', name: 'Roadmap', icon: Timeline, color: 'text-orange-600' },
 ];
@@ -27,17 +39,24 @@ export default function NotesApp() {
 
   // Process notes to ensure dates are Date objects
   const processedNotes = useMemo(() => {
-    return notes.map(note => ({
+    return notes.map((note) => ({
       ...note,
-      createdAt: note.createdAt instanceof Date ? note.createdAt : new Date(note.createdAt),
-      dueDate: note.dueDate ? (note.dueDate instanceof Date ? note.dueDate : new Date(note.dueDate)) : undefined,
+      createdAt:
+        note.createdAt instanceof Date
+          ? note.createdAt
+          : new Date(note.createdAt),
+      dueDate: note.dueDate
+        ? note.dueDate instanceof Date
+          ? note.dueDate
+          : new Date(note.dueDate)
+        : undefined,
     }));
   }, [notes]);
 
   // Initialize with sample data
   useEffect(() => {
     if (notes.length > 0) return; // Don't override existing data
-    
+
     const sampleNotes: Note[] = [
       {
         id: '1',
@@ -108,18 +127,19 @@ export default function NotesApp() {
   };
 
   const updateNote = (id: string, updates: Partial<Note>) => {
-    setNotes((prev: Note[]) => prev.map(note => 
-      note.id === id ? { ...note, ...updates } : note
-    ));
+    setNotes((prev: Note[]) =>
+      prev.map((note) => (note.id === id ? { ...note, ...updates } : note))
+    );
   };
 
   const deleteNote = (id: string) => {
-    setNotes((prev: Note[]) => prev.filter(note => note.id !== id));
+    setNotes((prev: Note[]) => prev.filter((note) => note.id !== id));
   };
 
-  const filteredNotes = processedNotes.filter(note =>
-    note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    note.content.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredNotes = processedNotes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const renderView = () => {
@@ -145,45 +165,48 @@ export default function NotesApp() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className='min-h-screen bg-gray-50 dark:bg-gray-900'>
       {/* Header */}
       <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-3 sm:px-6 py-3 sm:py-4"
-      >
-        <div className="flex flex-col sm:flex-row items-center justify-between space-y-3 sm:space-y-0">
-          <div className="flex items-center space-x-3 sm:space-x-4 w-full sm:w-auto justify-between sm:justify-start">
+        className='bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-3 sm:px-6 py-3 sm:py-4'>
+        <div className='flex flex-col sm:flex-row items-center justify-between space-y-3 sm:space-y-0'>
+          <div className='flex items-center space-x-3 sm:space-x-4 w-full sm:w-auto justify-between sm:justify-start'>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/')}
-              className="flex items-center space-x-1 sm:space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
-            >
+              className='flex items-center space-x-1 sm:space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors'>
               <ArrowLeft size={28} />
-              <span className="hidden sm:inline"></span>
+              <span className='hidden sm:inline'></span>
             </motion.button>
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <Logo size={28} className="sm:w-8" />
-              <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Sticky Memo</h1>
+            <div className='flex items-center space-x-2 sm:space-x-3'>
+              <Logo size={28} className='sm:w-8' />
+              <h1 className='text-lg sm:text-xl font-bold text-gray-900 dark:text-white'>
+                Sticky Memo
+              </h1>
             </div>
           </div>
-          
-          <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
+
+          <div className='flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto'>
             {/* Search */}
-            <div className="relative w-full sm:w-auto">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+            <div className='relative w-full sm:w-auto'>
+              <Search
+                className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400'
+                size={16}
+              />
               <input
-                type="text"
-                placeholder="Search notes..."
+                type='text'
+                placeholder='Search notes...'
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full sm:w-auto pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                className='w-full sm:w-auto pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white dark:placeholder-gray-400'
               />
             </div>
-            
+
             {/* View Switcher */}
-            <div className="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1 w-full sm:w-auto justify-between sm:justify-start">
+            <div className='flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1 w-full sm:w-auto justify-between sm:justify-start'>
               {views.map((view) => {
                 const Icon = view.icon;
                 return (
@@ -196,10 +219,14 @@ export default function NotesApp() {
                       activeView === view.id
                         ? 'bg-white dark:bg-gray-600 shadow-sm text-gray-900 dark:text-white'
                         : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-                    }`}
-                  >
-                    <Icon size={16} className={activeView === view.id ? view.color : ''} />
-                    <span className="hidden sm:inline text-sm font-medium">{view.name}</span>
+                    }`}>
+                    <Icon
+                      size={16}
+                      className={activeView === view.id ? view.color : ''}
+                    />
+                    <span className='hidden sm:inline text-sm font-medium'>
+                      {view.name}
+                    </span>
                   </motion.button>
                 );
               })}
@@ -210,15 +237,14 @@ export default function NotesApp() {
       </motion.header>
 
       {/* Main Content */}
-      <main className="p-6 dark:bg-gray-900">
-        <AnimatePresence mode="wait">
+      <main className='p-6 dark:bg-gray-900'>
+        <AnimatePresence mode='wait'>
           <motion.div
             key={activeView}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
+            transition={{ duration: 0.3 }}>
             {renderView()}
           </motion.div>
         </AnimatePresence>

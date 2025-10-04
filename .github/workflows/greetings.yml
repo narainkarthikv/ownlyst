@@ -17,7 +17,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           pr-message: |
             # 🎉 Welcome to sticky-memo!
-            
+
             Thank you for your first pull request! The Wisdom Fox community truly appreciates your contribution.
                     
             Need help? Don't hesitate to ask questions in the comments!

@@ -6,7 +6,7 @@
 
 - [Bicheka](https://github.com/Bicheka) **First Contribution**
 - [m1her](https://github.com/m1her) **Contributed**
-- [Jatin Tyagi](https://github.com/jatintyagi1) **Contributed** 
+- [Jatin Tyagi](https://github.com/jatintyagi1) **Contributed**
 - [AndresCasasola](https://github.com/AndresCasasola) **Contributed**
 - [Aditya Amit Kinjwadekar](https://github.com/ProgrammerAditya36) **Contributed**
 - [Vimal Vinod](https://github.com/dalekvim) **Contributed**

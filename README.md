@@ -11,6 +11,7 @@ Built with **React.ts**, **Vite**, and **TailwindCSS**, this project is ideal fo
 ---
 
 ## 📚 Table of Contents
+
 - [About](#about)
 - [Demo](#demo)
 - [Tech Stack](#tech-stack)
@@ -26,33 +27,37 @@ Built with **React.ts**, **Vite**, and **TailwindCSS**, this project is ideal fo
 ## 📝 About
 
 **Sticky-Memo** allows you to:
-- Create, edit, and delete sticky notes  
-- Organize notes by boards, tables, and categories  
-- Practice React, Vite, and MUI  
-- Collaborate with a friendly open-source community  
+
+- Create, edit, and delete sticky notes
+- Organize notes by boards, tables, and categories
+- Practice React, Vite, and MUI
+- Collaborate with a friendly open-source community
 
 ---
 
 ## 🌐 Demo
-👉 **[Live Preview](https://sticky-memo-dev.vercel.app/)**  
+
+👉 **[Live Preview](https://sticky-memo-dev.vercel.app/)**
 
 ---
 
 ## 🛠️ Tech Stack
-- React.ts  
-- Vite  
+
+- React.ts
+- Vite
 - TailwindCSS
-- Typescript  
+- Typescript
 
 ---
 
 ## 🚀 Getting Started
 
 ### 1. Fork and Clone
+
 ```bash
 git clone https://github.com/<your-username>/sticky-memo.git
 cd sticky-memo
-````
+```
 
 ### 2. Install Dependencies
 
@@ -123,27 +128,27 @@ Need help? Open an [issue](https://github.com/narainkarthikv/sticky-memo/issues)
 
 ### Code Style
 
-* ESLint + Prettier for linting/formatting
-* EditorConfig for consistent style
-* 2-space indentation, max line length 100
+- ESLint + Prettier for linting/formatting
+- EditorConfig for consistent style
+- 2-space indentation, max line length 100
 
 ### Documentation
 
-* Use JSDoc for functions and components
-* Comment complex logic
-* Keep README and docs updated
+- Use JSDoc for functions and components
+- Comment complex logic
+- Keep README and docs updated
 
 ### Git Workflow
 
-* Feature branches: `feature/short-description`
-* Bugfix branches: `fix/short-description`
-* Follow [Conventional Commits](https://www.conventionalcommits.org/)
+- Feature branches: `feature/short-description`
+- Bugfix branches: `fix/short-description`
+- Follow [Conventional Commits](https://www.conventionalcommits.org/)
 
 ### Testing
 
-* Maintain ≥80% coverage
-* Test components in isolation
-* Include positive and negative test cases
+- Maintain ≥80% coverage
+- Test components in isolation
+- Include positive and negative test cases
 
 ---
 
