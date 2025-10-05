@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Pin, Edit3, Trash2, Calendar, Palette, X } from 'lucide-react';
+import { Plus, Pin, Edit3, Trash2, Calendar, Palette, X, Search } from 'lucide-react';
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
 import ColorPicker from './ColorPicker';
@@ -92,28 +92,33 @@ export default function NotesView({
   };
 
   return (
-    <div className='space-y-6'>
-      {/* Header */}
-      <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-3 sm:space-y-0'>
-        <div>
-          <h2 className='text-xl sm:text-2xl font-bold text-gray-900'>Notes</h2>
-          <p className='text-sm sm:text-base text-gray-600'>
-            Organize your thoughts with colorful sticky notes
-          </p>
+    <div className='space-y-6 p-4'>
+      {/* Search and Add Note Section */}
+      <div className='flex flex-col sm:flex-row gap-3 sm:items-center sm:space-x-3'>
+        <div className='relative flex-1'>
+          <input
+            type='search'
+            placeholder='Search notes...'
+            className='w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent'
+          />
+          <span className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-600'>
+            <Search className='h-4 w-4' />
+          </span>
         </div>
         <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
           onClick={handleAddNote}
-          className='w-full sm:w-auto flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors'>
-          <Plus size={20} />
-          <span>Add Note</span>
+          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900'
+        >
+          <Plus className='h-5 w-5' aria-hidden='true' />
+          <span className='sm:hidden'>Add Note</span>
         </motion.button>
       </div>
 
       {/* Notes Grid */}
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 sm:gap-4'>
-        <AnimatePresence>
+        <AnimatePresence mode='popLayout'>
           {sortedNotes.map((note) => {
             return (
               <motion.div

@@ -74,6 +74,11 @@ export default function TableView({
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
 
+  const handleAddNote = () => {
+    setEditingNote(null);
+    setIsModalOpen(true);
+  };
+
   const sortedAndFilteredNotes = useMemo(() => {
     let filtered = [...notes];
 
@@ -154,11 +159,6 @@ export default function TableView({
     }
   };
 
-  const handleAddNote = () => {
-    setEditingNote(null);
-    setIsModalOpen(true);
-  };
-
   const handleEditNote = (note: Note) => {
     setEditingNote(note);
     setIsModalOpen(true);
@@ -223,59 +223,52 @@ export default function TableView({
   );
 
   return (
-    <div className='space-y-6'>
-      {/* Header */}
-      <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-3 sm:space-y-0 mb-4'>
-        <div>
-          <h2 className='text-xl sm:text-2xl font-bold text-gray-900'>
-            Table View
-          </h2>
-          <p className='text-sm sm:text-base text-gray-600'>
-            Detailed spreadsheet view of all your notes
-          </p>
+    <div className='space-y-6 p-4'>
+      {/* Header with Search and Add Note */}
+      <div className='flex flex-col sm:flex-row gap-3 sm:items-center sm:space-x-3'>
+        <div className='relative flex-1'>
+          <input
+            type='search'
+            placeholder='Search notes...'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className='w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent'
+          />
+          <span className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-600'>
+            <Search className='h-4 w-4' />
+          </span>
         </div>
-        <div className='flex items-center space-x-3 w-full sm:w-auto'>
+        <div className='flex gap-2 sm:gap-3'>
           {selectedRows.size > 0 && (
             <motion.button
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={handleBulkDelete}
-              className='flex items-center justify-center space-x-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex-1 sm:flex-none'>
-              <Trash2 size={16} />
+              className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium gap-2 transition-colors'
+            >
+              <Trash2 className='h-5 w-5' />
               <span>Delete ({selectedRows.size})</span>
             </motion.button>
           )}
           <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={handleAddNote}
-            className='flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex-1 sm:flex-none'>
-            <Plus size={20} />
-            <span>Add Note</span>
+            className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900'
+          >
+            <Plus className='h-5 w-5' aria-hidden='true' />
+            <span className='sm:hidden'>Add Note</span>
           </motion.button>
         </div>
       </div>
 
-      {/* Search and Filters */}
+      {/* Filters */}
       <div className='bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700'>
         <div className='flex flex-col space-y-3'>
-          {/* Search */}
-          <div className='relative w-full'>
-            <Search
-              className='absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400'
-              size={16}
-            />
-            <input
-              type='text'
-              placeholder='Search notes...'
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className='w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white dark:placeholder-gray-400'
-            />
-          </div>
-
+          
+          {/* Filters */}
           <div className='flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4'>
             <div className='flex items-center space-x-2'>
               <Filter size={16} className='text-gray-500' />

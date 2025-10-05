@@ -9,6 +9,7 @@ import {
   ArrowLeft,
   Search,
 } from 'lucide-react';
+import sampleNotesData from '../data/sampleNotes.json';
 import NotesView from '../components/NotesView';
 import KanbanView from '../components/KanbanView';
 import TableView from '../components/TableView';
@@ -22,10 +23,7 @@ import { useMemo } from 'react';
 const views = [
   { id: 'notes', name: 'Notes', icon: StickyNote, color: 'text-green-600' },
   {
-    id: 'kanban',
-    name: 'Boards',
-    icon: LayoutDashboard,
-    color: 'text-blue-600',
+    id: 'kanban', name: 'Boards', icon: LayoutDashboard, color: 'text-blue-600',
   },
   { id: 'table', name: 'Table', icon: Table, color: 'text-cyan-600' },
   { id: 'roadmap', name: 'Roadmap', icon: Timeline, color: 'text-orange-600' },
@@ -57,63 +55,15 @@ export default function NotesApp() {
   useEffect(() => {
     if (notes.length > 0) return; // Don't override existing data
 
-    const sampleNotes: Note[] = [
-      {
-        id: '1',
-        title: 'Design Review',
-        content: 'Review the new dashboard design with the team',
-        color: 'emerald',
-        status: 'todo',
-        priority: 'low',
-        isPinned: true,
-        createdAt: new Date('2024-01-15'),
-        dueDate: new Date('2024-01-20'),
-      },
-      {
-        id: '2',
-        title: 'Bug Fixes',
-        content: 'Fix the login authentication issue',
-        color: 'orange',
-        status: 'in-progress',
-        priority: 'medium',
-        isPinned: false,
-        createdAt: new Date('2024-01-14'),
-        dueDate: new Date('2024-01-18'),
-      },
-      {
-        id: '3',
-        title: 'Client Meeting',
-        content: 'Discuss project requirements and timeline',
-        color: 'rose',
-        status: 'todo',
-        priority: 'high',
-        isPinned: false,
-        createdAt: new Date('2024-01-13'),
-        dueDate: new Date('2024-01-17'),
-      },
-      {
-        id: '4',
-        title: 'Team Standup',
-        content: 'Weekly team sync meeting',
-        color: 'sky',
-        status: 'done',
-        priority: 'low',
-        isPinned: false,
-        createdAt: new Date('2024-01-12'),
-        dueDate: new Date('2024-01-16'),
-      },
-      {
-        id: '5',
-        title: 'Code Review',
-        content: 'Review pull requests from the development team',
-        color: 'violet',
-        status: 'in-progress',
-        priority: 'medium',
-        isPinned: true,
-        createdAt: new Date('2024-01-11'),
-        dueDate: new Date('2024-01-19'),
-      },
-    ];
+    const sampleNotes: Note[] = sampleNotesData.notes.map(note => ({
+      ...note,
+      color: note.color as Note['color'],
+      status: note.status as Note['status'],
+      priority: note.priority as Note['priority'],
+      createdAt: new Date(note.createdAt),
+      dueDate: note.dueDate ? new Date(note.dueDate) : undefined,
+    }));
+    
     setNotes(sampleNotes);
   }, [notes.length, setNotes]);
 

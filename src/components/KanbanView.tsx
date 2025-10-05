@@ -13,6 +13,7 @@ import {
   Trash2,
   GripVertical,
   Palette,
+  Search,
 } from 'lucide-react';
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
@@ -372,6 +373,7 @@ export default function KanbanView({
   onDeleteNote,
 }: KanbanViewProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const [columnState, setColumnState] = useState<Record<ColumnId, Note[]>>(
     () => {
       const initialState: Record<ColumnId, Note[]> = {
@@ -425,27 +427,30 @@ export default function KanbanView({
   }, []);
 
   return (
-    <div className='h-full flex flex-col overflow-hidden'>
-      {/* Fixed Header */}
-      <div className='sticky top-0 z-10 bg-white pb-6'>
-        <div className='flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-3 sm:space-y-0'>
-          <div>
-            <h2 className='text-xl sm:text-2xl font-bold text-gray-900'>
-              Kanban Board
-            </h2>
-            <p className='text-sm sm:text-base text-gray-600'>
-              Manage your workflow with drag and drop
-            </p>
-          </div>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className='w-full sm:w-auto flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 
-              rounded-lg hover:bg-blue-700 transition-all duration-200 hover:shadow-xl
-              hover:scale-[1.02] active:scale-[0.98]'>
-            <Plus size={20} />
-            <span>Add Note</span>
-          </button>
+    <div className='h-full flex flex-col overflow-hidden p-4'>
+      {/* Search and Add Note Section */}
+      <div className='flex flex-col sm:flex-row gap-3 sm:items-center sm:space-x-3 mb-6'>
+        <div className='relative flex-1'>
+          <input
+            type='search'
+            placeholder='Search notes...'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className='w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent'
+          />
+          <span className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-600'>
+            <Search className='h-4 w-4' />
+          </span>
         </div>
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setIsModalOpen(true)}
+          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900'
+        >
+          <Plus className='h-5 w-5' aria-hidden='true' />
+          <span className='sm:hidden'>Add Note</span>
+        </motion.button>
       </div>
 
       {/* Scrollable Kanban Board */}
