@@ -1,6 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Pin, Edit3, Trash2, Calendar, Palette, X, Search } from 'lucide-react';
+import {
+  Plus,
+  Pin,
+  Edit3,
+  Trash2,
+  Calendar,
+  Palette,
+  X,
+  Search,
+} from 'lucide-react';
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
 import ColorPicker from './ColorPicker';
@@ -109,8 +118,7 @@ export default function NotesView({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleAddNote}
-          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900'
-        >
+          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900'>
           <Plus className='h-5 w-5' aria-hidden='true' />
           <span className='sm:hidden'>Add Note</span>
         </motion.button>

@@ -22,9 +22,7 @@ import { useMemo } from 'react';
 
 const views = [
   { id: 'notes', name: 'Notes', icon: StickyNote, color: 'text-green-600' },
-  {
-    id: 'kanban', name: 'Boards', icon: LayoutDashboard, color: 'text-blue-600',
-  },
+  { id: 'kanban', name: 'Boards', icon: LayoutDashboard, color: 'text-blue-600' },
   { id: 'table', name: 'Table', icon: Table, color: 'text-cyan-600' },
   { id: 'roadmap', name: 'Roadmap', icon: Timeline, color: 'text-orange-600' },
 ];
@@ -55,7 +53,7 @@ export default function NotesApp() {
   useEffect(() => {
     if (notes.length > 0) return; // Don't override existing data
 
-    const sampleNotes: Note[] = sampleNotesData.notes.map(note => ({
+    const sampleNotes: Note[] = sampleNotesData.notes.map((note) => ({
       ...note,
       color: note.color as Note['color'],
       status: note.status as Note['status'],
@@ -63,7 +61,7 @@ export default function NotesApp() {
       createdAt: new Date(note.createdAt),
       dueDate: note.dueDate ? new Date(note.dueDate) : undefined,
     }));
-    
+
     setNotes(sampleNotes);
   }, [notes.length, setNotes]);
 
