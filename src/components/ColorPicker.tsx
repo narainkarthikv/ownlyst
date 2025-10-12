@@ -10,61 +10,17 @@ interface ColorPickerProps {
 }
 
 const colors: { id: Note['color']; label: string; class: string }[] = [
-  {
-    id: 'indigo',
-    label: 'In',
-    class: 'bg-indigo-400 hover:bg-indigo-500',
-  },
-  {
-    id: 'emerald',
-    label: 'Em',
-    class: 'bg-emerald-400 hover:bg-emerald-500',
-  },
-  {
-    id: 'sky',
-    label: 'Sk',
-    class: 'bg-sky-400 hover:bg-sky-500',
-  },
-  {
-    id: 'rose',
-    label: 'Ro',
-    class: 'bg-rose-400 hover:bg-rose-500',
-  },
-  {
-    id: 'violet',
-    label: 'Vi',
-    class: 'bg-violet-400 hover:bg-violet-500',
-  },
-  {
-    id: 'amber',
-    label: 'Am',
-    class: 'bg-amber-400 hover:bg-amber-500',
-  },
-  {
-    id: 'slate',
-    label: 'Sl',
-    class: 'bg-slate-400 hover:bg-slate-500',
-  },
-  {
-    id: 'cyan',
-    label: 'Cy',
-    class: 'bg-cyan-400 hover:bg-cyan-500',
-  },
-  {
-    id: 'lime',
-    label: 'Li',
-    class: 'bg-lime-400 hover:bg-lime-500',
-  },
-  {
-    id: 'orange',
-    label: 'Or',
-    class: 'bg-orange-400 hover:bg-orange-500',
-  },
-  {
-    id: 'teal',
-    label: 'Te',
-    class: 'bg-teal-400 hover:bg-teal-500',
-  },
+  { id: 'indigo', label: 'In', class: 'bg-indigo-400 hover:bg-indigo-500' },
+  { id: 'emerald', label: 'Em', class: 'bg-emerald-400 hover:bg-emerald-500' },
+  { id: 'sky', label: 'Sk', class: 'bg-sky-400 hover:bg-sky-500' },
+  { id: 'rose', label: 'Ro', class: 'bg-rose-400 hover:bg-rose-500' },
+  { id: 'violet', label: 'Vi', class: 'bg-violet-400 hover:bg-violet-500' },
+  { id: 'amber', label: 'Am', class: 'bg-amber-400 hover:bg-amber-500' },
+  { id: 'slate', label: 'Sl', class: 'bg-slate-400 hover:bg-slate-500' },
+  { id: 'cyan', label: 'Cy', class: 'bg-cyan-400 hover:bg-cyan-500' },
+  { id: 'lime', label: 'Li', class: 'bg-lime-400 hover:bg-lime-500' },
+  { id: 'orange', label: 'Or', class: 'bg-orange-400 hover:bg-orange-500' },
+  { id: 'teal', label: 'Te', class: 'bg-teal-400 hover:bg-teal-500' },
 ];
 
 export default function ColorPicker({
@@ -92,6 +48,7 @@ export default function ColorPicker({
 
     document.addEventListener('mousedown', handleClickOutside);
     document.addEventListener('keydown', handleEscape);
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscape);
