@@ -3,46 +3,46 @@
     {
       "id": "1",
       "title": "Design Review",
-      "content": "Review the new dashboard design with the team",
+      "content": "Review and finalize the latest dashboard design with the design and product teams.",
       "color": "emerald",
       "status": "todo",
       "priority": "low",
       "isPinned": true,
-      "createdAt": "2024-01-15",
-      "dueDate": "2024-01-20"
+      "createdAt": "2025-10-13",
+      "dueDate": "2026-01-11"
     },
     {
       "id": "2",
       "title": "Bug Fixes",
-      "content": "Fix the login authentication issue",
+      "content": "Resolve authentication issues affecting user login flow and session persistence.",
       "color": "orange",
       "status": "in-progress",
       "priority": "medium",
       "isPinned": false,
-      "createdAt": "2024-01-14",
-      "dueDate": "2024-01-18"
+      "createdAt": "2025-10-13",
+      "dueDate": "2025-12-27"
     },
     {
       "id": "3",
       "title": "Client Meeting",
-      "content": "Discuss project requirements and timeline",
+      "content": "Prepare agenda and presentation for upcoming client meeting to discuss project milestones and delivery timeline.",
       "color": "rose",
       "status": "todo",
       "priority": "high",
       "isPinned": false,
-      "createdAt": "2024-01-13",
-      "dueDate": "2024-01-17"
+      "createdAt": "2025-10-13",
+      "dueDate": "2026-01-05"
     },
     {
       "id": "4",
       "title": "Team Standup",
-      "content": "Weekly team sync meeting",
+      "content": "Conduct weekly sync to review progress, blockers, and next sprint goals with the team.",
       "color": "sky",
       "status": "done",
       "priority": "low",
       "isPinned": false,
-      "createdAt": "2024-01-12",
-      "dueDate": "2024-01-16"
+      "createdAt": "2025-10-13",
+      "dueDate": "2026-01-02"
     }
   ]
 }
