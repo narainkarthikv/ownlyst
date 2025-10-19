@@ -366,21 +366,57 @@ export default function LandingPage() {
           <div className='flex flex-row gap-12 flex-wrap'>
             <div>
               <h5 className='text-white mb-2 text-sm font-bold'>Product</h5>
-              <p className='text-gray-400 text-sm mb-1'>Features</p>
-              <p className='text-gray-400 text-sm mb-1'>Pricing</p>
-              <p className='text-gray-400 text-sm'>Updates</p>
+              <button
+                onClick={() => navigate('/features')}
+                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
+                Features
+              </button>
+              <button
+                onClick={() => navigate('/pricing')}
+                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
+                Pricing
+              </button>
+              <button
+                onClick={() => navigate('/updates')}
+                className='text-gray-400 hover:text-gray-300 text-sm w-full text-left transition-colors'>
+                Updates
+              </button>
             </div>
             <div>
               <h5 className='text-white mb-2 text-sm font-bold'>Company</h5>
-              <p className='text-gray-400 text-sm mb-1'>About</p>
-              <p className='text-gray-400 text-sm mb-1'>Blog</p>
-              <p className='text-gray-400 text-sm'>Contact</p>
+              <button
+                onClick={() => navigate('/about')}
+                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
+                About
+              </button>
+              <button
+                onClick={() => navigate('/blog')}
+                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
+                Blog
+              </button>
+              <button
+                onClick={() => navigate('/contact')}
+                className='text-gray-400 hover:text-gray-300 text-sm w-full text-left transition-colors'>
+                Contact
+              </button>
             </div>
             <div>
               <h5 className='text-white mb-2 text-sm font-bold'>Support</h5>
-              <p className='text-gray-400 text-sm mb-1'>Help Center</p>
-              <p className='text-gray-400 text-sm mb-1'>Documentation</p>
-              <p className='text-gray-400 text-sm'>Community</p>
+              <button
+                onClick={() => navigate('/help')}
+                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
+                Help Center
+              </button>
+              <button
+                onClick={() => navigate('/docs')}
+                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
+                Documentation
+              </button>
+              <button
+                onClick={() => navigate('/community')}
+                className='text-gray-400 hover:text-gray-300 text-sm w-full text-left transition-colors'>
+                Community
+              </button>
             </div>
           </div>
         </div>
