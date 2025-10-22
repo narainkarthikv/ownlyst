@@ -1,9 +1,9 @@
 ---
 name: 🚀 Feature Request
 about: Suggest a new feature for the project
-title: "[Feature] "
+title: '[Feature] '
 labels: enhancement, feature
-assignees: ''  # Add default GitHub usernames if desired
+assignees: '' # Add default GitHub usernames if desired
 ---
 
 ## 📌 Feature Description
