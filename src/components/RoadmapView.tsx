@@ -28,10 +28,10 @@ const statusIcons: Record<Note['status'], React.ElementType> = {
 };
 
 const statusColors: Record<Note['status'], string> = {
-  todo: 'text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700',
+  todo: 'text-azure-900 dark:text-azure-100 bg-azure-100 dark:bg-azure-900/60',
   'in-progress':
-    'text-blue-700 dark:text-blue-200 bg-blue-100 dark:bg-blue-900/50',
-  done: 'text-emerald-700 dark:text-emerald-200 bg-emerald-100 dark:bg-emerald-900/50',
+    'text-blue-900 dark:text-blue-100 bg-blue-100 dark:bg-blue-900/60',
+  done: 'text-cyan-900 dark:text-cyan-100 bg-cyan-100 dark:bg-cyan-900/60',
 };
 
 interface GanttTask {

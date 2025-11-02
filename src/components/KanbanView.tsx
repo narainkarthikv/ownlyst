@@ -42,51 +42,51 @@ const COLUMNS: Column[] = [
     id: 'todo',
     title: 'To-Do',
     color:
-      'from-slate-50 to-slate-100 dark:from-slate-800/50 dark:to-slate-800 border-slate-200 dark:border-slate-700',
+      'bg-azure-50/80 dark:bg-azure-900/40 border-azure-200 dark:border-azure-600/50 text-black dark:text-white shadow-sm',
     icon: '📋',
   },
   {
     id: 'in-progress',
     title: 'In Progress',
     color:
-      'from-sky-50 to-sky-100 dark:from-sky-900/50 dark:to-sky-800 border-sky-200 dark:border-sky-700',
+      'bg-blue-50/80 dark:bg-blue-900/40 border-blue-200 dark:border-blue-600/50 text-black dark:text-white shadow-sm',
     icon: '⚡',
   },
   {
     id: 'done',
     title: 'Done',
     color:
-      'from-emerald-50 to-emerald-100 dark:from-emerald-900/50 dark:to-emerald-800 border-emerald-200 dark:border-emerald-700',
+      'bg-cyan-50/80 dark:bg-cyan-900/40 border-cyan-200 dark:border-cyan-600/50 text-black dark:text-white shadow-sm',
     icon: '✅',
   },
 ];
 
 const COLOR_CLASSES: Record<string, string> = {
   indigo:
-    'bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/50 dark:to-indigo-800 border-indigo-200 dark:border-indigo-700 hover:from-indigo-100 hover:to-indigo-200 dark:hover:from-indigo-800 dark:hover:to-indigo-700',
+    'bg-azure-100 dark:bg-azure-900/60 border-azure-200 dark:border-azure-600 text-gray-900 dark:text-white shadow-sm',
   emerald:
-    'bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/50 dark:to-emerald-800 border-emerald-200 dark:border-emerald-700 hover:from-emerald-100 hover:to-emerald-200 dark:hover:from-emerald-800 dark:hover:to-emerald-700',
-  sky: 'bg-gradient-to-br from-sky-50 to-sky-100 dark:from-sky-900/50 dark:to-sky-800 border-sky-200 dark:border-sky-700 hover:from-sky-100 hover:to-sky-200 dark:hover:from-sky-800 dark:hover:to-sky-700',
-  rose: 'bg-gradient-to-br from-rose-50 to-rose-100 dark:from-rose-900/50 dark:to-rose-800 border-rose-200 dark:border-rose-700 hover:from-rose-100 hover:to-rose-200 dark:hover:from-rose-800 dark:hover:to-rose-700',
+    'bg-blue-100 dark:bg-blue-900/60 border-blue-200 dark:border-blue-600 text-gray-900 dark:text-white shadow-sm',
+  sky: 'bg-cyan-100 dark:bg-cyan-900/60 border-cyan-200 dark:border-cyan-600 text-gray-900 dark:text-white shadow-sm',
+  rose: 'bg-azure-200 dark:bg-azure-800/60 border-azure-300 dark:border-azure-600 text-gray-900 dark:text-white shadow-sm',
   violet:
-    'bg-gradient-to-br from-violet-50 to-violet-100 dark:from-violet-900/50 dark:to-violet-800 border-violet-200 dark:border-violet-700 hover:from-violet-100 hover:to-violet-200 dark:hover:from-violet-800 dark:hover:to-violet-700',
+    'bg-violet-200 dark:bg-violet-900/50 border-violet-300 dark:border-violet-700 text-violet-900 dark:text-violet-100',
   amber:
-    'bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-900/50 dark:to-amber-800 border-amber-200 dark:border-amber-700 hover:from-amber-100 hover:to-amber-200 dark:hover:from-amber-800 dark:hover:to-amber-700',
+    'bg-amber-200 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-100',
   fuchsia:
-    'bg-gradient-to-br from-fuchsia-50 to-fuchsia-100 dark:from-fuchsia-900/50 dark:to-fuchsia-800 border-fuchsia-200 dark:border-fuchsia-700 hover:from-fuchsia-100 hover:to-fuchsia-200 dark:hover:from-fuchsia-800 dark:hover:to-fuchsia-700',
+    'bg-fuchsia-200 dark:bg-fuchsia-900/50 border-fuchsia-300 dark:border-fuchsia-700 text-fuchsia-900 dark:text-fuchsia-100',
   slate:
-    'bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900/50 dark:to-slate-800 border-slate-200 dark:border-slate-700 hover:from-slate-100 hover:to-slate-200 dark:hover:from-slate-800 dark:hover:to-slate-700',
-  cyan: 'bg-gradient-to-br from-cyan-50 to-cyan-100 dark:from-cyan-900/50 dark:to-cyan-800 border-cyan-200 dark:border-cyan-700 hover:from-cyan-100 hover:to-cyan-200 dark:hover:from-cyan-800 dark:hover:to-cyan-700',
-  lime: 'bg-gradient-to-br from-lime-50 to-lime-100 dark:from-lime-900/50 dark:to-lime-800 border-lime-200 dark:border-lime-700 hover:from-lime-100 hover:to-lime-200 dark:hover:from-lime-800 dark:hover:to-lime-700',
+    'bg-slate-200 dark:bg-slate-900/50 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100',
+  cyan: 'bg-cyan-200 dark:bg-cyan-900/50 border-cyan-300 dark:border-cyan-700 text-cyan-900 dark:text-cyan-100',
+  lime: 'bg-lime-200 dark:bg-lime-900/50 border-lime-300 dark:border-lime-700 text-lime-900 dark:text-lime-100',
   orange:
-    'bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900/50 dark:to-orange-800 border-orange-200 dark:border-orange-700 hover:from-orange-100 hover:to-orange-200 dark:hover:from-orange-800 dark:hover:to-orange-700',
-  teal: 'bg-gradient-to-br from-teal-50 to-teal-100 dark:from-teal-900/50 dark:to-teal-800 border-teal-200 dark:border-teal-700 hover:from-teal-100 hover:to-teal-200 dark:hover:from-teal-800 dark:hover:to-teal-700',
+    'bg-orange-200 dark:bg-orange-900/50 border-orange-300 dark:border-orange-700 text-orange-900 dark:text-orange-100',
+  teal: 'bg-teal-200 dark:bg-teal-900/50 border-teal-300 dark:border-teal-700 text-teal-900 dark:text-teal-100',
 };
 
 const PRIORITY_COLORS: Record<Note['priority'], string> = {
-  low: 'bg-green-500',
-  medium: 'bg-orange-500',
-  high: 'bg-red-500',
+  low: 'bg-azure-500 dark:bg-azure-400 text-white shadow-sm',
+  medium: 'bg-blue-500 dark:bg-blue-400 text-white shadow-sm',
+  high: 'bg-cyan-600 dark:bg-cyan-500 text-white shadow-sm',
 };
 
 interface KanbanCardProps {
@@ -211,7 +211,7 @@ const KanbanCard = memo(
             </div>
 
             {/* Action Buttons */}
-            <div className='absolute bottom-3 right-3 flex items-center space-x-1.5'>
+            <div className='absolute top-3 right-3 flex items-center space-x-1.5'>
               <AnimatePresence>
                 {isHovered && (
                   <motion.div
@@ -455,7 +455,7 @@ export default function KanbanView({
       {/* Scrollable Kanban Board */}
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className='flex-1 min-h-0 overflow-y-auto p-4'>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min text-left text-xs font-bold text-gray-900 dark:text-white'>
             {COLUMNS.map((column) => (
               <KanbanColumn
                 key={column.id}

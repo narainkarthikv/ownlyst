@@ -24,25 +24,25 @@ type SortField = 'title' | 'status' | 'priority' | 'createdAt' | 'dueDate';
 type SortDirection = 'asc' | 'desc';
 
 const statusColors = {
-  todo: 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-200 dark:border-gray-600',
+  todo: 'bg-azure-100 dark:bg-azure-900/60 border-azure-200 dark:border-azure-600 text-gray-900 dark:text-white shadow-sm',
   'in-progress':
-    'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200 border-blue-200 dark:border-blue-700',
-  done: 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 border-green-200 dark:border-green-700',
+    'bg-blue-100 dark:bg-blue-900/60 border-blue-200 dark:border-blue-600 text-gray-900 dark:text-white shadow-sm',
+  done: 'bg-cyan-100 dark:bg-cyan-900/60 border-cyan-200 dark:border-cyan-600 text-gray-900 dark:text-white shadow-sm',
 };
 
 const priorityColors = {
-  low: 'bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 border-green-200 dark:border-green-700',
+  low: 'bg-azure-100 dark:bg-azure-900/60 border-azure-200 dark:border-azure-600 text-azure-900 dark:text-azure-100 shadow-sm',
   medium:
-    'bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200 border-orange-200 dark:border-orange-700',
-  high: 'bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200 border-red-200 dark:border-red-700',
+    'bg-blue-100 dark:bg-blue-900/60 border-blue-200 dark:border-blue-600 text-blue-900 dark:text-blue-100 shadow-sm',
+  high: 'bg-cyan-100 dark:bg-cyan-900/60 border-cyan-200 dark:border-cyan-600 text-cyan-900 dark:text-cyan-100 shadow-sm',
 };
 
-const colorClasses = {
+const colorClasses: Record<string, string> = {
   indigo:
-    'bg-indigo-200 dark:bg-indigo-900/50 border-indigo-300 dark:border-indigo-700',
+    'bg-azure-200 dark:bg-azure-800/50 border-azure-300 dark:border-azure-600 shadow-sm',
   emerald:
-    'bg-emerald-200 dark:bg-emerald-900/50 border-emerald-300 dark:border-emerald-700',
-  sky: 'bg-sky-200 dark:bg-sky-900/50 border-sky-300 dark:border-sky-700',
+    'bg-blue-200 dark:bg-blue-800/50 border-blue-300 dark:border-blue-600 shadow-sm',
+  sky: 'bg-cyan-200 dark:bg-cyan-800/50 border-cyan-300 dark:border-cyan-600 shadow-sm',
   rose: 'bg-rose-200 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700',
   violet:
     'bg-violet-200 dark:bg-violet-900/50 border-violet-300 dark:border-violet-700',
@@ -316,12 +316,12 @@ export default function TableView({
       </div>
 
       {/* Table */}
-      <div className='bg-white rounded-xl shadow-lg border border-gray-200'>
+      <div className='rounded-xl shadow-lg border border-gray-200'>
         <div className='overflow-auto'>
           <table className='w-full table-auto'>
-            <thead className='bg-gradient-to-r from-gray-50 to-gray-100 border-b-2 border-gray-200 sticky top-0 z-10'>
+            <thead className='border-b-2 border-gray-200 sticky top-0 z-10'>
               <tr>
-                <th className='w-10 px-3 py-3 text-left border-r border-gray-200'>
+                <th className='w-10 px-3 py-3 text-center border-r border-gray-200'>
                   <input
                     type='checkbox'
                     checked={
@@ -332,33 +332,33 @@ export default function TableView({
                     className='w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2'
                   />
                 </th>
-                <th className='w-1/6 px-3 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-200 bg-gray-100'>
+                <th className='w-1/6 px-3 py-3 text-center text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider border-r'>
                   <SortButton field='title'>Title</SortButton>
                 </th>
-                <th className='w-1/4 hidden lg:table-cell px-3 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-200 bg-gray-100'>
+                <th className='w-1/4 hidden lg:table-cell px-3 py-3 text-center text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider border-r'>
                   Content
                 </th>
-                <th className='px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-200 bg-gray-100'>
+                <th className='px-3 sm:px-6 py-3 sm:py-4 text-center text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider border-r'>
                   <SortButton field='status'>Status</SortButton>
                 </th>
-                <th className='hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-200 bg-gray-100'>
+                <th className='hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 text-center text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider border-r'>
                   <SortButton field='priority'>Priority</SortButton>
                 </th>
-                <th className='hidden lg:table-cell px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-200 bg-gray-100'>
+                <th className='hidden lg:table-cell px-3 sm:px-6 py-3 sm:py-4 text-center text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider border-r'>
                   Color
                 </th>
-                <th className='hidden md:table-cell px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-200 bg-gray-100'>
+                <th className='hidden md:table-cell px-3 sm:px-6 py-3 sm:py-4 text-center text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider border-r'>
                   <SortButton field='createdAt'>Created</SortButton>
                 </th>
-                <th className='hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider border-r border-gray-200 bg-gray-100'>
+                <th className='hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 text-center text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider border-r'>
                   <SortButton field='dueDate'>Due</SortButton>
                 </th>
-                <th className='px-3 sm:px-6 py-3 sm:py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider bg-gray-100'>
+                <th className='hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 text-center text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider border-r'>
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className='bg-white divide-y-2 divide-gray-100'>
+            <tbody className='divide-y-2 divide-gray-100'>
               {sortedAndFilteredNotes.map((note, index) => (
                 <motion.tr
                   key={note.id}
@@ -383,13 +383,13 @@ export default function TableView({
                       {note.isPinned && (
                         <Pin size={16} className='text-blue-600 shrink-0' />
                       )}
-                      <span className='font-semibold text-gray-900 max-w-[120px] sm:max-w-[250px] truncate text-sm'>
+                      <span className='font-semibold text-gray-900 dark:text-white max-w-[120px] sm:max-w-[250px] truncate text-sm'>
                         {note.title}
                       </span>
                     </div>
                   </td>
                   <td className='hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 border-r border-gray-100'>
-                    <div className='text-sm text-gray-600 max-w-[200px] sm:max-w-[350px] truncate leading-relaxed'>
+                    <div className='text-sm text-gray-900 dark:text-white max-w-[200px] sm:max-w-[350px] truncate leading-relaxed'>
                       {note.content}
                     </div>
                   </td>
@@ -410,12 +410,12 @@ export default function TableView({
                       className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl border-2 ${colorClasses[note.color]} shadow-md`}
                     />
                   </td>
-                  <td className='hidden md:table-cell px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-gray-600 border-r border-gray-100 font-medium'>
+                  <td className='hidden md:table-cell px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white border-r border-gray-100 font-medium'>
                     {formatDate(note.createdAt)}
                   </td>
                   <td className='hidden sm:table-cell px-3 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-sm border-r border-gray-100'>
                     <span
-                      className={`font-medium ${note.dueDate && new Date(note.dueDate) < new Date() ? 'text-red-600 bg-red-50 px-2 py-1 rounded-lg' : 'text-gray-600'}`}>
+                      className={`font-medium ${note.dueDate && new Date(note.dueDate) < new Date() ? 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30 px-2 py-1 rounded-lg' : 'text-gray-900 dark:text-gray-300'}`}>
                       {formatDate(note.dueDate)}
                     </span>
                   </td>

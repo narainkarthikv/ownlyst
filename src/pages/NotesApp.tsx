@@ -118,7 +118,7 @@ export default function NotesApp() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/')}
-              className='flex items-center space-x-1 sm:space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors'>
+              className='flex items-center space-x-1 sm:space-x-2 text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200 transition-colors'>
               <ArrowLeft size={28} />
               <span className='hidden sm:inline'></span>
             </motion.button>

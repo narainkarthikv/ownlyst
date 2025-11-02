@@ -21,13 +21,13 @@ interface NotesViewProps {
   onDeleteNote: (id: string) => void;
 }
 
-const colorClasses = {
+const colorClasses: Record<string, string> = {
   indigo:
-    'bg-indigo-200 dark:bg-indigo-900/50 border-indigo-300 dark:border-indigo-700 text-indigo-900 dark:text-indigo-100',
+    'bg-azure-100 dark:bg-azure-900/60 border-azure-200 dark:border-azure-600 text-gray-900 dark:text-white shadow-sm',
   emerald:
-    'bg-emerald-200 dark:bg-emerald-900/50 border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-100',
-  sky: 'bg-sky-200 dark:bg-sky-900/50 border-sky-300 dark:border-sky-700 text-sky-900 dark:text-sky-100',
-  rose: 'bg-rose-200 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700 text-rose-900 dark:text-rose-100',
+    'bg-blue-100 dark:bg-blue-900/60 border-blue-200 dark:border-blue-600 text-gray-900 dark:text-white shadow-sm',
+  sky: 'bg-cyan-100 dark:bg-cyan-900/60 border-cyan-200 dark:border-cyan-600 text-gray-900 dark:text-white shadow-sm',
+  rose: 'bg-azure-200 dark:bg-azure-800/60 border-azure-300 dark:border-azure-600 text-gray-900 dark:text-white shadow-sm',
   violet:
     'bg-violet-200 dark:bg-violet-900/50 border-violet-300 dark:border-violet-700 text-violet-900 dark:text-violet-100',
   amber:
@@ -44,9 +44,9 @@ const colorClasses = {
 };
 
 const priorityColors = {
-  low: 'text-green-600',
-  medium: 'text-orange-600',
-  high: 'text-red-600',
+  low: 'text-azure-600 dark:text-azure-400',
+  medium: 'text-blue-600 dark:text-blue-400',
+  high: 'text-cyan-700 dark:text-cyan-500',
 };
 
 export default function NotesView({
