@@ -10,11 +10,35 @@ interface ColorPickerProps {
 }
 
 const colors: { id: Note['color']; label: string; class: string }[] = [
-  { id: 'indigo', label: 'In', class: 'bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-400 dark:hover:bg-indigo-500' },
-  { id: 'emerald', label: 'Em', class: 'bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-400 dark:hover:bg-emerald-500' },
-  { id: 'sky', label: 'Sk', class: 'bg-sky-500 hover:bg-sky-600 dark:bg-sky-400 dark:hover:bg-sky-500' },
-  { id: 'rose', label: 'Ro', class: 'bg-rose-500 hover:bg-rose-600 dark:bg-rose-400 dark:hover:bg-rose-500' },
-  { id: 'violet', label: 'Vi', class: 'bg-violet-500 hover:bg-violet-600 dark:bg-violet-400 dark:hover:bg-violet-500' },
+  {
+    id: 'indigo',
+    label: 'In',
+    class:
+      'bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-400 dark:hover:bg-indigo-500',
+  },
+  {
+    id: 'emerald',
+    label: 'Em',
+    class:
+      'bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-400 dark:hover:bg-emerald-500',
+  },
+  {
+    id: 'sky',
+    label: 'Sk',
+    class: 'bg-sky-500 hover:bg-sky-600 dark:bg-sky-400 dark:hover:bg-sky-500',
+  },
+  {
+    id: 'rose',
+    label: 'Ro',
+    class:
+      'bg-rose-500 hover:bg-rose-600 dark:bg-rose-400 dark:hover:bg-rose-500',
+  },
+  {
+    id: 'violet',
+    label: 'Vi',
+    class:
+      'bg-violet-500 hover:bg-violet-600 dark:bg-violet-400 dark:hover:bg-violet-500',
+  },
   { id: 'amber', label: 'Am', class: 'bg-amber-400 hover:bg-amber-500' },
   { id: 'slate', label: 'Sl', class: 'bg-slate-400 hover:bg-slate-500' },
   { id: 'cyan', label: 'Cy', class: 'bg-cyan-400 hover:bg-cyan-500' },

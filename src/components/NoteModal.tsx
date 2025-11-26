@@ -29,16 +29,22 @@ const statuses: Note['status'][] = ['todo', 'in-progress', 'done'];
 const priorities: Note['priority'][] = ['low', 'medium', 'high'];
 
 const colorClasses = {
-  indigo: 'bg-indigo-200 dark:bg-indigo-800 border-indigo-300 dark:border-indigo-600',
-  emerald: 'bg-emerald-200 dark:bg-emerald-800 border-emerald-300 dark:border-emerald-600',
+  indigo:
+    'bg-indigo-200 dark:bg-indigo-800 border-indigo-300 dark:border-indigo-600',
+  emerald:
+    'bg-emerald-200 dark:bg-emerald-800 border-emerald-300 dark:border-emerald-600',
   sky: 'bg-sky-200 dark:bg-sky-800 border-sky-300 dark:border-sky-600',
   rose: 'bg-rose-200 dark:bg-rose-800 border-rose-300 dark:border-rose-600',
-  violet: 'bg-violet-200 dark:bg-violet-800 border-violet-300 dark:border-violet-600',
-  amber: 'bg-amber-200 dark:bg-amber-800 border-amber-300 dark:border-amber-600',
-  slate: 'bg-slate-200 dark:bg-slate-800 border-slate-300 dark:border-slate-600',
+  violet:
+    'bg-violet-200 dark:bg-violet-800 border-violet-300 dark:border-violet-600',
+  amber:
+    'bg-amber-200 dark:bg-amber-800 border-amber-300 dark:border-amber-600',
+  slate:
+    'bg-slate-200 dark:bg-slate-800 border-slate-300 dark:border-slate-600',
   cyan: 'bg-cyan-200 dark:bg-cyan-800 border-cyan-300 dark:border-cyan-600',
   lime: 'bg-lime-200 dark:bg-lime-800 border-lime-300 dark:border-lime-600',
-  orange: 'bg-orange-200 dark:bg-orange-800 border-orange-300 dark:border-orange-600',
+  orange:
+    'bg-orange-200 dark:bg-orange-800 border-orange-300 dark:border-orange-600',
   teal: 'bg-teal-200 dark:bg-teal-800 border-teal-300 dark:border-teal-600',
 };
 

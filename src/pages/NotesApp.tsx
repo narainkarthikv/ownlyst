@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { StickyNote, Table, LayoutDashboard, Baseline as Timeline, ArrowLeft } from 'lucide-react';
+import {
+  StickyNote,
+  Table,
+  LayoutDashboard,
+  Baseline as Timeline,
+  ArrowLeft,
+} from 'lucide-react';
 import sampleNotesData from '../data/sampleNotes.json';
 import NotesView from '../components/NotesView';
 import KanbanView from '../components/KanbanView';
@@ -15,7 +21,12 @@ import { useMemo } from 'react';
 
 const views = [
   { id: 'notes', name: 'Notes', icon: StickyNote, color: 'text-green-600' },
-  { id: 'kanban', name: 'Boards', icon: LayoutDashboard, color: 'text-blue-600'},
+  {
+    id: 'kanban',
+    name: 'Boards',
+    icon: LayoutDashboard,
+    color: 'text-blue-600',
+  },
   { id: 'table', name: 'Table', icon: Table, color: 'text-cyan-600' },
   { id: 'roadmap', name: 'Roadmap', icon: Timeline, color: 'text-orange-600' },
 ];
@@ -131,7 +142,6 @@ export default function NotesApp() {
           </div>
 
           <div className='flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto'>
-            
             {/* View Switcher */}
             <div className='flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1 w-full sm:w-auto justify-between sm:justify-start'>
               {views.map((view) => {
