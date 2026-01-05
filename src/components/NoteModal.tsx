@@ -29,17 +29,23 @@ const statuses: Note['status'][] = ['todo', 'in-progress', 'done'];
 const priorities: Note['priority'][] = ['low', 'medium', 'high'];
 
 const colorClasses = {
-  indigo: 'bg-indigo-200 border-indigo-300',
-  emerald: 'bg-emerald-200 border-emerald-300',
-  sky: 'bg-sky-200 border-sky-300',
-  rose: 'bg-rose-200 border-rose-300',
-  violet: 'bg-violet-200 border-violet-300',
-  amber: 'bg-amber-200 border-amber-300',
-  slate: 'bg-slate-200 border-slate-300',
-  cyan: 'bg-cyan-200 border-cyan-300',
-  lime: 'bg-lime-200 border-lime-300',
-  orange: 'bg-orange-200 border-orange-300',
-  teal: 'bg-teal-200 border-teal-300',
+  indigo:
+    'bg-indigo-200 dark:bg-indigo-800 border-indigo-300 dark:border-indigo-600',
+  emerald:
+    'bg-emerald-200 dark:bg-emerald-800 border-emerald-300 dark:border-emerald-600',
+  sky: 'bg-sky-200 dark:bg-sky-800 border-sky-300 dark:border-sky-600',
+  rose: 'bg-rose-200 dark:bg-rose-800 border-rose-300 dark:border-rose-600',
+  violet:
+    'bg-violet-200 dark:bg-violet-800 border-violet-300 dark:border-violet-600',
+  amber:
+    'bg-amber-200 dark:bg-amber-800 border-amber-300 dark:border-amber-600',
+  slate:
+    'bg-slate-200 dark:bg-slate-800 border-slate-300 dark:border-slate-600',
+  cyan: 'bg-cyan-200 dark:bg-cyan-800 border-cyan-300 dark:border-cyan-600',
+  lime: 'bg-lime-200 dark:bg-lime-800 border-lime-300 dark:border-lime-600',
+  orange:
+    'bg-orange-200 dark:bg-orange-800 border-orange-300 dark:border-orange-600',
+  teal: 'bg-teal-200 dark:bg-teal-800 border-teal-300 dark:border-teal-600',
 };
 
 export default function NoteModal({
@@ -128,12 +134,12 @@ export default function NoteModal({
             role='dialog'
             aria-modal='true'
             aria-labelledby='note-modal-title'
-            className='relative bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[80vh] overflow-y-auto'>
+            className='relative bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-xl max-h-[80vh] overflow-y-auto'>
             {/* Header */}
-            <div className='flex items-center justify-between p-6 border-b border-gray-200'>
+            <div className='flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700'>
               <h2
                 id='note-modal-title'
-                className='text-xl font-bold text-gray-900'>
+                className='text-xl font-bold text-gray-900 dark:text-white'>
                 {note ? 'Edit Note' : 'Create Note'}
               </h2>
               <div className='flex items-center gap-2'>
@@ -150,8 +156,8 @@ export default function NoteModal({
                   aria-label={formData.isPinned ? 'Unpin note' : 'Pin note'}
                   className={`p-2 rounded-full transition-colors ${
                     formData.isPinned
-                      ? 'bg-blue-100 text-blue-600 hover:bg-blue-200'
-                      : 'hover:bg-gray-100 text-gray-600'
+                      ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900'
+                      : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400'
                   }`}>
                   <Pin size={20} />
                 </motion.button>
@@ -184,7 +190,7 @@ export default function NoteModal({
             <form onSubmit={handleSubmit} className='p-6 space-y-6'>
               {/* Title */}
               <div>
-                <label className='block text-sm font-medium text-gray-700 mb-2'>
+                <label className='block text-sm font-medium text-gray-900 dark:text-white mb-2'>
                   Title *
                 </label>
                 <input
@@ -193,7 +199,7 @@ export default function NoteModal({
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, title: e.target.value }))
                   }
-                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'
+                  className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent'
                   placeholder='Enter note title...'
                   required
                 />

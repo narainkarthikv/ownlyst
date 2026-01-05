@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { StickyNote, Table, LayoutDashboard, Baseline as Timeline, ArrowLeft } from 'lucide-react';
+import {
+  StickyNote,
+  Table,
+  LayoutDashboard,
+  Baseline as Timeline,
+  ArrowLeft,
+} from 'lucide-react';
 import sampleNotesData from '../data/sampleNotes.json';
 import NotesView from '../components/NotesView';
 import KanbanView from '../components/KanbanView';
@@ -15,7 +21,12 @@ import { useMemo } from 'react';
 
 const views = [
   { id: 'notes', name: 'Notes', icon: StickyNote, color: 'text-green-600' },
-  { id: 'kanban', name: 'Boards', icon: LayoutDashboard, color: 'text-blue-600'},
+  {
+    id: 'kanban',
+    name: 'Boards',
+    icon: LayoutDashboard,
+    color: 'text-blue-600',
+  },
   { id: 'table', name: 'Table', icon: Table, color: 'text-cyan-600' },
   { id: 'roadmap', name: 'Roadmap', icon: Timeline, color: 'text-orange-600' },
 ];
@@ -118,7 +129,7 @@ export default function NotesApp() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigate('/')}
-              className='flex items-center space-x-1 sm:space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors'>
+              className='flex items-center space-x-1 sm:space-x-2 text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200 transition-colors'>
               <ArrowLeft size={28} />
               <span className='hidden sm:inline'></span>
             </motion.button>
@@ -131,7 +142,6 @@ export default function NotesApp() {
           </div>
 
           <div className='flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto'>
-            
             {/* View Switcher */}
             <div className='flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1 w-full sm:w-auto justify-between sm:justify-start'>
               {views.map((view) => {
