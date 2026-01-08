@@ -2,51 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Pin, Check } from 'lucide-react';
 import { Note } from '../types/Note';
+import {
+  COLOR_NAMES,
+  LIGHT_COLOR_CLASSES,
+  type NoteColor,
+} from '../constants/colors';
+import { STATUS_VALUES, type NoteStatus } from '../constants/statuses';
+import { PRIORITY_VALUES, type NotePriority } from '../constants/priorities';
+import { formatDateForInput } from '../utils/dates';
 
 interface NoteModalProps {
   isOpen: boolean;
   onClose: () => void;
   note: Note | null;
-  defaultStatus?: Note['status'];
+  defaultStatus?: NoteStatus;
   defaultDueDate?: Date;
   onSave: (note: Omit<Note, 'id' | 'createdAt'>) => void;
 }
-
-const colors: Note['color'][] = [
-  'indigo',
-  'emerald',
-  'sky',
-  'rose',
-  'violet',
-  'amber',
-  'slate',
-  'cyan',
-  'lime',
-  'orange',
-  'teal',
-];
-const statuses: Note['status'][] = ['todo', 'in-progress', 'done'];
-const priorities: Note['priority'][] = ['low', 'medium', 'high'];
-
-const colorClasses = {
-  indigo:
-    'bg-indigo-200 dark:bg-indigo-800 border-indigo-300 dark:border-indigo-600',
-  emerald:
-    'bg-emerald-200 dark:bg-emerald-800 border-emerald-300 dark:border-emerald-600',
-  sky: 'bg-sky-200 dark:bg-sky-800 border-sky-300 dark:border-sky-600',
-  rose: 'bg-rose-200 dark:bg-rose-800 border-rose-300 dark:border-rose-600',
-  violet:
-    'bg-violet-200 dark:bg-violet-800 border-violet-300 dark:border-violet-600',
-  amber:
-    'bg-amber-200 dark:bg-amber-800 border-amber-300 dark:border-amber-600',
-  slate:
-    'bg-slate-200 dark:bg-slate-800 border-slate-300 dark:border-slate-600',
-  cyan: 'bg-cyan-200 dark:bg-cyan-800 border-cyan-300 dark:border-cyan-600',
-  lime: 'bg-lime-200 dark:bg-lime-800 border-lime-300 dark:border-lime-600',
-  orange:
-    'bg-orange-200 dark:bg-orange-800 border-orange-300 dark:border-orange-600',
-  teal: 'bg-teal-200 dark:bg-teal-800 border-teal-300 dark:border-teal-600',
-};
 
 export default function NoteModal({
   isOpen,
@@ -59,9 +31,9 @@ export default function NoteModal({
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    color: 'indigo' as Note['color'],
-    status: defaultStatus,
-    priority: 'medium' as Note['priority'],
+    color: 'indigo' as NoteColor,
+    status: defaultStatus as NoteStatus,
+    priority: 'medium' as NotePriority,
     isPinned: false,
     dueDate: defaultDueDate as Date | undefined,
   });
@@ -82,20 +54,14 @@ export default function NoteModal({
       setFormData({
         title: '',
         content: '',
-        color: 'indigo' as Note['color'],
-        status: defaultStatus,
-        priority: 'medium' as Note['priority'],
+        color: 'indigo' as NoteColor,
+        status: defaultStatus as NoteStatus,
+        priority: 'medium' as NotePriority,
         isPinned: false,
         dueDate: defaultDueDate,
       });
     }
   }, [note, defaultStatus, defaultDueDate]);
-
-  // Helpers
-  const formatDateForInput = (date: Date | undefined) => {
-    if (!date) return '';
-    return date.toISOString().split('T')[0];
-  };
 
   const handleDateChange = (dateString: string) => {
     setFormData((prev) => ({
@@ -230,7 +196,7 @@ export default function NoteModal({
                   Color
                 </label>
                 <div className='grid grid-cols-6 gap-1'>
-                  {colors.map((color) => (
+                  {COLOR_NAMES.map((color) => (
                     <motion.button
                       key={color}
                       type='button'
@@ -240,7 +206,7 @@ export default function NoteModal({
                         setFormData((prev) => ({ ...prev, color }))
                       }
                       aria-label={`Select ${color} color`}
-                      className={`w-12 h-12 rounded-lg border-2 ${colorClasses[color]} ${
+                      className={`w-12 h-12 rounded-lg border-2 ${LIGHT_COLOR_CLASSES[color]} ${
                         formData.color === color ? 'ring-2 ring-blue-500' : ''
                       }`}
                     />
@@ -259,11 +225,11 @@ export default function NoteModal({
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        status: e.target.value as Note['status'],
+                        status: e.target.value as NoteStatus,
                       }))
                     }
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'>
-                    {statuses.map((status) => (
+                    {STATUS_VALUES.map((status) => (
                       <option key={status} value={status}>
                         {status
                           .replace('-', ' ')
@@ -282,11 +248,11 @@ export default function NoteModal({
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        priority: e.target.value as Note['priority'],
+                        priority: e.target.value as NotePriority,
                       }))
                     }
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'>
-                    {priorities.map((priority) => (
+                    {PRIORITY_VALUES.map((priority) => (
                       <option key={priority} value={priority}>
                         {priority.charAt(0).toUpperCase() + priority.slice(1)}
                       </option>

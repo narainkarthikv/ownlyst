@@ -18,6 +18,12 @@ import {
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
 import ColorPicker from './ColorPicker';
+import {
+  DISPLAY_COLOR_CLASSES,
+  PRIORITY_COLOR_CLASSES,
+  type NoteColor,
+} from '../constants/colors';
+import { KANBAN_COLUMNS } from '../constants/kanban';
 
 // Types
 interface KanbanViewProps {
@@ -26,68 +32,6 @@ interface KanbanViewProps {
   onUpdateNote: (id: string, updates: Partial<Note>) => void;
   onDeleteNote: (id: string) => void;
 }
-
-type ColumnId = 'todo' | 'in-progress' | 'done';
-
-interface Column {
-  id: ColumnId;
-  title: string;
-  color: string;
-  icon?: React.ReactNode;
-}
-
-// Constants
-const COLUMNS: Column[] = [
-  {
-    id: 'todo',
-    title: 'To-Do',
-    color:
-      'bg-azure-50/80 dark:bg-azure-900/40 border-azure-200 dark:border-azure-600/50 text-black dark:text-white shadow-sm',
-    icon: '📋',
-  },
-  {
-    id: 'in-progress',
-    title: 'In Progress',
-    color:
-      'bg-blue-50/80 dark:bg-blue-900/40 border-blue-200 dark:border-blue-600/50 text-black dark:text-white shadow-sm',
-    icon: '⚡',
-  },
-  {
-    id: 'done',
-    title: 'Done',
-    color:
-      'bg-cyan-50/80 dark:bg-cyan-900/40 border-cyan-200 dark:border-cyan-600/50 text-black dark:text-white shadow-sm',
-    icon: '✅',
-  },
-];
-
-const COLOR_CLASSES: Record<string, string> = {
-  indigo:
-    'bg-azure-100 dark:bg-azure-900/60 border-azure-200 dark:border-azure-600 text-gray-900 dark:text-white shadow-sm',
-  emerald:
-    'bg-blue-100 dark:bg-blue-900/60 border-blue-200 dark:border-blue-600 text-gray-900 dark:text-white shadow-sm',
-  sky: 'bg-cyan-100 dark:bg-cyan-900/60 border-cyan-200 dark:border-cyan-600 text-gray-900 dark:text-white shadow-sm',
-  rose: 'bg-azure-200 dark:bg-azure-800/60 border-azure-300 dark:border-azure-600 text-gray-900 dark:text-white shadow-sm',
-  violet:
-    'bg-violet-200 dark:bg-violet-900/50 border-violet-300 dark:border-violet-700 text-violet-900 dark:text-violet-100',
-  amber:
-    'bg-amber-200 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-100',
-  fuchsia:
-    'bg-fuchsia-200 dark:bg-fuchsia-900/50 border-fuchsia-300 dark:border-fuchsia-700 text-fuchsia-900 dark:text-fuchsia-100',
-  slate:
-    'bg-slate-200 dark:bg-slate-900/50 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100',
-  cyan: 'bg-cyan-200 dark:bg-cyan-900/50 border-cyan-300 dark:border-cyan-700 text-cyan-900 dark:text-cyan-100',
-  lime: 'bg-lime-200 dark:bg-lime-900/50 border-lime-300 dark:border-lime-700 text-lime-900 dark:text-lime-100',
-  orange:
-    'bg-orange-200 dark:bg-orange-900/50 border-orange-300 dark:border-orange-700 text-orange-900 dark:text-orange-100',
-  teal: 'bg-teal-200 dark:bg-teal-900/50 border-teal-300 dark:border-teal-700 text-teal-900 dark:text-teal-100',
-};
-
-const PRIORITY_COLORS: Record<Note['priority'], string> = {
-  low: 'bg-azure-500 dark:bg-azure-400 text-white shadow-sm',
-  medium: 'bg-blue-500 dark:bg-blue-400 text-white shadow-sm',
-  high: 'bg-cyan-600 dark:bg-cyan-500 text-white shadow-sm',
-};
 
 interface KanbanCardProps {
   note: Note;
@@ -125,7 +69,7 @@ const KanbanCard = memo(
     );
 
     const handleColorChange = useCallback(
-      (color: Note['color']) => {
+      (color: NoteColor) => {
         onUpdate(note.id, { color });
         setShowColorPicker(false);
       },
@@ -143,7 +87,7 @@ const KanbanCard = memo(
             onMouseLeave={() => setIsHovered(false)}
             className={`
             relative p-4 rounded-lg border backdrop-blur-sm group
-            ${COLOR_CLASSES[note.color]}
+            ${DISPLAY_COLOR_CLASSES[note.color]}
             transition-all duration-200 transform
             ${
               snapshot.isDragging
@@ -173,7 +117,7 @@ const KanbanCard = memo(
                 </motion.div>
               )}
               <motion.div
-                className={`w-3 h-3 rounded-full ${PRIORITY_COLORS[note.priority]} shadow-sm`}
+                className={`w-3 h-3 rounded-full ${PRIORITY_COLOR_CLASSES[note.priority]} shadow-sm`}
                 whileHover={{ scale: 1.2 }}
               />
             </div>
@@ -278,7 +222,7 @@ const KanbanCard = memo(
   }
 ); // KanbanColumn Component
 interface KanbanColumnProps {
-  column: Column;
+  column: typeof KANBAN_COLUMNS[number];
   notes: Note[];
   onAddNote: () => void;
   onUpdateNote: (id: string, updates: Partial<Note>) => void;
@@ -365,6 +309,8 @@ const KanbanColumn = memo(
   }
 );
 
+type ColumnId = 'todo' | 'in-progress' | 'done';
+
 // Main KanbanView Component
 export default function KanbanView({
   notes,
@@ -384,8 +330,8 @@ export default function KanbanView({
 
       // Initial distribution of notes
       notes.forEach((note) => {
-        const columnIndex = Math.floor(Math.random() * COLUMNS.length);
-        const columnId = COLUMNS[columnIndex].id;
+        const columnIndex = Math.floor(Math.random() * KANBAN_COLUMNS.length);
+        const columnId = KANBAN_COLUMNS[columnIndex].id;
         initialState[columnId].push(note);
       });
 
@@ -456,7 +402,7 @@ export default function KanbanView({
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className='flex-1 min-h-0 overflow-y-auto p-4'>
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min text-left text-xs font-bold text-gray-900 dark:text-white'>
-            {COLUMNS.map((column) => (
+            {KANBAN_COLUMNS.map((column) => (
               <KanbanColumn
                 key={column.id}
                 column={column}
