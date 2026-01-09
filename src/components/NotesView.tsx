@@ -9,10 +9,13 @@ import {
   Palette,
   X,
   Search,
+  FileText,
 } from 'lucide-react';
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
 import ColorPicker from './ColorPicker';
+import EmptyState from './shared/EmptyState';
+import { highlightSearchTerm } from '../utils/highlighting';
 
 interface NotesViewProps {
   notes: Note[];
@@ -59,9 +62,17 @@ export default function NotesView({
   const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [colorPickerNote, setColorPickerNote] = useState<string | null>(null);
   const [viewingNote, setViewingNote] = useState<Note | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Filter notes by search term
+  const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Sort notes: pinned first, then by creation date
-  const sortedNotes = [...notes].sort((a, b) => {
+  const sortedNotes = [...filteredNotes].sort((a, b) => {
     if (a.isPinned && !b.isPinned) return -1;
     if (!a.isPinned && b.isPinned) return 1;
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
@@ -108,9 +119,12 @@ export default function NotesView({
           <input
             type='search'
             placeholder='Search notes...'
-            className='w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label='Search notes by title or content'
+            className='w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none'
           />
-          <span className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-600'>
+          <span aria-hidden='true' className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-600'>
             <Search className='h-4 w-4' />
           </span>
         </div>
@@ -118,7 +132,8 @@ export default function NotesView({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleAddNote}
-          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900'>
+          aria-label='Create a new note'
+          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none'>
           <Plus className='h-5 w-5' aria-hidden='true' />
           <span className='sm:hidden'>Add Note</span>
         </motion.button>
@@ -160,11 +175,23 @@ export default function NotesView({
                 {/* Note content */}
                 <div className='space-y-3'>
                   <h3 className='font-bold text-lg leading-tight'>
-                    {note.title}
+                    {searchTerm
+                      ? highlightSearchTerm(
+                          note.title,
+                          searchTerm,
+                          'bg-yellow-200 dark:bg-yellow-900/50 font-bold'
+                        )
+                      : note.title}
                   </h3>
 
                   <p className='text-sm opacity-80 line-clamp-4'>
-                    {note.content}
+                    {searchTerm
+                      ? highlightSearchTerm(
+                          note.content,
+                          searchTerm,
+                          'bg-yellow-200 dark:bg-yellow-900/50 font-bold'
+                        )
+                      : note.content}
                   </p>
 
                   {/* Metadata */}
@@ -190,31 +217,36 @@ export default function NotesView({
                   className='absolute top-2 right-2 flex space-x-1 opacity-0 hover:opacity-100 transition-opacity duration-200'
                   style={{ opacity: 1 }}>
                   <motion.button
+                    type='button'
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleTogglePin(note);
                     }}
-                    className={`p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-xs ${
+                    aria-label={note.isPinned ? 'Unpin note' : 'Pin note'}
+                    className={`p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none ${
                       note.isPinned
                         ? 'text-blue-600'
                         : 'text-gray-500 hover:text-blue-600'
                     }`}>
-                    <Pin size={10} />
+                    <Pin size={10} aria-hidden='true' />
                   </motion.button>
                   <motion.button
+                    type='button'
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={(e) => {
                       e.stopPropagation();
                       handleEditNote(note);
                     }}
-                    className='p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-gray-500 hover:text-blue-600 text-xs'>
-                    <Edit3 size={10} />
+                    aria-label='Edit note'
+                    className='p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-gray-500 hover:text-blue-600 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none'>
+                    <Edit3 size={10} aria-hidden='true' />
                   </motion.button>
                   <div className='relative'>
                     <motion.button
+                      type='button'
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       onClick={(e) => {
@@ -223,8 +255,9 @@ export default function NotesView({
                           colorPickerNote === note.id ? null : note.id
                         );
                       }}
-                      className='p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-gray-500 hover:text-purple-600 text-xs'>
-                      <Palette size={12} />
+                      aria-label='Change note color'
+                      className='p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-gray-500 hover:text-purple-600 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none'>
+                      <Palette size={12} aria-hidden='true' />
                     </motion.button>
                     {colorPickerNote === note.id && (
                       <ColorPicker
@@ -237,13 +270,15 @@ export default function NotesView({
                     )}
                   </div>
                   <motion.button
+                    type='button'
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={(e) => {
                       e.stopPropagation();
                       onDeleteNote(note.id);
                     }}
-                    className='p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-gray-500 hover:text-red-600 text-xs'>
+                    aria-label='Delete note'
+                    className='p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-gray-500 hover:text-red-600 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none'>
                     <Trash2 size={10} />
                   </motion.button>
                 </div>
@@ -255,27 +290,15 @@ export default function NotesView({
 
       {/* Empty state */}
       {notes.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className='text-center py-12'>
-          <div className='text-gray-400 mb-4'>
-            <Plus size={48} className='mx-auto' />
-          </div>
-          <h3 className='text-lg font-medium text-gray-900 mb-2'>
-            No notes yet
-          </h3>
-          <p className='text-gray-600 mb-4'>
-            Create your first sticky note to get started
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleAddNote}
-            className='bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors'>
-            Create Note
-          </motion.button>
-        </motion.div>
+        <EmptyState
+          icon={<FileText className='h-16 w-16' />}
+          title='No notes yet'
+          description='Create your first sticky note to get started'
+          action={{
+            label: 'Create Note',
+            onClick: handleAddNote,
+          }}
+        />
       )}
 
       {/* Note Modal */}

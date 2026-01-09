@@ -14,10 +14,12 @@ import {
   GripVertical,
   Palette,
   Search,
+  Kanban,
 } from 'lucide-react';
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
 import ColorPicker from './ColorPicker';
+import EmptyState from './shared/EmptyState';
 import {
   DISPLAY_COLOR_CLASSES,
   PRIORITY_COLOR_CLASSES,
@@ -165,20 +167,22 @@ const KanbanCard = memo(
                     className='flex items-center space-x-1.5'>
                     <div className='relative'>
                       <motion.button
+                        type='button'
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                         onClick={(e) => {
                           e.stopPropagation();
                           setShowColorPicker(!showColorPicker);
                         }}
-                        className={`p-1.5 rounded-lg transition-all duration-200
+                        aria-label='Change note color'
+                        className={`p-1.5 rounded-lg transition-all duration-200 focus:ring-2 focus:ring-purple-500 focus:outline-none
                         ${
                           showColorPicker
                             ? 'bg-purple-100 text-purple-600 shadow-inner'
                             : 'bg-white/90 shadow-sm hover:shadow-md text-gray-500 hover:text-purple-600'
                         }
                       `}>
-                        <Palette size={14} />
+                        <Palette size={14} aria-hidden='true' />
                       </motion.button>
 
                       <AnimatePresence>
@@ -193,23 +197,27 @@ const KanbanCard = memo(
                     </div>
 
                     <motion.button
+                      type='button'
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       onClick={handleTogglePin}
-                      className={`p-1.5 rounded-lg bg-white/90 shadow-sm hover:shadow-md transition-all ${
+                      aria-label={note.isPinned ? 'Unpin note' : 'Pin note'}
+                      className={`p-1.5 rounded-lg bg-white/90 shadow-sm hover:shadow-md transition-all focus:ring-2 focus:ring-blue-500 focus:outline-none ${
                         note.isPinned
                           ? 'bg-blue-100 text-blue-600'
                           : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50'
                       }`}>
-                      <Pin size={14} />
+                      <Pin size={14} aria-hidden='true' />
                     </motion.button>
                     <motion.button
+                      type='button'
                       whileHover={{ scale: 1.1 }}
                       whileTap={{ scale: 0.9 }}
                       onClick={handleDelete}
+                      aria-label='Delete note'
                       className='p-1.5 rounded-lg bg-white/90 shadow-sm hover:shadow-md transition-all
-                      text-gray-400 hover:text-red-600 hover:bg-red-50'>
-                      <Trash2 size={14} />
+                      text-gray-400 hover:text-red-600 hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:outline-none'>
+                      <Trash2 size={14} aria-hidden='true' />
                     </motion.button>
                   </motion.div>
                 )}
@@ -382,39 +390,54 @@ export default function KanbanView({
             placeholder='Search notes...'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className='w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent'
+            aria-label='Search notes in Kanban board'
+            className='w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none'
           />
-          <span className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-600'>
+          <span aria-hidden='true' className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-600'>
             <Search className='h-4 w-4' />
           </span>
         </div>
         <motion.button
+          type='button'
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={() => setIsModalOpen(true)}
-          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900'>
+          aria-label='Create a new note'
+          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none'>
           <Plus className='h-5 w-5' aria-hidden='true' />
           <span className='sm:hidden'>Add Note</span>
         </motion.button>
       </div>
 
       {/* Scrollable Kanban Board */}
-      <DragDropContext onDragEnd={handleDragEnd}>
-        <div className='flex-1 min-h-0 overflow-y-auto p-4'>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min text-left text-xs font-bold text-gray-900 dark:text-white'>
-            {KANBAN_COLUMNS.map((column) => (
-              <KanbanColumn
-                key={column.id}
-                column={column}
-                notes={columnState[column.id]}
-                onAddNote={() => setIsModalOpen(true)}
-                onUpdateNote={onUpdateNote}
-                onDeleteNote={onDeleteNote}
-              />
-            ))}
+      {notes.length === 0 ? (
+        <EmptyState
+          icon={<Kanban className='h-16 w-16' />}
+          title='No notes yet'
+          description='Create your first note to get started with the Kanban board'
+          action={{
+            label: 'Create Note',
+            onClick: () => setIsModalOpen(true),
+          }}
+        />
+      ) : (
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <div className='flex-1 min-h-0 overflow-y-auto p-4'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min text-left text-xs font-bold text-gray-900 dark:text-white'>
+              {KANBAN_COLUMNS.map((column) => (
+                <KanbanColumn
+                  key={column.id}
+                  column={column}
+                  notes={columnState[column.id]}
+                  onAddNote={() => setIsModalOpen(true)}
+                  onUpdateNote={onUpdateNote}
+                  onDeleteNote={onDeleteNote}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      </DragDropContext>
+        </DragDropContext>
+      )}
 
       {/* Add Note Modal */}
       <AnimatePresence>

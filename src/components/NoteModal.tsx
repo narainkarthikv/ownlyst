@@ -38,6 +38,8 @@ export default function NoteModal({
     dueDate: defaultDueDate as Date | undefined,
   });
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   // Load initial data when editing or creating
   useEffect(() => {
     if (note) {
@@ -50,6 +52,7 @@ export default function NoteModal({
         isPinned: note.isPinned,
         dueDate: note.dueDate,
       });
+      setErrors({});
     } else {
       setFormData({
         title: '',
@@ -60,8 +63,64 @@ export default function NoteModal({
         isPinned: false,
         dueDate: defaultDueDate,
       });
+      setErrors({});
     }
-  }, [note, defaultStatus, defaultDueDate]);
+  }, [note, defaultStatus, defaultDueDate, isOpen]);
+
+  // Check if form is valid
+  const isFormValid = formData.title.trim().length > 0;
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Escape to close modal
+      if (e.key === 'Escape') {
+        onClose();
+      }
+      // Ctrl/Cmd + Enter to save
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        if (isFormValid) {
+          const newErrors: Record<string, string> = {};
+          if (!formData.title.trim()) {
+            newErrors.title = 'Title is required';
+          } else if (formData.title.trim().length > 100) {
+            newErrors.title = 'Title must be less than 100 characters';
+          }
+          if (formData.content.trim().length > 5000) {
+            newErrors.content = 'Content must be less than 5000 characters';
+          }
+          if (Object.keys(newErrors).length === 0) {
+            onSave(formData);
+            onClose();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose, formData, isFormValid, onSave]);
+
+  // Validation function
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.title.trim()) {
+      newErrors.title = 'Title is required';
+    } else if (formData.title.trim().length > 100) {
+      newErrors.title = 'Title must be less than 100 characters';
+    }
+
+    if (formData.content.trim().length > 5000) {
+      newErrors.content = 'Content must be less than 5000 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleDateChange = (dateString: string) => {
     setFormData((prev) => ({
@@ -73,7 +132,7 @@ export default function NoteModal({
   // Submit handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title.trim()) return;
+    if (!validateForm()) return;
 
     onSave(formData);
     onClose();
@@ -132,20 +191,23 @@ export default function NoteModal({
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={handleSubmit}
-                  disabled={!formData.title.trim()}
-                  aria-label={note ? 'Update note' : 'Save note'}
+                  disabled={!isFormValid}
+                  title={`${note ? 'Update' : 'Save'} note (Ctrl+Enter)`}
+                  aria-label={`${note ? 'Update' : 'Save'} note - Keyboard shortcut: Ctrl+Enter`}
                   className={`p-2 rounded-full transition-colors ${
-                    formData.title.trim()
+                    isFormValid
                       ? 'text-emerald-600 hover:bg-emerald-100'
                       : 'text-gray-400 cursor-not-allowed'
                   }`}>
                   <Check size={20} />
                 </motion.button>
                 <motion.button
+                  type='button'
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={onClose}
-                  aria-label='Close modal'
+                  title='Close modal (Esc)'
+                  aria-label='Close modal - Keyboard shortcut: Escape'
                   className='p-2 rounded-full text-red-600 hover:bg-red-100 transition-colors'>
                   <X size={20} />
                 </motion.button>
@@ -165,15 +227,31 @@ export default function NoteModal({
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, title: e.target.value }))
                   }
-                  className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent'
+                  maxLength={100}
+                  aria-invalid={!!errors.title}
+                  aria-describedby={errors.title ? 'title-error' : undefined}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors ${
+                    errors.title
+                      ? 'border-red-500 dark:border-red-400'
+                      : 'border-gray-300 dark:border-gray-600 bg-white'
+                  }`}
                   placeholder='Enter note title...'
-                  required
                 />
+                {errors.title && (
+                  <p
+                    id='title-error'
+                    className='mt-1 text-sm text-red-600 dark:text-red-400'>
+                    {errors.title}
+                  </p>
+                )}
+                <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+                  {formData.title.length}/100
+                </p>
               </div>
 
               {/* Content */}
               <div>
-                <label className='block text-sm font-medium text-gray-700 mb-2'>
+                <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
                   Content
                 </label>
                 <textarea
@@ -184,10 +262,27 @@ export default function NoteModal({
                       content: e.target.value,
                     }))
                   }
+                  maxLength={5000}
                   rows={4}
-                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none'
+                  aria-invalid={!!errors.content}
+                  aria-describedby={errors.content ? 'content-error' : undefined}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none transition-colors ${
+                    errors.content
+                      ? 'border-red-500 dark:border-red-400'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
                   placeholder='Enter note content...'
                 />
+                {errors.content && (
+                  <p
+                    id='content-error'
+                    className='mt-1 text-sm text-red-600 dark:text-red-400'>
+                    {errors.content}
+                  </p>
+                )}
+                <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+                  {formData.content.length}/5000
+                </p>
               </div>
 
               {/* Color Selection */}
