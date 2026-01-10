@@ -2,51 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Pin, Check } from 'lucide-react';
 import { Note } from '../types/Note';
+import {
+  COLOR_NAMES,
+  LIGHT_COLOR_CLASSES,
+  type NoteColor,
+} from '../constants/colors';
+import { STATUS_VALUES, type NoteStatus } from '../constants/statuses';
+import { PRIORITY_VALUES, type NotePriority } from '../constants/priorities';
+import { formatDateForInput } from '../utils/dates';
 
 interface NoteModalProps {
   isOpen: boolean;
   onClose: () => void;
   note: Note | null;
-  defaultStatus?: Note['status'];
+  defaultStatus?: NoteStatus;
   defaultDueDate?: Date;
   onSave: (note: Omit<Note, 'id' | 'createdAt'>) => void;
 }
-
-const colors: Note['color'][] = [
-  'indigo',
-  'emerald',
-  'sky',
-  'rose',
-  'violet',
-  'amber',
-  'slate',
-  'cyan',
-  'lime',
-  'orange',
-  'teal',
-];
-const statuses: Note['status'][] = ['todo', 'in-progress', 'done'];
-const priorities: Note['priority'][] = ['low', 'medium', 'high'];
-
-const colorClasses = {
-  indigo:
-    'bg-indigo-200 dark:bg-indigo-800 border-indigo-300 dark:border-indigo-600',
-  emerald:
-    'bg-emerald-200 dark:bg-emerald-800 border-emerald-300 dark:border-emerald-600',
-  sky: 'bg-sky-200 dark:bg-sky-800 border-sky-300 dark:border-sky-600',
-  rose: 'bg-rose-200 dark:bg-rose-800 border-rose-300 dark:border-rose-600',
-  violet:
-    'bg-violet-200 dark:bg-violet-800 border-violet-300 dark:border-violet-600',
-  amber:
-    'bg-amber-200 dark:bg-amber-800 border-amber-300 dark:border-amber-600',
-  slate:
-    'bg-slate-200 dark:bg-slate-800 border-slate-300 dark:border-slate-600',
-  cyan: 'bg-cyan-200 dark:bg-cyan-800 border-cyan-300 dark:border-cyan-600',
-  lime: 'bg-lime-200 dark:bg-lime-800 border-lime-300 dark:border-lime-600',
-  orange:
-    'bg-orange-200 dark:bg-orange-800 border-orange-300 dark:border-orange-600',
-  teal: 'bg-teal-200 dark:bg-teal-800 border-teal-300 dark:border-teal-600',
-};
 
 export default function NoteModal({
   isOpen,
@@ -59,12 +31,14 @@ export default function NoteModal({
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    color: 'indigo' as Note['color'],
-    status: defaultStatus,
-    priority: 'medium' as Note['priority'],
+    color: 'indigo' as NoteColor,
+    status: defaultStatus as NoteStatus,
+    priority: 'medium' as NotePriority,
     isPinned: false,
     dueDate: defaultDueDate as Date | undefined,
   });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Load initial data when editing or creating
   useEffect(() => {
@@ -78,23 +52,74 @@ export default function NoteModal({
         isPinned: note.isPinned,
         dueDate: note.dueDate,
       });
+      setErrors({});
     } else {
       setFormData({
         title: '',
         content: '',
-        color: 'indigo' as Note['color'],
-        status: defaultStatus,
-        priority: 'medium' as Note['priority'],
+        color: 'indigo' as NoteColor,
+        status: defaultStatus as NoteStatus,
+        priority: 'medium' as NotePriority,
         isPinned: false,
         dueDate: defaultDueDate,
       });
+      setErrors({});
     }
-  }, [note, defaultStatus, defaultDueDate]);
+  }, [note, defaultStatus, defaultDueDate, isOpen]);
 
-  // Helpers
-  const formatDateForInput = (date: Date | undefined) => {
-    if (!date) return '';
-    return date.toISOString().split('T')[0];
+  // Check if form is valid
+  const isFormValid = formData.title.trim().length > 0;
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Escape to close modal
+      if (e.key === 'Escape') {
+        onClose();
+      }
+      // Ctrl/Cmd + Enter to save
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        if (isFormValid) {
+          const newErrors: Record<string, string> = {};
+          if (!formData.title.trim()) {
+            newErrors.title = 'Title is required';
+          } else if (formData.title.trim().length > 100) {
+            newErrors.title = 'Title must be less than 100 characters';
+          }
+          if (formData.content.trim().length > 5000) {
+            newErrors.content = 'Content must be less than 5000 characters';
+          }
+          if (Object.keys(newErrors).length === 0) {
+            onSave(formData);
+            onClose();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose, formData, isFormValid, onSave]);
+
+  // Validation function
+  const validateForm = (): boolean => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.title.trim()) {
+      newErrors.title = 'Title is required';
+    } else if (formData.title.trim().length > 100) {
+      newErrors.title = 'Title must be less than 100 characters';
+    }
+
+    if (formData.content.trim().length > 5000) {
+      newErrors.content = 'Content must be less than 5000 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleDateChange = (dateString: string) => {
@@ -107,7 +132,7 @@ export default function NoteModal({
   // Submit handler
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title.trim()) return;
+    if (!validateForm()) return;
 
     onSave(formData);
     onClose();
@@ -166,20 +191,23 @@ export default function NoteModal({
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={handleSubmit}
-                  disabled={!formData.title.trim()}
-                  aria-label={note ? 'Update note' : 'Save note'}
+                  disabled={!isFormValid}
+                  title={`${note ? 'Update' : 'Save'} note (Ctrl+Enter)`}
+                  aria-label={`${note ? 'Update' : 'Save'} note - Keyboard shortcut: Ctrl+Enter`}
                   className={`p-2 rounded-full transition-colors ${
-                    formData.title.trim()
+                    isFormValid
                       ? 'text-emerald-600 hover:bg-emerald-100'
                       : 'text-gray-400 cursor-not-allowed'
                   }`}>
                   <Check size={20} />
                 </motion.button>
                 <motion.button
+                  type='button'
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={onClose}
-                  aria-label='Close modal'
+                  title='Close modal (Esc)'
+                  aria-label='Close modal - Keyboard shortcut: Escape'
                   className='p-2 rounded-full text-red-600 hover:bg-red-100 transition-colors'>
                   <X size={20} />
                 </motion.button>
@@ -199,15 +227,31 @@ export default function NoteModal({
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, title: e.target.value }))
                   }
-                  className='w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent'
+                  maxLength={100}
+                  aria-invalid={!!errors.title}
+                  aria-describedby={errors.title ? 'title-error' : undefined}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white transition-colors ${
+                    errors.title
+                      ? 'border-red-500 dark:border-red-400'
+                      : 'border-gray-300 dark:border-gray-600 bg-white'
+                  }`}
                   placeholder='Enter note title...'
-                  required
                 />
+                {errors.title && (
+                  <p
+                    id='title-error'
+                    className='mt-1 text-sm text-red-600 dark:text-red-400'>
+                    {errors.title}
+                  </p>
+                )}
+                <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+                  {formData.title.length}/100
+                </p>
               </div>
 
               {/* Content */}
               <div>
-                <label className='block text-sm font-medium text-gray-700 mb-2'>
+                <label className='block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2'>
                   Content
                 </label>
                 <textarea
@@ -218,10 +262,27 @@ export default function NoteModal({
                       content: e.target.value,
                     }))
                   }
+                  maxLength={5000}
                   rows={4}
-                  className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none'
+                  aria-invalid={!!errors.content}
+                  aria-describedby={errors.content ? 'content-error' : undefined}
+                  className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none transition-colors ${
+                    errors.content
+                      ? 'border-red-500 dark:border-red-400'
+                      : 'border-gray-300 dark:border-gray-600'
+                  }`}
                   placeholder='Enter note content...'
                 />
+                {errors.content && (
+                  <p
+                    id='content-error'
+                    className='mt-1 text-sm text-red-600 dark:text-red-400'>
+                    {errors.content}
+                  </p>
+                )}
+                <p className='mt-1 text-xs text-gray-500 dark:text-gray-400'>
+                  {formData.content.length}/5000
+                </p>
               </div>
 
               {/* Color Selection */}
@@ -230,7 +291,7 @@ export default function NoteModal({
                   Color
                 </label>
                 <div className='grid grid-cols-6 gap-1'>
-                  {colors.map((color) => (
+                  {COLOR_NAMES.map((color) => (
                     <motion.button
                       key={color}
                       type='button'
@@ -240,7 +301,7 @@ export default function NoteModal({
                         setFormData((prev) => ({ ...prev, color }))
                       }
                       aria-label={`Select ${color} color`}
-                      className={`w-12 h-12 rounded-lg border-2 ${colorClasses[color]} ${
+                      className={`w-12 h-12 rounded-lg border-2 ${LIGHT_COLOR_CLASSES[color]} ${
                         formData.color === color ? 'ring-2 ring-blue-500' : ''
                       }`}
                     />
@@ -259,11 +320,11 @@ export default function NoteModal({
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        status: e.target.value as Note['status'],
+                        status: e.target.value as NoteStatus,
                       }))
                     }
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'>
-                    {statuses.map((status) => (
+                    {STATUS_VALUES.map((status) => (
                       <option key={status} value={status}>
                         {status
                           .replace('-', ' ')
@@ -282,11 +343,11 @@ export default function NoteModal({
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        priority: e.target.value as Note['priority'],
+                        priority: e.target.value as NotePriority,
                       }))
                     }
                     className='w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent'>
-                    {priorities.map((priority) => (
+                    {PRIORITY_VALUES.map((priority) => (
                       <option key={priority} value={priority}>
                         {priority.charAt(0).toUpperCase() + priority.slice(1)}
                       </option>

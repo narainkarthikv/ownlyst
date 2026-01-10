@@ -9,10 +9,11 @@ import {
   CheckCircle,
   Circle,
   BarChart3,
-  LayersIcon,
+  Map,
 } from 'lucide-react';
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
+import EmptyState from './shared/EmptyState';
 
 interface RoadmapViewProps {
   notes: Note[];
@@ -186,7 +187,20 @@ export default function RoadmapView({
 
   return (
     <div className='space-y-4'>
-      {/* Analytics Cards */}
+      {/* Empty state check */}
+      {notes.length === 0 ? (
+        <EmptyState
+          icon={<Map className='h-16 w-16' />}
+          title='No tasks yet'
+          description='Create notes with due dates to see them on the roadmap'
+          action={{
+            label: 'Create First Task',
+            onClick: () => setIsModalOpen(true),
+          }}
+        />
+      ) : (
+        <>
+          {/* Analytics Cards */}
       <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6 px-2 sm:px-0'>
         {[
           {
@@ -579,6 +593,8 @@ export default function RoadmapView({
           )}
         </div>
       </div>
+        </>
+      )}
 
       {/* Add Note Modal */}
       <NoteModal

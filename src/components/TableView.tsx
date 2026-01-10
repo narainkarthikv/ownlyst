@@ -9,9 +9,11 @@ import {
   Filter,
   Search,
   ChevronDown,
+  Table,
 } from 'lucide-react';
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
+import EmptyState from './shared/EmptyState';
 
 interface TableViewProps {
   notes: Note[];
@@ -80,7 +82,7 @@ export default function TableView({
   };
 
   const sortedAndFilteredNotes = useMemo(() => {
-    let filtered = [...notes];
+    const filtered = [...notes];
 
     // Split notes into pinned and unpinned
     let pinnedNotes = filtered.filter((note) => note.isPinned);
@@ -115,8 +117,8 @@ export default function TableView({
     // Sort pinned and unpinned notes separately
     const sortNotes = (notes: Note[]) => {
       return notes.sort((a, b) => {
-        let aValue: any = a[sortField];
-        let bValue: any = b[sortField];
+        let aValue: string | number | Date | undefined = a[sortField];
+        let bValue: string | number | Date | undefined = b[sortField];
 
         if (sortField === 'createdAt' || sortField === 'dueDate') {
           aValue = aValue ? new Date(aValue).getTime() : 0;
@@ -457,27 +459,15 @@ export default function TableView({
 
       {/* Empty state */}
       {sortedAndFilteredNotes.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className='text-center py-16 bg-white rounded-xl border border-gray-200 shadow-sm'>
-          <div className='text-gray-400 mb-4'>
-            <Search size={48} className='mx-auto' />
-          </div>
-          <h3 className='text-lg font-medium text-gray-900 mb-2'>
-            No notes found
-          </h3>
-          <p className='text-gray-600 mb-4'>
-            Try adjusting your filters or create a new note
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleAddNote}
-            className='bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors'>
-            Create Note
-          </motion.button>
-        </motion.div>
+        <EmptyState
+          icon={<Table className='h-16 w-16' />}
+          title='No notes found'
+          description='Try adjusting your filters or create a new note'
+          action={{
+            label: 'Create Note',
+            onClick: handleAddNote,
+          }}
+        />
       )}
 
       {/* Note Modal */}

@@ -1,51 +1,16 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
-import { Note } from '../types/Note';
+import {
+  COLOR_PICKER_PALETTE,
+  type NoteColor,
+} from '../constants/colors';
 
 interface ColorPickerProps {
-  currentColor: Note['color'];
-  onColorSelect: (color: Note['color']) => void;
+  currentColor: NoteColor;
+  onColorSelect: (color: NoteColor) => void;
   onClose: () => void;
 }
-
-const colors: { id: Note['color']; label: string; class: string }[] = [
-  {
-    id: 'indigo',
-    label: 'In',
-    class:
-      'bg-indigo-500 hover:bg-indigo-600 dark:bg-indigo-400 dark:hover:bg-indigo-500',
-  },
-  {
-    id: 'emerald',
-    label: 'Em',
-    class:
-      'bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-400 dark:hover:bg-emerald-500',
-  },
-  {
-    id: 'sky',
-    label: 'Sk',
-    class: 'bg-sky-500 hover:bg-sky-600 dark:bg-sky-400 dark:hover:bg-sky-500',
-  },
-  {
-    id: 'rose',
-    label: 'Ro',
-    class:
-      'bg-rose-500 hover:bg-rose-600 dark:bg-rose-400 dark:hover:bg-rose-500',
-  },
-  {
-    id: 'violet',
-    label: 'Vi',
-    class:
-      'bg-violet-500 hover:bg-violet-600 dark:bg-violet-400 dark:hover:bg-violet-500',
-  },
-  { id: 'amber', label: 'Am', class: 'bg-amber-400 hover:bg-amber-500' },
-  { id: 'slate', label: 'Sl', class: 'bg-slate-400 hover:bg-slate-500' },
-  { id: 'cyan', label: 'Cy', class: 'bg-cyan-400 hover:bg-cyan-500' },
-  { id: 'lime', label: 'Li', class: 'bg-lime-400 hover:bg-lime-500' },
-  { id: 'orange', label: 'Or', class: 'bg-orange-400 hover:bg-orange-500' },
-  { id: 'teal', label: 'Te', class: 'bg-teal-400 hover:bg-teal-500' },
-];
 
 export default function ColorPicker({
   currentColor,
@@ -99,7 +64,7 @@ export default function ColorPicker({
       </div>
 
       <div className='grid grid-cols-6 gap-2'>
-        {colors.map((color) => (
+        {COLOR_PICKER_PALETTE.map((color) => (
           <motion.button
             key={color.id}
             whileHover={{ scale: 1.05 }}

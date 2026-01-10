@@ -60,12 +60,12 @@ Experience the power of effortless note-taking with our live demo.
 
 ## 🛠️ Tech Stack
 
-| Layer        | Technologies                                                      |
-| ------------ | ----------------------------------------------------------------- |
+| Layer        | Technologies                                                         |
+| ------------ | -------------------------------------------------------------------- |
 | **Frontend** | React 18, TypeScript, Vite, TailwindCSS, Framer Motion, React Router |
-| **Tooling**  | ESLint, Prettier, PostCSS, Autoprefixer                          |
-| **Storage**  | Browser LocalStorage                                              |
-| **Build**    | Vite (Fast build tool), Vercel (Deployment)                       |
+| **Tooling**  | ESLint, Prettier, PostCSS, Autoprefixer                              |
+| **Storage**  | Browser LocalStorage                                                 |
+| **Build**    | Vite (Fast build tool), Vercel (Deployment)                          |
 
 <p align="center">
   <img src="https://skillicons.dev/icons?i=react,typescript,vite,tailwind,javascript" />
@@ -356,7 +356,7 @@ Check your browser's LocalStorage is enabled:
 
 ```javascript
 // In browser console
-localStorage.getItem('theme')
+localStorage.getItem('theme');
 ```
 
 ---
@@ -383,7 +383,6 @@ We ❤️ contributions! Here's how to get started:
    ```
 
 4. **Make your changes**
-
    - Write clean, well-documented code
    - Follow the development standards above
    - Test your changes locally
@@ -402,7 +401,6 @@ We ❤️ contributions! Here's how to get started:
    ```
 
 7. **Open a Pull Request**
-
    - Go to the original repository
    - Click "New Pull Request"
    - Select your branch and provide a clear description
