@@ -1,4 +1,4 @@
-import { useState, useCallback, memo } from 'react';
+import { useState, useCallback, memo, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   DragDropContext,
@@ -26,13 +26,14 @@ import {
   type NoteColor,
 } from '../constants/colors';
 import { KANBAN_COLUMNS } from '../constants/kanban';
+import { useNotes } from '../context/NotesContext';
 
 // Types
 interface KanbanViewProps {
-  notes: Note[];
-  onAddNote: (note: Omit<Note, 'id' | 'createdAt'>) => void;
-  onUpdateNote: (id: string, updates: Partial<Note>) => void;
-  onDeleteNote: (id: string) => void;
+  notes?: Note[]; // Optional - can use context instead
+  onAddNote?: (note: Omit<Note, 'id' | 'createdAt'>) => void;
+  onUpdateNote?: (id: string, updates: Partial<Note>) => void;
+  onDeleteNote?: (id: string) => void;
 }
 
 interface KanbanCardProps {
@@ -319,66 +320,93 @@ const KanbanColumn = memo(
 
 type ColumnId = 'todo' | 'in-progress' | 'done';
 
-// Main KanbanView Component
+/**
+ * Main KanbanView Component
+ * 
+ * Features:
+ * - Maps notes to Kanban columns based on their status
+ * - Synchronizes status updates when items are dragged between columns
+ * - Uses centralized state management for cross-view synchronization
+ * - Optimized rendering with proper memoization
+ */
 export default function KanbanView({
-  notes,
-  onAddNote,
-  onUpdateNote,
-  onDeleteNote,
+  notes: propsNotes,
+  onAddNote: propsOnAddNote,
+  onUpdateNote: propsOnUpdateNote,
+  onDeleteNote: propsOnDeleteNote,
 }: KanbanViewProps) {
+  // Use context-based state by default, fallback to props for backward compatibility
+  const contextNotes = useNotes();
+  const notes = propsNotes || contextNotes.notes;
+  const onAddNote = propsOnAddNote || contextNotes.addNote;
+  const onUpdateNote = propsOnUpdateNote || contextNotes.updateNote;
+  const onDeleteNote = propsOnDeleteNote || contextNotes.deleteNote;
+  const updateNoteStatus = contextNotes.updateNoteStatus;
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [columnState, setColumnState] = useState<Record<ColumnId, Note[]>>(
-    () => {
-      const initialState: Record<ColumnId, Note[]> = {
-        todo: [],
-        'in-progress': [],
-        done: [],
-      };
 
-      // Initial distribution of notes
-      notes.forEach((note) => {
-        const columnIndex = Math.floor(Math.random() * KANBAN_COLUMNS.length);
-        const columnId = KANBAN_COLUMNS[columnIndex].id;
-        initialState[columnId].push(note);
-      });
+  /**
+   * Handle drag and drop with immediate status synchronization
+   * 
+   * When a note is dragged from one column to another:
+   * 1. The destination column ID is mapped to a status
+   * 2. The note's status is updated in the data model
+   * 3. The change propagates to all other views automatically
+   * 4. Re-render is triggered by React state update
+   */
+  const handleDragEnd = useCallback(
+    (result: DropResult) => {
+      const { destination, source, draggableId } = result;
 
-      return initialState;
-    }
+      // No valid destination - dropped outside droppable area
+      if (!destination) return;
+
+      // Item dropped in same position - no change needed
+      if (
+        destination.droppableId === source.droppableId &&
+        destination.index === source.index
+      )
+        return;
+
+      // Map destination droppable ID to note status
+      const newStatus = destination.droppableId as ColumnId;
+
+      // Update the note's status in the data model
+      // This triggers re-renders in all views that use the context
+      updateNoteStatus(draggableId, newStatus);
+    },
+    [updateNoteStatus]
   );
 
-  // Drag and drop handler with smooth animations
-  const handleDragEnd = useCallback((result: DropResult) => {
-    const { destination, source } = result;
+  // Filter notes by search term
+  const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-    if (!destination) return;
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    )
-      return;
+  /**
+   * Organize notes into columns based on their status
+   * Only updates when filtered notes change (search is updated)
+   * This ensures the UI always reflects the current data model state
+   */
+  const columnState = useMemo(() => {
+    const columns: Record<ColumnId, Note[]> = {
+      todo: [],
+      'in-progress': [],
+      done: [],
+    };
 
-    setColumnState((prev) => {
-      const newState = { ...prev };
-      const sourceCol = [...prev[source.droppableId as ColumnId]];
-      const destCol =
-        source.droppableId === destination.droppableId
-          ? sourceCol
-          : [...prev[destination.droppableId as ColumnId]];
-
-      const [movedNote] = sourceCol.splice(source.index, 1);
-      destCol.splice(destination.index, 0, movedNote);
-
-      if (source.droppableId === destination.droppableId) {
-        newState[source.droppableId as ColumnId] = sourceCol;
-      } else {
-        newState[source.droppableId as ColumnId] = sourceCol;
-        newState[destination.droppableId as ColumnId] = destCol;
+    filteredNotes.forEach((note) => {
+      const columnId = note.status as ColumnId;
+      if (columnId in columns) {
+        columns[columnId].push(note);
       }
-
-      return newState;
     });
-  }, []);
+
+    return columns;
+  }, [filteredNotes]);
 
   return (
     <div className='h-full flex flex-col overflow-hidden p-4'>
@@ -428,7 +456,7 @@ export default function KanbanView({
                 <KanbanColumn
                   key={column.id}
                   column={column}
-                  notes={columnState[column.id]}
+                  notes={columnState[column.id as ColumnId]}
                   onAddNote={() => setIsModalOpen(true)}
                   onUpdateNote={onUpdateNote}
                   onDeleteNote={onDeleteNote}

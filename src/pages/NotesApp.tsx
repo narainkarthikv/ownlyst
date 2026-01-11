@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -8,16 +8,13 @@ import {
   Baseline as Timeline,
   ArrowLeft,
 } from 'lucide-react';
-import sampleNotesData from '../data/sampleNotes.json';
 import NotesView from '../components/NotesView';
 import KanbanView from '../components/KanbanView';
 import TableView from '../components/TableView';
 import RoadmapView from '../components/RoadmapView';
-import { Note } from '../types/Note';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useNotes } from '../context/NotesContext';
 import Logo from '../components/Logo';
 import ThemeToggle from '../components/ThemeToggle';
-import { useMemo } from 'react';
 
 const views = [
   { id: 'notes', name: 'Notes', icon: StickyNote, color: 'text-green-600' },
@@ -35,7 +32,9 @@ export default function NotesApp() {
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState('notes');
   const [searchTerm, setSearchTerm] = useState('');
-  const [notes, setNotes] = useLocalStorage<Note[]>('sticky-notes', []);
+
+  // Use centralized notes context for state management
+  const { notes, addNote, updateNote, deleteNote, notesLoaded } = useNotes();
 
   // Process notes to ensure dates are Date objects
   const processedNotes = useMemo(() => {
@@ -52,41 +51,6 @@ export default function NotesApp() {
         : undefined,
     }));
   }, [notes]);
-
-  // Initialize with sample data
-  useEffect(() => {
-    if (notes.length > 0) return; // Don't override existing data
-
-    const sampleNotes: Note[] = sampleNotesData.notes.map((note) => ({
-      ...note,
-      color: note.color as Note['color'],
-      status: note.status as Note['status'],
-      priority: note.priority as Note['priority'],
-      createdAt: new Date(note.createdAt),
-      dueDate: note.dueDate ? new Date(note.dueDate) : undefined,
-    }));
-
-    setNotes(sampleNotes);
-  }, [notes.length, setNotes]);
-
-  const addNote = (note: Omit<Note, 'id' | 'createdAt'>) => {
-    const newNote: Note = {
-      ...note,
-      id: Date.now().toString(),
-      createdAt: new Date(),
-    };
-    setNotes((prev: Note[]) => [newNote, ...prev]);
-  };
-
-  const updateNote = (id: string, updates: Partial<Note>) => {
-    setNotes((prev: Note[]) =>
-      prev.map((note) => (note.id === id ? { ...note, ...updates } : note))
-    );
-  };
-
-  const deleteNote = (id: string) => {
-    setNotes((prev: Note[]) => prev.filter((note) => note.id !== id));
-  };
 
   const filteredNotes = processedNotes.filter(
     (note) =>
