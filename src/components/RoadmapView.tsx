@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar,
@@ -48,7 +48,7 @@ interface GanttTask {
 
 type GroupingOption = 'none' | 'status' | 'priority';
 
-export default function RoadmapView({
+export default memo(function RoadmapView({
   notes,
   onAddNote,
   onUpdateNote,
@@ -61,23 +61,26 @@ export default function RoadmapView({
   const [zoomLevel, setZoomLevel] = useState<number>(80); // Default cell width in pixels
   const [groupBy, setGroupBy] = useState<GroupingOption>('none');
 
-  // Group tasks by status or priority
-  const groupTasks = (
-    tasks: GanttTask[],
-    grouping: GroupingOption
-  ): Record<string, GanttTask[]> => {
-    if (grouping === 'none') return { '': tasks };
+  // Memoized group tasks function
+  const groupTasks = useCallback(
+    (
+      tasks: GanttTask[],
+      grouping: GroupingOption
+    ): Record<string, GanttTask[]> => {
+      if (grouping === 'none') return { '': tasks };
 
-    return tasks.reduce(
-      (groups, task) => {
-        const key = grouping === 'status' ? task.status : task.priority;
-        if (!groups[key]) groups[key] = [];
-        groups[key].push(task);
-        return groups;
-      },
-      {} as Record<string, GanttTask[]>
-    );
-  };
+      return tasks.reduce(
+        (groups, task) => {
+          const key = grouping === 'status' ? task.status : task.priority;
+          if (!groups[key]) groups[key] = [];
+          groups[key].push(task);
+          return groups;
+        },
+        {} as Record<string, GanttTask[]>
+      );
+    },
+    []
+  );
 
   // Convert notes to Gantt tasks
   const ganttTasks = useMemo(() => {
@@ -614,4 +617,4 @@ export default function RoadmapView({
       />
     </div>
   );
-}
+});

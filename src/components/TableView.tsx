@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import {
   Plus,
@@ -61,7 +61,7 @@ const colorClasses: Record<string, string> = {
   teal: 'bg-teal-200 dark:bg-teal-900/50 border-teal-300 dark:border-teal-700',
 };
 
-export default function TableView({
+export default memo(function TableView({
   notes,
   onAddNote,
   onUpdateNote,
@@ -76,10 +76,10 @@ export default function TableView({
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
 
-  const handleAddNote = () => {
+  const handleAddNote = useCallback(() => {
     setEditingNote(null);
     setIsModalOpen(true);
-  };
+  }, []);
 
   const sortedAndFilteredNotes = useMemo(() => {
     const filtered = [...notes];
@@ -486,4 +486,4 @@ export default function TableView({
       />
     </div>
   );
-}
+});

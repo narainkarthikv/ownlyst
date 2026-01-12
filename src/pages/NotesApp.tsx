@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -28,7 +28,7 @@ const views = [
   { id: 'roadmap', name: 'Roadmap', icon: Timeline, color: 'text-orange-600' },
 ];
 
-export default function NotesApp() {
+export default memo(function NotesApp() {
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState('notes');
   const [searchTerm, setSearchTerm] = useState('');
@@ -152,4 +152,4 @@ export default function NotesApp() {
       </main>
     </div>
   );
-}
+});

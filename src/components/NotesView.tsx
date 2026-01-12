@@ -1,21 +1,30 @@
-import { useState } from 'react';
+/**
+ * NotesView - Optimized Notes Grid View
+ * 
+ * Features:
+ * - Memoized component to prevent unnecessary re-renders
+ * - Debounced search input for better performance
+ * - Memoized filtering and sorting operations
+ * - Reusable NoteCard component with memoization
+ */
+
+import { useState, memo, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plus,
+  Search,
+  FileText,
   Pin,
+  X,
   Edit3,
   Trash2,
   Calendar,
-  Palette,
-  X,
-  Search,
-  FileText,
 } from 'lucide-react';
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
-import ColorPicker from './ColorPicker';
 import EmptyState from './shared/EmptyState';
-import { highlightSearchTerm } from '../utils/highlighting';
+import NoteCard from './NoteCard';
+import { useDebounce } from '../hooks/useDebounce';
 
 interface NotesViewProps {
   notes: Note[];
@@ -52,7 +61,7 @@ const priorityColors = {
   high: 'text-cyan-700 dark:text-cyan-500',
 };
 
-export default function NotesView({
+export default memo(function NotesView({
   notes,
   onAddNote,
   onUpdateNote,
@@ -60,47 +69,55 @@ export default function NotesView({
 }: NotesViewProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
-  const [colorPickerNote, setColorPickerNote] = useState<string | null>(null);
+  const [searchInput, setSearchInput] = useState('');
   const [viewingNote, setViewingNote] = useState<Note | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
 
-  // Filter notes by search term
-  const filteredNotes = notes.filter(
-    (note) =>
-      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.content.toLowerCase().includes(searchTerm.toLowerCase())
+  // Debounce search to avoid excessive filtering
+  const searchTerm = useDebounce(searchInput, undefined, { delay: 200 });
+
+  // Memoized filtered notes - only recomputes when notes or searchTerm changes
+  const filteredNotes = useMemo(
+    () =>
+      notes.filter(
+        (note) =>
+          note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          note.content.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    [notes, searchTerm]
   );
 
-  // Sort notes: pinned first, then by creation date
-  const sortedNotes = [...filteredNotes].sort((a, b) => {
-    if (a.isPinned && !b.isPinned) return -1;
-    if (!a.isPinned && b.isPinned) return 1;
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  });
+  // Memoized sorted notes - only recomputes when filteredNotes changes
+  const sortedNotes = useMemo(
+    () =>
+      [...filteredNotes].sort((a, b) => {
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      }),
+    [filteredNotes]
+  );
 
-  const handleAddNote = () => {
+  // Memoized callback handlers to prevent unnecessary prop updates
+  const handleAddNote = useCallback(() => {
     setEditingNote(null);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleEditNote = (note: Note) => {
+  const handleEditNote = useCallback((note: Note) => {
     setEditingNote(note);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleTogglePin = (note: Note) => {
-    onUpdateNote(note.id, { isPinned: !note.isPinned });
-  };
+  const handleTogglePin = useCallback(
+    (note: Note) => {
+      onUpdateNote(note.id, { isPinned: !note.isPinned });
+    },
+    [onUpdateNote]
+  );
 
-  const handleColorChange = (noteId: string, color: Note['color']) => {
-    onUpdateNote(noteId, { color });
-    setColorPickerNote(null);
-  };
-
-  const handleNoteClick = (note: Note) => {
-    setViewingNote(note);
-  };
-  const formatDate = (date: Date | string) => {
+  const formatDate = useCallback((date: Date | string) => {
     const dateObj = new Date(date);
     if (isNaN(dateObj.getTime())) {
       return '-';
@@ -109,7 +126,7 @@ export default function NotesView({
       month: 'short',
       day: 'numeric',
     }).format(dateObj);
-  };
+  }, []);
 
   return (
     <div className='space-y-6 p-4'>
@@ -119,12 +136,14 @@ export default function NotesView({
           <input
             type='search'
             placeholder='Search notes...'
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
             aria-label='Search notes by title or content'
             className='w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none'
           />
-          <span aria-hidden='true' className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-600'>
+          <span
+            aria-hidden='true'
+            className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-600'>
             <Search className='h-4 w-4' />
           </span>
         </div>
@@ -140,156 +159,7 @@ export default function NotesView({
       </div>
 
       {/* Notes Grid */}
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 sm:gap-4'>
-        <AnimatePresence mode='popLayout'>
-          {sortedNotes.map((note) => {
-            return (
-              <motion.div
-                key={note.id}
-                layout
-                initial={{ opacity: 0, scale: 0.8, rotateZ: -5 }}
-                animate={{ opacity: 1, scale: 1, rotateZ: 0 }}
-                exit={{ opacity: 0, scale: 0.8, rotateZ: 5 }}
-                whileHover={{
-                  scale: 1.02,
-                  boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
-                  transition: { type: 'spring', stiffness: 300 },
-                }}
-                onClick={() => handleNoteClick(note)}
-                className={`relative p-3 sm:p-4 rounded-lg border-2 cursor-pointer transform transition-all duration-200 h-full ${
-                  colorClasses[note.color]
-                } ${note.isPinned ? 'ring-2 ring-blue-400' : ''}`}
-                style={{
-                  minHeight: '160px',
-                }}>
-                {/* Pin indicator */}
-                {note.isPinned && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className='absolute -top-2 -right-2 bg-blue-500 text-white rounded-full p-1'>
-                    <Pin size={12} />
-                  </motion.div>
-                )}
-
-                {/* Note content */}
-                <div className='space-y-3'>
-                  <h3 className='font-bold text-lg leading-tight'>
-                    {searchTerm
-                      ? highlightSearchTerm(
-                          note.title,
-                          searchTerm,
-                          'bg-yellow-200 dark:bg-yellow-900/50 font-bold'
-                        )
-                      : note.title}
-                  </h3>
-
-                  <p className='text-sm opacity-80 line-clamp-4'>
-                    {searchTerm
-                      ? highlightSearchTerm(
-                          note.content,
-                          searchTerm,
-                          'bg-yellow-200 dark:bg-yellow-900/50 font-bold'
-                        )
-                      : note.content}
-                  </p>
-
-                  {/* Metadata */}
-                  <div className='space-y-2 text-xs opacity-70'>
-                    <div className='flex items-center space-x-1'>
-                      <Calendar size={12} />
-                      <span>{formatDate(note.createdAt)}</span>
-                    </div>
-                    {note.dueDate && (
-                      <div className='flex items-center space-x-1'>
-                        <span>Due: {formatDate(note.dueDate)}</span>
-                      </div>
-                    )}
-                    <div
-                      className={`font-medium ${priorityColors[note.priority]}`}>
-                      {note.priority.toUpperCase()} PRIORITY
-                    </div>
-                  </div>
-                </div>
-
-                {/* Action buttons */}
-                <div
-                  className='absolute top-2 right-2 flex space-x-1 opacity-0 hover:opacity-100 transition-opacity duration-200'
-                  style={{ opacity: 1 }}>
-                  <motion.button
-                    type='button'
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleTogglePin(note);
-                    }}
-                    aria-label={note.isPinned ? 'Unpin note' : 'Pin note'}
-                    className={`p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-                      note.isPinned
-                        ? 'text-blue-600'
-                        : 'text-gray-500 hover:text-blue-600'
-                    }`}>
-                    <Pin size={10} aria-hidden='true' />
-                  </motion.button>
-                  <motion.button
-                    type='button'
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEditNote(note);
-                    }}
-                    aria-label='Edit note'
-                    className='p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-gray-500 hover:text-blue-600 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none'>
-                    <Edit3 size={10} aria-hidden='true' />
-                  </motion.button>
-                  <div className='relative'>
-                    <motion.button
-                      type='button'
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setColorPickerNote(
-                          colorPickerNote === note.id ? null : note.id
-                        );
-                      }}
-                      aria-label='Change note color'
-                      className='p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-gray-500 hover:text-purple-600 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none'>
-                      <Palette size={12} aria-hidden='true' />
-                    </motion.button>
-                    {colorPickerNote === note.id && (
-                      <ColorPicker
-                        currentColor={note.color}
-                        onColorSelect={(color) =>
-                          handleColorChange(note.id, color)
-                        }
-                        onClose={() => setColorPickerNote(null)}
-                      />
-                    )}
-                  </div>
-                  <motion.button
-                    type='button'
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDeleteNote(note.id);
-                    }}
-                    aria-label='Delete note'
-                    className='p-1 rounded-md bg-white/90 backdrop-blur-sm shadow-sm hover:shadow-md transition-all text-gray-500 hover:text-red-600 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none'>
-                    <Trash2 size={10} />
-                  </motion.button>
-                </div>
-              </motion.div>
-            );
-          })}
-        </AnimatePresence>
-      </div>
-
-      {/* Empty state */}
-      {notes.length === 0 && (
+      {notes.length === 0 ? (
         <EmptyState
           icon={<FileText className='h-16 w-16' />}
           title='No notes yet'
@@ -299,6 +169,21 @@ export default function NotesView({
             onClick: handleAddNote,
           }}
         />
+      ) : (
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 sm:gap-4'>
+          <AnimatePresence mode='popLayout'>
+            {sortedNotes.map((note) => (
+              <NoteCard
+                key={note.id}
+                note={note}
+                searchTerm={searchTerm}
+                onUpdate={onUpdateNote}
+                onDelete={onDeleteNote}
+                onEdit={handleEditNote}
+              />
+            ))}
+          </AnimatePresence>
+        </div>
       )}
 
       {/* Note Modal */}
@@ -462,4 +347,4 @@ export default function NotesView({
       </AnimatePresence>
     </div>
   );
-}
+});
