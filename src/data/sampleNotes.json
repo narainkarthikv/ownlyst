@@ -1,0 +1,48 @@
+{
+  "notes": [
+    {
+      "id": "1",
+      "title": "Design Review",
+      "content": "Review and finalize the latest dashboard design with the design and product teams.",
+      "color": "emerald",
+      "status": "todo",
+      "priority": "low",
+      "isPinned": true,
+      "createdAt": "2025-10-13",
+      "dueDate": "2026-01-11"
+    },
+    {
+      "id": "2",
+      "title": "Bug Fixes",
+      "content": "Resolve authentication issues affecting user login flow and session persistence.",
+      "color": "orange",
+      "status": "in-progress",
+      "priority": "medium",
+      "isPinned": false,
+      "createdAt": "2025-10-13",
+      "dueDate": "2025-12-27"
+    },
+    {
+      "id": "3",
+      "title": "Client Meeting",
+      "content": "Prepare agenda and presentation for upcoming client meeting to discuss project milestones and delivery timeline.",
+      "color": "rose",
+      "status": "todo",
+      "priority": "high",
+      "isPinned": false,
+      "createdAt": "2025-10-13",
+      "dueDate": "2026-01-05"
+    },
+    {
+      "id": "4",
+      "title": "Team Standup",
+      "content": "Conduct weekly sync to review progress, blockers, and next sprint goals with the team.",
+      "color": "sky",
+      "status": "done",
+      "priority": "low",
+      "isPinned": false,
+      "createdAt": "2025-10-13",
+      "dueDate": "2026-01-02"
+    }
+  ]
+}
