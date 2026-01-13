@@ -1,21 +1,13 @@
 ---
-name: 🚀 Feature Request
-about: Suggest a new feature for the project
-title: '[Feature] '
-labels: enhancement, feature
-assignees: '' # Add default GitHub usernames if desired
+name: Feature Request
+about: Suggest an idea or enhancement
 ---
 
-## 📌 Feature Description
+## 🚀 Feature Description
+Describe the feature clearly.
 
-Clearly describe the feature you are requesting and why it would be useful.
+## 🎯 Motivation
+Why is this feature useful?
 
-## ✅ Tasks
-
-- [ ] Task 1: Describe the first step needed
-- [ ] Task 2: Describe the next part
-- [ ] Task 3: Add as many checklist items as needed
-
-## 📎 Additional Context
-
-Add any other context, screenshots, or references here.
+## 🔧 Possible Solution
+Optional: how it could be implemented.
