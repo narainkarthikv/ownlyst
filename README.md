@@ -1,6 +1,13 @@
+![License](https://img.shields.io/github/license/narainkarthikv/Sticky-Memo)
+![Last Commit](https://img.shields.io/github/last-commit/narainkarthikv/Sticky-Memo)
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+
 # Sticky-Memo
 
-Sticky-Memo is a sticky notes application built using React.js + Vite along with MUI. This documentation will guide you through the process of contributing to this project.
+Sticky-Memo is a lightweight web application that allows users to create, edit, and manage sticky notes directly in the browser.
+
+The application uses browser localStorage to persist notes across sessions, without requiring a backend or database. It is built using React.js, Vite, and Material UI for a fast and modern user experience.
+
 
 ## Tech Stack
 
@@ -20,6 +27,7 @@ Sticky-Memo is a sticky notes application built using React.js + Vite along with
 - [Installation](#installation)
   - [Clone the Repository](#clone-the-repository)
   - [Frontend Installation](#frontend-installation)
+- [Usage](#usage)
   <!-- - [Docker Installation](#docker-installation) -->
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
@@ -61,6 +69,14 @@ After cloning the repository:
     npm run dev
     ```
 
+## Usage
+
+- Create a new sticky note using the add button.
+- Edit notes directly by clicking on them.
+- Delete notes when they are no longer needed.
+- Notes are automatically saved in the browser using       localStorage.
+
+
 <!-- ### Docker Installation
 
 If you prefer using Docker:
@@ -96,7 +112,11 @@ frontend/
 
 ## Contributing
 
-We welcome contributions! To contribute to Sticky-Memo, follow these steps:
+> Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) file before submitting issues or pull requests.
+
+We welcome contributions!
+To contribute to Sticky-Memo, follow these steps:
+
 
 ### Forking the Repository
 
