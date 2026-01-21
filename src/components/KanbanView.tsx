@@ -26,7 +26,7 @@ import {
   type NoteColor,
 } from '../constants/colors';
 import { KANBAN_COLUMNS } from '../constants/kanban';
-import { useNotes } from '../context/NotesContext';
+import { useNotesContext } from '../controllers/NotesProvider';
 
 // Types
 interface KanbanViewProps {
@@ -336,12 +336,16 @@ export default function KanbanView({
   onDeleteNote: propsOnDeleteNote,
 }: KanbanViewProps) {
   // Use context-based state by default, fallback to props for backward compatibility
-  const contextNotes = useNotes();
+  const contextNotes = useNotesContext();
   const notes = propsNotes || contextNotes.notes;
-  const onAddNote = propsOnAddNote || contextNotes.addNote;
+  const onAddNote = propsOnAddNote || contextNotes.createNote;
   const onUpdateNote = propsOnUpdateNote || contextNotes.updateNote;
   const onDeleteNote = propsOnDeleteNote || contextNotes.deleteNote;
-  const updateNoteStatus = contextNotes.updateNoteStatus;
+  
+  // Helper to update note status (maps droppable ID to status)
+  const updateNoteStatus = useCallback((noteId: string, newStatus: string) => {
+    onUpdateNote(noteId, { status: newStatus as any });
+  }, [onUpdateNote]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');

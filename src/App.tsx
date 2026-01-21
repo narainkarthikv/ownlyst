@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { NotesProvider } from './context/NotesContext';
+import { NotesProvider } from './controllers/NotesProvider';
 import LoadingSpinner from './components/shared/LoadingSpinner';
 
 // Lazy load all page components for code splitting

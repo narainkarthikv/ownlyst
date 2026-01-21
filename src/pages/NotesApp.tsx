@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, memo } from 'react';
+import { useState, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -8,11 +8,11 @@ import {
   Baseline as Timeline,
   ArrowLeft,
 } from 'lucide-react';
-import NotesView from '../components/NotesView';
+import NotesView from '../views/notes/NotesView';
 import KanbanView from '../components/KanbanView';
 import TableView from '../components/TableView';
 import RoadmapView from '../components/RoadmapView';
-import { useNotes } from '../context/NotesContext';
+import { useNotesContext } from '../controllers/NotesProvider';
 import Logo from '../components/Logo';
 import ThemeToggle from '../components/ThemeToggle';
 
@@ -31,44 +31,35 @@ const views = [
 export default memo(function NotesApp() {
   const navigate = useNavigate();
   const [activeView, setActiveView] = useState('notes');
+
+  // Get notes from controller
+  const {
+    notes,
+    createNote,
+    updateNote,
+    deleteNote,
+    searchNotes,
+    getNotesByStatusGrouped,
+    getSortedNotes,
+  } = useNotesContext();
+
+  // Local search state
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Use centralized notes context for state management
-  const { notes, addNote, updateNote, deleteNote, notesLoaded } = useNotes();
-
-  // Process notes to ensure dates are Date objects
-  const processedNotes = useMemo(() => {
-    return notes.map((note) => ({
-      ...note,
-      createdAt:
-        note.createdAt instanceof Date
-          ? note.createdAt
-          : new Date(note.createdAt),
-      dueDate: note.dueDate
-        ? note.dueDate instanceof Date
-          ? note.dueDate
-          : new Date(note.dueDate)
-        : undefined,
-    }));
-  }, [notes]);
-
-  const filteredNotes = processedNotes.filter(
-    (note) =>
-      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.content.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Get sorted notes for default view (grid)
+  const displayNotes = searchTerm ? searchNotes(searchTerm) : getSortedNotes();
 
   const renderView = () => {
     const props = {
-      notes: filteredNotes,
-      onAddNote: addNote,
+      notes: displayNotes,
+      onAddNote: createNote,
       onUpdateNote: updateNote,
       onDeleteNote: deleteNote,
     };
 
     switch (activeView) {
       case 'notes':
-        return <NotesView {...props} />;
+        return <NotesView {...props} onSearch={setSearchTerm} />;
       case 'kanban':
         return <KanbanView {...props} />;
       case 'table':
@@ -76,7 +67,7 @@ export default memo(function NotesApp() {
       case 'roadmap':
         return <RoadmapView {...props} />;
       default:
-        return <NotesView {...props} />;
+        return <NotesView {...props} onSearch={setSearchTerm} />;
     }
   };
 
