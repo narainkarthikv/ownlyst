@@ -7,25 +7,9 @@
  */
 
 /**
- * Color options available for notes
- * Used for visual categorization and user preference
- */
-export type NoteColor =
-  | 'indigo'
-  | 'emerald'
-  | 'sky'
-  | 'rose'
-  | 'violet'
-  | 'amber'
-  | 'slate'
-  | 'cyan'
-  | 'lime'
-  | 'orange'
-  | 'teal';
-
-/**
  * Priority levels for task importance
  * Used for sorting and filtering notes by urgency
+ * Also determines the visual color coding (low=blue, medium=amber, high=red)
  */
 export type NotePriority = 'low' | 'medium' | 'high';
 
@@ -42,8 +26,7 @@ export type NoteStatus = 'todo' | 'in-progress' | 'done';
  * @property id - Unique identifier (generated from timestamp)
  * @property title - Brief heading for the note
  * @property content - Full text content of the note
- * @property color - Visual color coding for the note
- * @property priority - Urgency level of the note
+ * @property priority - Urgency level of the note (determines visual color)
  * @property status - Current workflow state
  * @property isPinned - Whether the note is pinned to top
  * @property createdAt - Creation timestamp (immutable)
@@ -54,7 +37,6 @@ export interface Note {
   id: string;
   title: string;
   content: string;
-  color: NoteColor;
   priority: NotePriority;
   status: NoteStatus;
   isPinned: boolean;

@@ -5,6 +5,7 @@
  */
 
 import { motion } from 'framer-motion';
+import { TEXT_CLASSES } from '../../constants/ui-colors';
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
@@ -29,7 +30,7 @@ export default function LoadingSpinner({
         className={`${sizeClasses[size]} border-2 border-blue-200 dark:border-blue-900 border-t-blue-600 dark:border-t-blue-400 rounded-full`}
       />
       {label && (
-        <p className='text-sm text-gray-600 dark:text-gray-400'>{label}</p>
+        <p className={`text-sm ${TEXT_CLASSES.secondary}`}>{label}</p>
       )}
     </div>
   );

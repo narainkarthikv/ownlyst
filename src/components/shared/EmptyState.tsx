@@ -6,6 +6,7 @@
 
 import { motion } from 'framer-motion';
 import { type ReactNode } from 'react';
+import { TEXT_CLASSES, BUTTON_CLASSES } from '../../constants/ui-colors';
 
 interface EmptyStateProps {
   icon?: ReactNode;
@@ -34,13 +35,13 @@ export default function EmptyState({
       <div className='text-5xl mb-4'>{icon}</div>
 
       {/* Title */}
-      <h3 className='text-xl font-semibold text-gray-900 dark:text-white text-center mb-2'>
+      <h3 className={`text-xl font-semibold text-center mb-2 ${TEXT_CLASSES.primary}`}>
         {title}
       </h3>
 
       {/* Description */}
       {description && (
-        <p className='text-gray-600 dark:text-gray-400 text-center max-w-sm mb-6'>
+        <p className={`text-center max-w-sm mb-6 ${TEXT_CLASSES.secondary}`}>
           {description}
         </p>
       )}
@@ -51,7 +52,7 @@ export default function EmptyState({
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={action.onClick}
-          className='px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900'>
+          className={BUTTON_CLASSES.primary}>
           {action.label}
         </motion.button>
       )}

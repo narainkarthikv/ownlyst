@@ -32,29 +32,6 @@ interface NotesViewProps {
   onUpdateNote: (id: string, updates: Partial<Note>) => void;
   onDeleteNote: (id: string) => void;
 }
-
-const colorClasses: Record<string, string> = {
-  indigo:
-    'bg-azure-100 dark:bg-azure-900/60 border-azure-200 dark:border-azure-600 text-gray-900 dark:text-white shadow-sm',
-  emerald:
-    'bg-blue-100 dark:bg-blue-900/60 border-blue-200 dark:border-blue-600 text-gray-900 dark:text-white shadow-sm',
-  sky: 'bg-cyan-100 dark:bg-cyan-900/60 border-cyan-200 dark:border-cyan-600 text-gray-900 dark:text-white shadow-sm',
-  rose: 'bg-azure-200 dark:bg-azure-800/60 border-azure-300 dark:border-azure-600 text-gray-900 dark:text-white shadow-sm',
-  violet:
-    'bg-violet-200 dark:bg-violet-900/50 border-violet-300 dark:border-violet-700 text-violet-900 dark:text-violet-100',
-  amber:
-    'bg-amber-200 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-100',
-  fuchsia:
-    'bg-fuchsia-200 dark:bg-fuchsia-900/50 border-fuchsia-300 dark:border-fuchsia-700 text-fuchsia-900 dark:text-fuchsia-100',
-  slate:
-    'bg-slate-200 dark:bg-slate-900/50 border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100',
-  cyan: 'bg-cyan-200 dark:bg-cyan-900/50 border-cyan-300 dark:border-cyan-700 text-cyan-900 dark:text-cyan-100',
-  lime: 'bg-lime-200 dark:bg-lime-900/50 border-lime-300 dark:border-lime-700 text-lime-900 dark:text-lime-100',
-  orange:
-    'bg-orange-200 dark:bg-orange-900/50 border-orange-300 dark:border-orange-700 text-orange-900 dark:text-orange-100',
-  teal: 'bg-teal-200 dark:bg-teal-900/50 border-teal-300 dark:border-teal-700 text-teal-900 dark:text-teal-100',
-};
-
 const priorityColors = {
   low: 'text-azure-600 dark:text-azure-400',
   medium: 'text-blue-600 dark:text-blue-400',
@@ -152,7 +129,7 @@ export default memo(function NotesView({
           whileTap={{ scale: 0.98 }}
           onClick={handleAddNote}
           aria-label='Create a new note'
-          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none'>
+          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none'>
           <Plus className='h-5 w-5' aria-hidden='true' />
           <span className='sm:hidden'>Add Note</span>
         </motion.button>
@@ -223,12 +200,12 @@ export default memo(function NotesView({
                 colorClasses[viewingNote.color]
               }`}>
               {/* Header */}
-              <div className='flex items-center justify-between p-6 border-b border-gray-200/50'>
+              <div className='flex items-center justify-between p-6 border-b border-gray-200/50 dark:border-slate-600/50'>
                 <div className='flex items-center space-x-3'>
                   {viewingNote.isPinned && (
-                    <Pin size={20} className='text-blue-600' />
+                    <Pin size={20} className='text-blue-600 dark:text-blue-400' />
                   )}
-                  <h2 className='text-2xl font-bold text-gray-900'>
+                  <h2 className='text-2xl font-bold text-gray-900 dark:text-white'>
                     {viewingNote.title}
                   </h2>
                 </div>
@@ -236,7 +213,7 @@ export default memo(function NotesView({
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setViewingNote(null)}
-                  className='p-2 rounded-full hover:bg-white/50 transition-colors'>
+                  className='p-2 rounded-full hover:bg-white/50 dark:hover:bg-slate-700/50 transition-colors text-gray-900 dark:text-white'>
                   <X size={24} />
                 </motion.button>
               </div>
@@ -252,37 +229,37 @@ export default memo(function NotesView({
                 </div>
 
                 {/* Content */}
-                <div className='bg-white/30 rounded-lg p-4'>
-                  <h3 className='text-lg font-semibold text-gray-900 mb-3'>
+                <div className='bg-white/30 dark:bg-slate-700/30 rounded-lg p-4'>
+                  <h3 className='text-lg font-semibold text-gray-900 dark:text-white mb-3'>
                     Content
                   </h3>
-                  <p className='text-gray-800 leading-relaxed whitespace-pre-wrap'>
+                  <p className='text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap'>
                     {viewingNote.content || 'No content available'}
                   </p>
                 </div>
 
                 {/* Metadata */}
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                  <div className='bg-white/30 rounded-lg p-4'>
-                    <h4 className='font-semibold text-gray-900 mb-2 flex items-center'>
+                  <div className='bg-white/30 dark:bg-slate-700/30 rounded-lg p-4'>
+                    <h4 className='font-semibold text-gray-900 dark:text-white mb-2 flex items-center'>
                       <Calendar size={16} className='mr-2' />
                       Created
                     </h4>
-                    <p className='text-gray-800'>
+                    <p className='text-gray-800 dark:text-gray-200'>
                       {formatDate(viewingNote.createdAt)}
                     </p>
                   </div>
                   {viewingNote.dueDate && (
-                    <div className='bg-white/30 rounded-lg p-4'>
-                      <h4 className='font-semibold text-gray-900 mb-2 flex items-center'>
+                    <div className='bg-white/30 dark:bg-slate-700/30 rounded-lg p-4'>
+                      <h4 className='font-semibold text-gray-900 dark:text-white mb-2 flex items-center'>
                         <Calendar size={16} className='mr-2' />
                         Due Date
                       </h4>
                       <p
                         className={`font-medium ${
                           new Date(viewingNote.dueDate) < new Date()
-                            ? 'text-red-700'
-                            : 'text-gray-800'
+                            ? 'text-red-700 dark:text-red-400'
+                            : 'text-gray-800 dark:text-gray-200'
                         }`}>
                         {formatDate(viewingNote.dueDate)}
                         {new Date(viewingNote.dueDate) < new Date() && (
@@ -296,7 +273,7 @@ export default memo(function NotesView({
                 </div>
 
                 {/* Actions */}
-                <div className='flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 pt-4 border-t border-gray-200/50'>
+                <div className='flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 pt-4 border-t border-gray-200/50 dark:border-slate-600/50'>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}

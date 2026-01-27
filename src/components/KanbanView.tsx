@@ -12,18 +12,17 @@ import {
   Calendar,
   Trash2,
   GripVertical,
-  Palette,
-  Search,
   Kanban,
 } from 'lucide-react';
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
-import ColorPicker from './ColorPicker';
 import EmptyState from './shared/EmptyState';
+import FilterBar, { type FilterState } from './shared/FilterBar';
+import { applyFilters, getDefaultFilters } from '../utils/noteFilters';
 import {
-  DISPLAY_COLOR_CLASSES,
-  PRIORITY_COLOR_CLASSES,
-  type NoteColor,
+  PRIORITY_CARD_CLASSES,
+  PRIORITY_INDICATOR_CLASSES,
+  PRIORITY_TEXT_COLORS,
 } from '../constants/colors';
 import { KANBAN_COLUMNS } from '../constants/kanban';
 import { useNotesContext } from '../controllers/NotesProvider';
@@ -45,9 +44,6 @@ interface KanbanCardProps {
 
 const KanbanCard = memo(
   ({ note, index, onUpdate, onDelete }: KanbanCardProps) => {
-    const [showColorPicker, setShowColorPicker] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
-
     const formatDate = useCallback((date: Date) => {
       return new Intl.DateTimeFormat('en-US', {
         month: 'short',
@@ -60,7 +56,7 @@ const KanbanCard = memo(
         e.stopPropagation();
         onUpdate(note.id, { isPinned: !note.isPinned });
       },
-      [note.id, onUpdate]
+      [note.id, note.isPinned, onUpdate]
     );
 
     const handleDelete = useCallback(
@@ -71,14 +67,6 @@ const KanbanCard = memo(
       [note.id, onDelete]
     );
 
-    const handleColorChange = useCallback(
-      (color: NoteColor) => {
-        onUpdate(note.id, { color });
-        setShowColorPicker(false);
-      },
-      [note.id, onUpdate]
-    );
-
     return (
       <Draggable draggableId={note.id} index={index}>
         {(provided, snapshot) => (
@@ -86,15 +74,13 @@ const KanbanCard = memo(
             ref={provided.innerRef}
             {...provided.draggableProps}
             style={provided.draggableProps.style}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
             className={`
-            relative p-4 rounded-lg border backdrop-blur-sm group
-            ${DISPLAY_COLOR_CLASSES[note.color]}
+            relative p-4 rounded-lg backdrop-blur-sm group
+            ${PRIORITY_CARD_CLASSES[note.priority]}
             transition-all duration-200 transform
             ${
               snapshot.isDragging
-                ? 'shadow-lg scale-[1.02] z-50 cursor-grabbing ring-2 ring-blue-400 opacity-90'
+                ? 'shadow-lg scale-[1.02] z-50 cursor-grabbing ring-2 ring-blue-500 dark:ring-blue-400 opacity-90'
                 : 'shadow hover:shadow-md hover:scale-[1.01] z-10 cursor-grab'
             }
           `}>
@@ -102,10 +88,10 @@ const KanbanCard = memo(
             <div
               {...provided.dragHandleProps}
               className='absolute top-3 left-3 p-1.5 rounded-md opacity-0 group-hover:opacity-100
-              transition-all duration-200 hover:bg-black/5 cursor-grab active:cursor-grabbing'>
+              transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5 cursor-grab active:cursor-grabbing'>
               <GripVertical
                 size={16}
-                className='text-gray-400 group-hover:text-gray-600'
+                className='text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300'
               />
             </div>
 
@@ -115,12 +101,12 @@ const KanbanCard = memo(
                 <motion.div
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className='bg-blue-500 text-white rounded-full p-1.5 shadow-lg'>
+                  className='bg-blue-500 dark:bg-blue-400 text-white rounded-full p-1.5 shadow-lg'>
                   <Pin size={12} />
                 </motion.div>
               )}
               <motion.div
-                className={`w-3 h-3 rounded-full ${PRIORITY_COLOR_CLASSES[note.priority]} shadow-sm`}
+                className={`w-3 h-3 rounded-full ${PRIORITY_INDICATOR_CLASSES[note.priority]} shadow-sm`}
                 whileHover={{ scale: 1.2 }}
               />
             </div>
@@ -128,101 +114,64 @@ const KanbanCard = memo(
             {/* Content */}
             <div className='space-y-3 mt-6'>
               <motion.h4
-                className='font-bold text-base text-gray-900 leading-snug pr-16'
+                className='font-bold text-base leading-snug pr-16'
                 layout>
                 {note.title}
               </motion.h4>
               <motion.p
-                className='text-sm text-gray-600 line-clamp-3 leading-relaxed break-words'
+                className='text-sm opacity-80 line-clamp-3 leading-relaxed break-words'
                 layout>
                 {note.content}
               </motion.p>
 
               {/* Metadata */}
-              <div className='flex items-center justify-between text-xs text-gray-500 pt-3 mt-2 border-t border-gray-200/50'>
+              <div className='flex items-center justify-between text-xs opacity-70 pt-3 mt-2 border-t border-gray-200 dark:border-slate-600/50'>
                 <div className='flex items-center gap-1.5'>
                   <Calendar size={12} strokeWidth={2.5} />
                   <span>{formatDate(note.createdAt)}</span>
                 </div>
-                {note.dueDate && (
+                <span className={`font-bold uppercase ${PRIORITY_TEXT_COLORS[note.priority]}`}>
+                  {note.priority}
+                </span>
+              </div>
+              {note.dueDate && (
+                <div className='text-xs'>
                   <span
                     className={`font-medium ${
                       new Date(note.dueDate) < new Date()
-                        ? 'text-red-600'
-                        : 'text-orange-600'
+                        ? 'text-red-600 dark:text-red-400'
+                        : 'text-orange-600 dark:text-orange-400'
                     }`}>
                     Due: {formatDate(note.dueDate)}
                   </span>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Action Buttons */}
-            <div className='absolute top-3 right-3 flex items-center space-x-1.5'>
-              <AnimatePresence>
-                {isHovered && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    className='flex items-center space-x-1.5'>
-                    <div className='relative'>
-                      <motion.button
-                        type='button'
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowColorPicker(!showColorPicker);
-                        }}
-                        aria-label='Change note color'
-                        className={`p-1.5 rounded-lg transition-all duration-200 focus:ring-2 focus:ring-purple-500 focus:outline-none
-                        ${
-                          showColorPicker
-                            ? 'bg-purple-100 text-purple-600 shadow-inner'
-                            : 'bg-white/90 shadow-sm hover:shadow-md text-gray-500 hover:text-purple-600'
-                        }
-                      `}>
-                        <Palette size={14} aria-hidden='true' />
-                      </motion.button>
-
-                      <AnimatePresence>
-                        {showColorPicker && (
-                          <ColorPicker
-                            currentColor={note.color}
-                            onColorSelect={handleColorChange}
-                            onClose={() => setShowColorPicker(false)}
-                          />
-                        )}
-                      </AnimatePresence>
-                    </div>
-
-                    <motion.button
-                      type='button'
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={handleTogglePin}
-                      aria-label={note.isPinned ? 'Unpin note' : 'Pin note'}
-                      className={`p-1.5 rounded-lg bg-white/90 shadow-sm hover:shadow-md transition-all focus:ring-2 focus:ring-blue-500 focus:outline-none ${
-                        note.isPinned
-                          ? 'bg-blue-100 text-blue-600'
-                          : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50'
-                      }`}>
-                      <Pin size={14} aria-hidden='true' />
-                    </motion.button>
-                    <motion.button
-                      type='button'
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      onClick={handleDelete}
-                      aria-label='Delete note'
-                      className='p-1.5 rounded-lg bg-white/90 shadow-sm hover:shadow-md transition-all
-                      text-gray-400 hover:text-red-600 hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:outline-none'>
-                      <Trash2 size={14} aria-hidden='true' />
-                    </motion.button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            <div className='absolute top-3 right-3 flex items-center space-x-1.5 opacity-0 group-hover:opacity-100 transition-opacity'>
+              <motion.button
+                type='button'
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleTogglePin}
+                aria-label={note.isPinned ? 'Unpin note' : 'Pin note'}
+                className={`p-1.5 rounded-lg bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all focus:ring-2 focus:ring-blue-500 focus:outline-none ${
+                  note.isPinned
+                    ? 'text-blue-600 dark:text-blue-400'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
+                }`}>
+                <Pin size={14} aria-hidden='true' />
+              </motion.button>
+              <motion.button
+                type='button'
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleDelete}
+                aria-label='Delete note'
+                className='p-1.5 rounded-lg bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 focus:ring-2 focus:ring-red-500 focus:outline-none'>
+                <Trash2 size={14} aria-hidden='true' />
+              </motion.button>
             </div>
           </div>
         )}
@@ -255,20 +204,20 @@ const KanbanColumn = memo(
           <div className='flex items-center gap-3'>
             <span className='text-xl'>{column.icon}</span>
             <div className='flex items-center gap-2'>
-              <h3 className='font-bold text-lg text-gray-900'>
+              <h3 className='font-bold text-lg text-gray-900 dark:text-white'>
                 {column.title}
               </h3>
               <span
                 className='inline-flex items-center justify-center h-6 min-w-[1.5rem] px-2 
-              bg-white/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-700 shadow-sm'>
+              bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm'>
                 {notes.length}
               </span>
             </div>
           </div>
           <button
             onClick={onAddNote}
-            className='p-2 rounded-lg bg-white/80 backdrop-blur-sm shadow-sm
-            transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 text-gray-600
+            className='p-2 rounded-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm
+            transition-all duration-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 text-gray-600 dark:text-gray-400
             hover:scale-105 active:scale-95'>
             <Plus size={18} />
           </button>
@@ -305,7 +254,7 @@ const KanbanColumn = memo(
               {/* Empty State */}
               {notes.length === 0 && !snapshot.isDraggingOver && (
                 <div className='absolute inset-0 flex items-center justify-center'>
-                  <p className='text-sm text-gray-500 text-center px-6'>
+                  <p className='text-sm text-gray-500 dark:text-gray-400 text-center px-6'>
                     Drop items here or click + to add a new note
                   </p>
                 </div>
@@ -344,20 +293,19 @@ export default function KanbanView({
   
   // Helper to update note status (maps droppable ID to status)
   const updateNoteStatus = useCallback((noteId: string, newStatus: string) => {
-    onUpdateNote(noteId, { status: newStatus as any });
+    onUpdateNote(noteId, { status: newStatus as Note['status'] });
   }, [onUpdateNote]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [filters, setFilters] = useState<FilterState>(getDefaultFilters());
+
+  // Apply filters to notes
+  const filteredNotes = useMemo(() => {
+    return applyFilters(notes, filters);
+  }, [notes, filters]);
 
   /**
    * Handle drag and drop with immediate status synchronization
-   * 
-   * When a note is dragged from one column to another:
-   * 1. The destination column ID is mapped to a status
-   * 2. The note's status is updated in the data model
-   * 3. The change propagates to all other views automatically
-   * 4. Re-render is triggered by React state update
    */
   const handleDragEnd = useCallback(
     (result: DropResult) => {
@@ -383,16 +331,9 @@ export default function KanbanView({
     [updateNoteStatus]
   );
 
-  // Filter notes by search term
-  const filteredNotes = notes.filter(
-    (note) =>
-      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      note.content.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   /**
    * Organize notes into columns based on their status
-   * Only updates when filtered notes change (search is updated)
+   * Only updates when filtered notes change
    * This ensures the UI always reflects the current data model state
    */
   const columnState = useMemo(() => {
@@ -414,20 +355,16 @@ export default function KanbanView({
 
   return (
     <div className='h-full flex flex-col overflow-hidden p-4'>
-      {/* Search and Add Note Section */}
-      <div className='flex flex-col sm:flex-row gap-3 sm:items-center sm:space-x-3 mb-6'>
-        <div className='relative flex-1'>
-          <input
-            type='search'
-            placeholder='Search notes...'
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            aria-label='Search notes in Kanban board'
-            className='w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none'
+      {/* FilterBar and Add Note Section */}
+      <div className='flex items-center justify-between gap-3 mb-6'>
+        <div className='flex-1'>
+          <FilterBar
+            filters={filters}
+            onFilterChange={setFilters}
+            totalCount={notes.length}
+            filteredCount={filteredNotes.length}
+            searchPlaceholder='Search notes in Kanban board...'
           />
-          <span aria-hidden='true' className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-600'>
-            <Search className='h-4 w-4' />
-          </span>
         </div>
         <motion.button
           type='button'
@@ -435,9 +372,9 @@ export default function KanbanView({
           whileTap={{ scale: 0.98 }}
           onClick={() => setIsModalOpen(true)}
           aria-label='Create a new note'
-          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none'>
+          className='inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none shadow-sm whitespace-nowrap'>
           <Plus className='h-5 w-5' aria-hidden='true' />
-          <span className='sm:hidden'>Add Note</span>
+          <span>New Note</span>
         </motion.button>
       </div>
 

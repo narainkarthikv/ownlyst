@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Pin,
+  Plus,
   Clock,
   CheckCircle,
   Circle,
@@ -14,6 +15,8 @@ import {
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
 import EmptyState from './shared/EmptyState';
+import FilterBar, { type FilterState } from './shared/FilterBar';
+import { applyFilters, getDefaultFilters } from '../utils/noteFilters';
 
 interface RoadmapViewProps {
   notes: Note[];
@@ -26,13 +29,6 @@ const statusIcons: Record<Note['status'], React.ElementType> = {
   todo: Circle,
   'in-progress': Clock,
   done: CheckCircle,
-};
-
-const statusColors: Record<Note['status'], string> = {
-  todo: 'text-azure-900 dark:text-azure-100 bg-azure-100 dark:bg-azure-900/60',
-  'in-progress':
-    'text-blue-900 dark:text-blue-100 bg-blue-100 dark:bg-blue-900/60',
-  done: 'text-cyan-900 dark:text-cyan-100 bg-cyan-100 dark:bg-cyan-900/60',
 };
 
 interface GanttTask {
@@ -51,15 +47,20 @@ type GroupingOption = 'none' | 'status' | 'priority';
 export default memo(function RoadmapView({
   notes,
   onAddNote,
-  onUpdateNote,
+  onUpdateNote: _onUpdateNote,
 }: RoadmapViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [viewMode, setViewMode] = useState<'month' | 'quarter'>('month');
-  const [filterStatus, setFilterStatus] = useState<string>('all');
   const [zoomLevel, setZoomLevel] = useState<number>(80); // Default cell width in pixels
   const [groupBy, setGroupBy] = useState<GroupingOption>('none');
+  const [filters, setFilters] = useState<FilterState>(getDefaultFilters());
+
+  // Apply filters first
+  const filteredNotes = useMemo(() => {
+    return applyFilters(notes, filters);
+  }, [notes, filters]);
 
   // Memoized group tasks function
   const groupTasks = useCallback(
@@ -84,9 +85,8 @@ export default memo(function RoadmapView({
 
   // Convert notes to Gantt tasks
   const ganttTasks = useMemo(() => {
-    const tasks = notes
+    const tasks = filteredNotes
       .filter((note) => note.dueDate)
-      .filter((note) => filterStatus === 'all' || note.status === filterStatus)
       .map((note) => ({
         id: note.id,
         title: note.title,
@@ -105,7 +105,7 @@ export default memo(function RoadmapView({
       });
 
     return groupTasks(tasks, groupBy);
-  }, [notes, filterStatus, groupBy]);
+  }, [filteredNotes, groupBy, groupTasks]);
 
   // Generate time periods for the timeline
   const timelineData = useMemo(() => {
@@ -243,18 +243,18 @@ export default memo(function RoadmapView({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className={`bg-white p-3 sm:p-4 rounded-lg shadow-sm border ${stat.color.split(' ')[2]} hover:shadow-md transition-shadow`}>
+            className={`bg-white dark:bg-slate-800 p-3 sm:p-4 rounded-lg shadow-sm border ${stat.color.split(' ')[2]} dark:border-slate-700 hover:shadow-md transition-shadow`}>
             <div className='flex items-start justify-between'>
               <div className='min-w-0 flex-1'>
-                <p className='text-xs sm:text-sm font-medium mb-1 truncate'>
+                <p className='text-xs sm:text-sm font-medium mb-1 truncate text-gray-700 dark:text-gray-300'>
                   {stat.label}
                 </p>
-                <p className='text-xl sm:text-2xl font-bold tabular-nums'>
+                <p className='text-xl sm:text-2xl font-bold tabular-nums text-gray-900 dark:text-white'>
                   {stat.value}
                 </p>
               </div>
               <div
-                className={`p-1.5 sm:p-2 rounded-lg ml-3 ${stat.color.split(' ')[0]}`}>
+                className={`p-1.5 sm:p-2 rounded-lg ml-3 ${stat.color.split(' ')[0]} dark:bg-opacity-20`}>
                 {stat.icon}
               </div>
             </div>
@@ -262,8 +262,32 @@ export default memo(function RoadmapView({
         ))}
       </div>
 
-      {/* Controls */}
-      <div className='bg-white p-3 sm:p-4 rounded-lg shadow-sm border border-gray-200 mx-2 sm:mx-0'>
+      {/* FilterBar and Controls */}
+      <div className='space-y-4'>
+        {/* FilterBar with New Note button */}
+        <div className='flex items-center justify-between gap-3'>
+          <div className='flex-1'>
+            <FilterBar 
+              filters={filters}
+              onFilterChange={setFilters}
+              totalCount={notes.length}
+              filteredCount={filteredNotes.length}
+            />
+          </div>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setIsModalOpen(true)}
+            aria-label='Create a new note'
+            className='inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none shadow-sm whitespace-nowrap flex-shrink-0'>
+            <Plus className='h-5 w-5' aria-hidden='true' />
+            <span>New Note</span>
+          </motion.button>
+        </div>
+        
+        {/* View Controls */}
+        <div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700'>
+        
         <div className='flex flex-col sm:flex-row items-stretch sm:items-center justify-between space-y-3 sm:space-y-0'>
           {/* Period Navigation */}
           <div className='flex items-center justify-between sm:justify-start w-full sm:w-auto space-x-2 sm:space-x-4'>
@@ -272,23 +296,23 @@ export default memo(function RoadmapView({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => navigatePeriod('prev')}
-                className='p-1.5 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500'
+                className='p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500'
                 title='Previous period'>
-                <ChevronLeft size={20} className='sm:size-6 text-gray-600' />
+                <ChevronLeft size={20} className='sm:size-6 text-gray-600 dark:text-gray-300' />
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setCurrentDate(new Date())}
-                className='px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700 flex items-center space-x-1.5'
+                className='px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm font-medium text-gray-700 dark:text-gray-200 flex items-center space-x-1.5'
                 title='Go to today'>
                 <Calendar size={14} />
                 <span>Today</span>
               </motion.button>
             </div>
 
-            <h3 className='text-lg sm:text-2xl font-semibold text-gray-900 min-w-[140px] sm:min-w-[200px] text-center'>
+            <h3 className='text-lg sm:text-2xl font-semibold text-gray-900 dark:text-white min-w-[140px] sm:min-w-[200px] text-center'>
               {formatPeriodHeader()}
             </h3>
 
@@ -296,9 +320,9 @@ export default memo(function RoadmapView({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => navigatePeriod('next')}
-              className='p-1.5 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500'
+              className='p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500'
               title='Next period'>
-              <ChevronRight size={20} className='sm:size-6 text-gray-600' />
+              <ChevronRight size={20} className='sm:size-6 text-gray-600 dark:text-gray-300' />
             </motion.button>
           </div>
 
@@ -318,8 +342,8 @@ export default memo(function RoadmapView({
                 onClick={() => setViewMode('quarter')}
                 className={`flex-1 sm:flex-none px-4 py-1.5 rounded-md text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                   viewMode === 'quarter'
-                    ? 'bg-white shadow-sm text-gray-900'
-                    : 'text-gray-500 hover:text-gray-900'
+                    ? 'bg-white dark:bg-gray-600 shadow-sm text-gray-900 dark:text-white'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                 }`}>
                 Quarter
               </button>
@@ -329,7 +353,7 @@ export default memo(function RoadmapView({
             <div className='flex items-center space-x-2 px-2 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-lg'>
               <button
                 onClick={() => setZoomLevel((prev) => Math.max(40, prev - 20))}
-                className='p-1 rounded hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50'
+                className='p-1 rounded hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 text-gray-700 dark:text-gray-200'
                 disabled={zoomLevel <= 40}
                 title='Zoom out'>
                 <span className='font-medium text-lg leading-none'>−</span>
@@ -339,7 +363,7 @@ export default memo(function RoadmapView({
               </span>
               <button
                 onClick={() => setZoomLevel((prev) => Math.min(200, prev + 20))}
-                className='p-1 rounded hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50'
+                className='p-1 rounded hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 text-gray-700 dark:text-gray-200'
                 disabled={zoomLevel >= 200}
                 title='Zoom in'>
                 <span className='font-medium text-lg leading-none'>+</span>
@@ -350,30 +374,20 @@ export default memo(function RoadmapView({
             <select
               value={groupBy}
               onChange={(e) => setGroupBy(e.target.value as GroupingOption)}
-              className='w-full sm:w-auto pl-3 pr-8 py-1.5 border border-gray-300 rounded-md text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white appearance-none'>
+              className='w-full sm:w-auto pl-3 pr-8 py-1.5 border border-gray-300 dark:border-gray-700 rounded-md text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white appearance-none'>
               <option value='none'>No Grouping</option>
               <option value='status'>Group by Status</option>
               <option value='priority'>Group by Priority</option>
             </select>
-
-            {/* Status Filter */}
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className='w-full sm:w-auto pl-3 pr-8 py-1.5 border border-gray-300 rounded-md text-sm font-medium focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white appearance-none'>
-              <option value='all'>All Status</option>
-              <option value='todo'>To Do</option>
-              <option value='in-progress'>In Progress</option>
-              <option value='done'>Done</option>
-            </select>
           </div>
         </div>
       </div>
+      </div>
 
       {/* Gantt Chart */}
-      <div className='bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto relative'>
+      <div className='bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 overflow-x-auto relative'>
         {/* Mobile scroll hint */}
-        <div className='md:hidden absolute right-4 top-2 text-xs text-gray-500 bg-white/80 px-2 py-1 rounded-full shadow-sm border border-gray-200 animate-pulse'>
+        <div className='md:hidden absolute right-4 top-2 text-xs text-gray-500 dark:text-gray-400 bg-white/80 dark:bg-slate-700/80 px-2 py-1 rounded-full shadow-sm border border-gray-200 dark:border-slate-600 animate-pulse'>
           Scroll to view timeline →
         </div>
 
@@ -381,12 +395,12 @@ export default memo(function RoadmapView({
         <div
           className='grid'
           style={{ gridTemplateColumns: 'minmax(150px, 200px) 1fr' }}>
-          <div className='sticky left-0 bg-white p-3 sm:p-4 border-r border-gray-200 z-10'>
-            <h4 className='font-semibold text-gray-900 text-sm'>Tasks</h4>
+          <div className='sticky left-0 bg-white dark:bg-slate-800 p-3 sm:p-4 border-r border-gray-200 dark:border-slate-700 z-10'>
+            <h4 className='font-semibold text-gray-900 dark:text-white text-sm'>Tasks</h4>
           </div>
           <div className='overflow-x-auto min-w-0'>
             <div
-              className='grid border-b border-gray-200 bg-gray-50'
+              className='grid border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50'
               style={{
                 gridTemplateColumns: `repeat(${timelineData.length}, ${zoomLevel}px)`,
                 width: `max(100%, ${timelineData.length * zoomLevel}px)`,
@@ -394,16 +408,16 @@ export default memo(function RoadmapView({
               {timelineData.map((date) => (
                 <div
                   key={date.toISOString()}
-                  className={`p-2 sm:p-4 text-center border-r border-gray-200 last:border-r-0 ${
-                    isToday(date) ? 'bg-blue-50' : ''
+                  className={`p-2 sm:p-4 text-center border-r border-gray-200 dark:border-slate-700 last:border-r-0 ${
+                    isToday(date) ? 'bg-blue-50 dark:bg-blue-900/30' : ''
                   }`}>
-                  <div className='text-[10px] sm:text-xs md:text-sm font-semibold text-gray-900'>
+                  <div className='text-[10px] sm:text-xs md:text-sm font-semibold text-gray-900 dark:text-white'>
                     {viewMode === 'month'
                       ? date.getDate()
                       : `W${Math.ceil(date.getDate() / 7)}`}
                   </div>
                   {viewMode === 'month' && (
-                    <div className='text-[10px] sm:text-xs font-medium uppercase text-gray-500 mt-0.5 sm:mt-1'>
+                    <div className='text-[10px] sm:text-xs font-medium uppercase text-gray-500 dark:text-gray-400 mt-0.5 sm:mt-1'>
                       {date.toLocaleDateString('en-US', { weekday: 'short' })}
                     </div>
                   )}
@@ -419,19 +433,19 @@ export default memo(function RoadmapView({
             <div className='text-center p-6 sm:py-12'>
               <Calendar
                 size={40}
-                className='mx-auto mb-3 sm:mb-4 text-gray-400'
+                className='mx-auto mb-3 sm:mb-4 text-gray-400 dark:text-gray-500'
               />
-              <h3 className='text-base sm:text-lg font-medium text-gray-900 mb-2'>
+              <h3 className='text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-2'>
                 No tasks with due dates
               </h3>
-              <p className='text-sm sm:text-base text-gray-600 mb-4'>
+              <p className='text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-4'>
                 Add due dates to your notes to see them in the timeline
               </p>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleAddNote()}
-                className='bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500'>
+                className='bg-blue-600 dark:bg-blue-500 text-white px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500'>
                 Create Task
               </motion.button>
             </div>
@@ -441,12 +455,12 @@ export default memo(function RoadmapView({
                 className='grid min-w-0'
                 style={{ gridTemplateColumns: 'minmax(150px, 200px) 1fr' }}>
                 {/* Task Names Column */}
-                <div className='sticky left-0 bg-white z-10 border-r border-gray-200'>
+                <div className='sticky left-0 bg-white dark:bg-slate-800 z-10 border-r border-gray-200 dark:border-slate-700'>
                   {Object.entries(ganttTasks).map(([groupName, tasks]) => (
                     <React.Fragment key={groupName}>
                       {groupBy !== 'none' && (
-                        <div className='bg-gray-50 px-4 py-2 border-b border-gray-200'>
-                          <h3 className='text-sm font-medium text-gray-700 capitalize'>
+                        <div className='bg-gray-50 dark:bg-slate-700/50 px-4 py-2 border-b border-gray-200 dark:border-slate-700'>
+                          <h3 className='text-sm font-medium text-gray-700 dark:text-gray-300 capitalize'>
                             {groupName || 'Ungrouped'}
                           </h3>
                         </div>
@@ -454,14 +468,20 @@ export default memo(function RoadmapView({
                       {tasks.map((task) => (
                         <div
                           key={task.id}
-                          className='flex items-center min-h-[3rem] sm:min-h-[4rem] px-2 sm:px-4 py-2 sm:py-3 border-b border-gray-200 hover:bg-gray-50 transition-colors'>
+                          className='flex items-center min-h-[3rem] sm:min-h-[4rem] px-2 sm:px-4 py-2 sm:py-3 border-b border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors'>
                           <div className='flex-1 min-w-0'>
                             <div className='flex items-center space-x-1.5 sm:space-x-2'>
                               {React.createElement(statusIcons[task.status], {
                                 size: 14,
-                                className: `${statusColors[task.status]} p-0.5 rounded-full shrink-0`,
+                                className: `p-0.5 rounded-full shrink-0 ${
+                                  task.status === 'todo'
+                                    ? 'text-blue-600 dark:text-blue-400'
+                                    : task.status === 'in-progress'
+                                    ? 'text-amber-600 dark:text-amber-400'
+                                    : 'text-green-600 dark:text-green-400'
+                                }`,
                               })}
-                              <span className='text-sm sm:text-base font-medium text-gray-900 truncate'>
+                              <span className='text-sm sm:text-base font-medium text-gray-900 dark:text-white truncate'>
                                 {task.title}
                               </span>
                               {task.isPinned && (
@@ -471,7 +491,7 @@ export default memo(function RoadmapView({
                                 />
                               )}
                             </div>
-                            <div className='text-[10px] sm:text-[11px] text-gray-500 mt-0.5'>
+                            <div className='text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 mt-0.5'>
                               {task.startDate.toLocaleDateString()} -{' '}
                               {task.endDate.toLocaleDateString()}
                             </div>
@@ -485,7 +505,7 @@ export default memo(function RoadmapView({
                 {/* Timeline Column */}
                 <div className='overflow-x-auto'>
                   <div
-                    className='grid bg-white'
+                    className='grid bg-white dark:bg-slate-800'
                     style={{
                       gridTemplateColumns: `repeat(${timelineData.length}, ${zoomLevel}px)`,
                       width: `max(100%, ${timelineData.length * zoomLevel}px)`,
@@ -494,7 +514,7 @@ export default memo(function RoadmapView({
                       <React.Fragment key={groupName}>
                         {groupBy !== 'none' && (
                           <div
-                            className='h-10 border-b border-gray-200 bg-gray-50'
+                            className='h-10 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50'
                             style={{
                               gridColumn: `1 / span ${timelineData.length}`,
                             }}
@@ -503,7 +523,7 @@ export default memo(function RoadmapView({
                         {tasks.map((task) => (
                           <div
                             key={task.id}
-                            className='relative border-b border-gray-200 min-h-[3rem] sm:min-h-[4rem] group'
+                            className='relative border-b border-gray-200 dark:border-slate-700 min-h-[3rem] sm:min-h-[4rem] group'
                             style={getTaskPosition(task)}>
                             <motion.div
                               initial={{ opacity: 0, scaleX: 0 }}
@@ -530,9 +550,9 @@ export default memo(function RoadmapView({
                                   initial={{ opacity: 0, y: 10 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   exit={{ opacity: 0, y: 10 }}
-                                  className='absolute hidden md:group-hover:block active:block z-20 bg-white p-3 rounded-lg shadow-lg border border-gray-200 w-64 -translate-x-1/2 left-1/2 top-full mt-2'>
+                                  className='absolute hidden md:group-hover:block active:block z-20 bg-white dark:bg-slate-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-slate-700 w-64 -translate-x-1/2 left-1/2 top-full mt-2'>
                                   <div className='text-sm space-y-2'>
-                                    <div className='font-semibold text-gray-900'>
+                                    <div className='font-semibold text-gray-900 dark:text-white'>
                                       {task.title}
                                     </div>
                                     <div className='flex items-center text-xs space-x-2'>
@@ -540,14 +560,20 @@ export default memo(function RoadmapView({
                                         statusIcons[task.status],
                                         {
                                           size: 14,
-                                          className: `${statusColors[task.status]} p-0.5 rounded-full shrink-0`,
+                                          className: `p-0.5 rounded-full shrink-0 ${
+                                            task.status === 'todo'
+                                              ? 'text-blue-600 dark:text-blue-400'
+                                              : task.status === 'in-progress'
+                                              ? 'text-amber-600 dark:text-amber-400'
+                                              : 'text-green-600 dark:text-green-400'
+                                          }`,
                                         }
                                       )}
-                                      <span className='capitalize'>
+                                      <span className='capitalize text-gray-900 dark:text-gray-200'>
                                         {task.status}
                                       </span>
                                     </div>
-                                    <div className='text-xs text-gray-600'>
+                                    <div className='text-xs text-gray-600 dark:text-gray-400'>
                                       <div className='flex justify-between'>
                                         <span>Start:</span>
                                         <span className='font-medium'>

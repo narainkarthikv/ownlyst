@@ -5,6 +5,7 @@ import {
   COLOR_PICKER_PALETTE,
   type NoteColor,
 } from '../constants/colors';
+import { COLOR_PICKER_CLASSES } from '../constants/ui-colors';
 
 interface ColorPickerProps {
   currentColor: NoteColor;
@@ -51,14 +52,14 @@ export default function ColorPicker({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -4 }}
       transition={{ duration: 0.15 }}
-      className='absolute bottom-full right-0 mb-1 bg-white rounded-lg shadow-lg border border-gray-100 p-3 z-50 w-[280px]'>
+      className={`absolute bottom-full right-0 mb-1 p-3 z-50 w-[280px] ${COLOR_PICKER_CLASSES.container}`}>
       <div className='flex items-center justify-between mb-2'>
-        <span className='text-sm font-medium text-gray-700'>Color</span>
+        <span className={COLOR_PICKER_CLASSES.header}>Color</span>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={onClose}
-          className='text-gray-400 hover:text-gray-600'>
+          className={COLOR_PICKER_CLASSES.closeButton}>
           <X size={14} />
         </motion.button>
       </div>
@@ -77,12 +78,12 @@ export default function ColorPicker({
                 ${color.class}
                 ${
                   currentColor === color.id
-                    ? 'ring-2 ring-offset-2 ring-gray-400'
-                    : 'hover:ring-2 hover:ring-offset-2 hover:ring-gray-200'
+                    ? COLOR_PICKER_CLASSES.selectedRing
+                    : COLOR_PICKER_CLASSES.hoverRing
                 }
               `}
             />
-            <span className='text-[10px] font-medium text-gray-500'>
+            <span className={COLOR_PICKER_CLASSES.colorLabel}>
               {color.label}
             </span>
           </motion.button>

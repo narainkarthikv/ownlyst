@@ -17,7 +17,6 @@ import { useState, memo, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plus,
-  Search,
   FileText,
   Pin,
   X,
@@ -26,10 +25,11 @@ import {
   Calendar,
 } from 'lucide-react';
 import type { Note } from '../../models/note.model';
-import NoteModal from '../../components/modals/NoteModal';
+import NoteModal from '../../components/NoteModal';
 import EmptyState from '../../components/shared/EmptyState';
 import NoteCard from './NoteCard';
-import { useDebounce } from '../../hooks/useDebounce';
+import FilterBar, { type FilterState } from '../../components/shared/FilterBar';
+import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 
 /**
  * Props for NotesView component
@@ -43,8 +43,6 @@ interface NotesViewProps {
   onUpdateNote: (id: string, updates: Partial<Note>) => void;
   /** Callback to delete a note */
   onDeleteNote: (id: string) => void;
-  /** Optional callback to search notes */
-  onSearch?: (term: string) => void;
 }
 
 /**
@@ -96,22 +94,17 @@ const NotesView = memo(function NotesView({
   onAddNote,
   onUpdateNote,
   onDeleteNote,
-  onSearch,
 }: NotesViewProps) {
   // Local UI state only
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
-  const [searchInput, setSearchInput] = useState('');
   const [viewingNote, setViewingNote] = useState<Note | null>(null);
+  const [filters, setFilters] = useState<FilterState>(getDefaultFilters());
 
-  // Debounce search input to avoid excessive filtering
-  const searchTerm = useDebounce(searchInput, undefined, { delay: 200 });
-
-  // Notify parent of search term changes
-  // Parent (controller) handles the actual filtering
-  useMemo(() => {
-    onSearch?.(searchTerm);
-  }, [searchTerm, onSearch]);
+  // Apply filters to notes
+  const filteredNotes = useMemo(() => {
+    return applyFilters(notes, filters);
+  }, [notes, filters]);
 
   /**
    * Format date for display
@@ -155,23 +148,16 @@ const NotesView = memo(function NotesView({
 
   return (
     <div className='space-y-6 p-4'>
-      {/* Header: Search and Add Note */}
-      <div className='flex flex-col sm:flex-row gap-3 sm:items-center sm:space-x-3'>
-        {/* Search input */}
-        <div className='relative flex-1'>
-          <input
-            type='search'
-            placeholder='Search notes...'
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            aria-label='Search notes by title or content'
-            className='w-full pl-4 pr-10 py-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent outline-none'
+      {/* Header: Search, Filter Bar and Add Note */}
+      <div className='flex items-center justify-between gap-3'>
+        <div className='flex-1'>
+          <FilterBar
+            filters={filters}
+            onFilterChange={setFilters}
+            totalCount={notes.length}
+            filteredCount={filteredNotes.length}
+            searchPlaceholder='Search notes by title, content, or tags...'
           />
-          <span
-            aria-hidden='true'
-            className='absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-600'>
-            <Search className='h-4 w-4' />
-          </span>
         </div>
 
         {/* Add Note button */}
@@ -180,31 +166,43 @@ const NotesView = memo(function NotesView({
           whileTap={{ scale: 0.98 }}
           onClick={handleAddNote}
           aria-label='Create a new note'
-          className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none'>
+          className='inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none shadow-sm whitespace-nowrap'>
           <Plus className='h-5 w-5' aria-hidden='true' />
-          <span className='sm:hidden'>Add Note</span>
+          <span>New Note</span>
         </motion.button>
       </div>
 
       {/* Notes Grid or Empty State */}
-      {notes.length === 0 ? (
-        <EmptyState
-          icon={<FileText className='h-16 w-16' />}
-          title='No notes yet'
-          description='Create your first sticky note to get started'
-          action={{
-            label: 'Create Note',
-            onClick: handleAddNote,
-          }}
-        />
+      {filteredNotes.length === 0 ? (
+        notes.length === 0 ? (
+          <EmptyState
+            icon={<FileText className='h-16 w-16' />}
+            title='No notes yet'
+            description='Create your first sticky note to get started'
+            action={{
+              label: 'Create Note',
+              onClick: handleAddNote,
+            }}
+          />
+        ) : (
+          <EmptyState
+            icon={<FileText className='h-16 w-16' />}
+            title='No matching notes'
+            description='Try adjusting your filters or search terms'
+            action={{
+              label: 'Clear Filters',
+              onClick: () => setFilters(getDefaultFilters()),
+            }}
+          />
+        )
       ) : (
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3 sm:gap-4'>
           <AnimatePresence mode='popLayout'>
-            {notes.map((note) => (
+            {filteredNotes.map((note) => (
               <NoteCard
                 key={note.id}
                 note={note}
-                searchTerm={searchTerm}
+                searchTerm={filters.search}
                 onUpdate={onUpdateNote}
                 onDelete={onDeleteNote}
                 onEdit={handleEditNote}

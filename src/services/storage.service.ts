@@ -39,6 +39,7 @@ export class StorageService {
   /**
    * Reads notes from localStorage
    * Safely handles missing or corrupted data
+   * Automatically deduplicates notes by ID
    * 
    * @returns Array of notes or empty array if none found
    */
@@ -49,9 +50,20 @@ export class StorageService {
         return [];
       }
 
-      const parsed = JSON.parse(stored) as any[];
+      const parsed = JSON.parse(stored) as unknown[];
       // Normalize date strings back to Date objects
-      return parsed.map(note => normalizeDateFields(note));
+      const notes = parsed.map(note => normalizeDateFields(note));
+      
+      // Deduplicate notes by ID (keep the first occurrence)
+      const seen = new Set<string>();
+      return notes.filter(note => {
+        if (seen.has(note.id)) {
+          console.warn(`[StorageService] Duplicate note ID found: ${note.id}, removing duplicate`);
+          return false;
+        }
+        seen.add(note.id);
+        return true;
+      });
     } catch (error) {
       console.error(`[StorageService] Error reading notes from localStorage:`, error);
       return [];

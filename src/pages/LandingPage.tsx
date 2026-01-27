@@ -1,78 +1,79 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  Table,
-  LayoutDashboard,
-  Baseline as Timeline,
-  Pin,
-  Palette,
-  Filter,
-  StickyNote,
+  Lock,
+  Database,
+  Download,
+  Zap,
+  Heart,
+  Shield,
+  Coffee,
 } from 'lucide-react';
 import Logo from '../components/Logo';
 
 const features = [
   {
-    icon: <Pin className='w-10 h-10 text-blue-600' />,
-    title: 'Smart Pinning',
-    desc: 'Pin important notes to keep them at the top and never lose track of critical tasks.',
+    icon: <Lock className='w-10 h-10 text-blue-600 dark:text-blue-400' />,
+    title: 'Your Notes, Your Device',
+    desc: 'No sneaky cloud uploads. Your thoughts stay locked on your device, where they belong. Because what happens in your browser, stays in your browser! 🔒',
   },
   {
-    icon: <Palette className='w-10 h-10 text-blue-600' />,
-    title: 'Color Coding',
-    desc: 'Organize with priority-based colors: green for low, orange for medium, red for high priority.',
+    icon: <Database className='w-10 h-10 text-green-600 dark:text-green-400' />,
+    title: 'Zero Surveillance',
+    desc: 'No tracking pixels. No analytics scripts. No "oops, we shared your data" moments. Just you and your notes. Forever. 🛡️',
   },
   {
-    icon: <Filter className='w-10 h-10 text-blue-600' />,
-    title: 'Advanced Filtering',
-    desc: "Filter by status, date, or title to find exactly what you're looking for instantly.",
-  },
-];
-
-const views = [
-  {
-    icon: <StickyNote className='w-8 h-8 text-green-600' />,
-    title: 'Notes View',
-    desc: 'Card-based layout for visual organization',
+    icon: <Download className='w-10 h-10 text-purple-600 dark:text-purple-400' />,
+    title: 'Break Free Anytime',
+    desc: 'Export everything as JSON or CSV with one click. Your data isn\'t held hostage here. Take it wherever you want! 📦',
   },
   {
-    icon: <LayoutDashboard className='w-8 h-8 text-blue-600' />,
-    title: 'Boards View',
-    desc: 'Kanban-style boards for workflow management',
+    icon: <Zap className='w-10 h-10 text-amber-600 dark:text-amber-400' />,
+    title: 'Blazingly Fast',
+    desc: 'Instant everything. No "connecting to server" delays. No loading spinners. No excuses. Just pure speed! ⚡',
   },
   {
-    icon: <Table className='w-8 h-8 text-cyan-600' />,
-    title: 'Tables View',
-    desc: 'Detailed spreadsheet-like data view',
+    icon: <Heart className='w-10 h-10 text-red-600 dark:text-red-400' />,
+    title: 'Designed for Humans',
+    desc: 'Clean, beautiful, and actually enjoyable to use. No clutter, no ads, no dark patterns trying to trick you. ✨',
   },
   {
-    icon: <Timeline className='w-8 h-8 text-orange-600' />,
-    title: 'Roadmap View',
-    desc: 'Timeline visualization for project planning',
+    icon: <Shield className='w-10 h-10 text-cyan-600 dark:text-cyan-400' />,
+    title: 'Open & Honest',
+    desc: 'Open source code you can read and trust. No secrets, no hidden agendas. Just transparent, ethical software. 💎',
   },
 ];
 
-const testimonials = [
+const privacyGuarantees = [
   {
-    name: 'Sarah Johnson',
-    role: 'Product Manager',
-    avatar:
-      'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
-    text: 'Sticky Memo has revolutionized how our team manages projects. The color coding and multiple views make everything so much clearer.',
+    icon: '🔐',
+    title: 'Lives in Your Browser',
+    desc: 'Everything runs on YOUR device. We just hand you the app, then step away. Like a good friend who knows when to give you space.',
   },
   {
-    name: 'Mike Chen',
-    role: 'Software Developer',
-    avatar:
-      'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
-    text: 'The filtering and sorting features save me hours every week. I can find any note or task in seconds.',
+    icon: '📱',
+    title: 'Stored 100% Locally',
+    desc: 'Your browser has a built-in vault for your notes. We never touch it, see it, or even know it exists. That\'s the way it should be!',
   },
   {
-    name: 'Emma Davis',
-    role: 'Design Lead',
-    avatar:
-      'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
-    text: 'Beautiful interface and intuitive design. It feels like using real sticky notes but with all the digital advantages.',
+    icon: '🚫',
+    title: 'Zero Server Uploads',
+    desc: 'After you open the app, your notes NEVER leave your device. Not once. Not even a tiny bit. Promise!',
+  },
+  {
+    icon: '✂️',
+    title: 'You\'re the Boss',
+    desc: 'Want to export? Do it. Delete everything? Go ahead. Backup offline? Sure thing. it\'s YOUR data, so YOU make the rules.',
+  },
+  {
+    icon: '⚡',
+    title: 'Works Anywhere, Anytime',
+    desc: 'Internet down? Phone in airplane mode? Stuck in a tunnel? No problem! Your notes are always accessible.',
+  },
+  {
+    icon: '🎉',
+    title: 'No Account Required',
+    desc: 'No email. No password. No "verify your identity." Just open it and start writing. Revolutionary concept, right?',
   },
 ];
 
@@ -88,150 +89,131 @@ export default function LandingPage() {
   };
 
   return (
-    <div className='bg-gray-50 text-gray-900 min-h-screen w-full overflow-x-hidden'>
+    <div className='bg-white dark:bg-slate-900 text-gray-900 dark:text-white min-h-screen w-full overflow-x-hidden'>
       {/* Hero Section */}
-      <div
-        id='hero'
-        className='w-full min-h-[420px] px-0 py-0 bg-gradient-to-br from-blue-500 to-pink-500 text-white relative'
-        style={{
-          boxShadow: '0 2px 16px 0 rgba(80,80,180,0.06)',
-          borderBottom: '1px solid #e5e8ef',
-        }}>
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className='max-w-7xl mx-auto pt-7 pb-4 px-4 md:px-6 min-h-[420px] flex flex-col items-start justify-center overflow-visible'>
+      <div className='w-full min-h-[500px] px-0 py-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-700 relative'>
+        <motion.div className='max-w-7xl mx-auto pt-10 pb-6 px-4 md:px-6 min-h-[500px] flex flex-col items-center justify-center overflow-visible'>
           {/* Logo and Brand Name */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className='flex items-center mb-4 cursor-pointer hover:scale-105 transition-transform duration-200'
+            className='flex items-center mb-6 cursor-pointer hover:scale-105 transition-transform duration-200'
             onClick={() => navigate('/')}>
             <Logo size={48} />
-            <h1
-              className='ml-3 text-2xl md:text-3xl font-extrabold'
-              style={{ textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+            <h1 className='ml-3 text-3xl md:text-4xl font-bold text-gray-900 dark:text-white'>
               Sticky Memo
             </h1>
           </motion.div>
 
-          <div className='flex flex-col md:flex-row items-start md:items-center justify-between w-full gap-4 md:gap-8'>
-            <div className='flex-1 min-w-[320px]'>
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className='text-4xl md:text-5xl font-extrabold leading-tight mb-2'
-                style={{ textShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-                Capture thoughts.
-                <br />
-                Stay organized.
-              </motion.h2>
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className='mb-4 text-white/90 font-normal text-lg md:text-xl max-w-[520px]'
-                style={{ textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
-                Transform your productivity with the intuitive note-taking app
-                that brings the simplicity of sticky notes to the digital world.
-              </motion.p>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-                className='flex flex-col sm:flex-row gap-2 sm:gap-4 mb-4'>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                  className='font-bold text-base px-6 py-3 rounded-xl bg-white/95 text-blue-500 w-full sm:w-auto hover:bg-white hover:shadow-lg transition-all duration-200'
-                  style={{ boxShadow: '0 4px 16px rgba(0,0,0,0.15)' }}
-                  onClick={() => navigate('/notes')}>
-                  Start Taking Notes
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.98 }}
-                  className='font-bold text-base px-6 py-3 rounded-xl border-2 border-white/80 text-white w-full sm:w-auto hover:border-white hover:bg-white/10 transition-all duration-200 backdrop-blur-sm'
-                  onClick={() => scrollToSection('features')}>
-                  Watch Demo
-                </motion.button>
-              </motion.div>
-            </div>
-            {/* Demo Cards Illustration */}
-            <div className='flex-1 flex justify-center md:justify-end items-center min-w-full md:min-w-[340px] mt-3 md:mt-0 pr-0 md:pr-2 overflow-visible'>
-              <motion.div
-                initial={{ opacity: 0, x: 40, rotate: 5 }}
-                animate={{ opacity: 1, x: 0, rotate: 0 }}
-                transition={{ duration: 1, delay: 1 }}
-                className='p-4 rounded-2xl bg-white w-full md:w-96 max-w-full md:max-w-96 min-w-0 md:min-w-[340px] overflow-hidden'
-                style={{ boxShadow: '0 12px 48px rgba(0,0,0,0.15)' }}>
-                <div className='grid grid-cols-2 gap-2'>
-                  <div>
-                    <div className='bg-green-200 rounded-lg p-3 mb-3 min-h-[56px] border border-green-300'>
-                      <p className='text-green-800 font-bold text-sm'>
-                        Design Review
-                      </p>
-                      <p className='text-gray-600 text-xs'>Due: Today</p>
-                    </div>
-                    <div className='bg-orange-200 rounded-lg p-3 min-h-[56px] border border-orange-300'>
-                      <p className='text-orange-800 font-bold text-sm'>
-                        Bug Fixes
-                      </p>
-                      <p className='text-gray-600 text-xs'>Due: Friday</p>
-                    </div>
-                  </div>
-                  <div>
-                    <div className='bg-red-200 rounded-lg p-3 mb-3 min-h-[56px] border border-red-300'>
-                      <p className='text-red-800 font-bold text-sm'>
-                        Client Meeting
-                      </p>
-                      <p className='text-gray-600 text-xs'>Due: Tomorrow</p>
-                    </div>
-                    <div className='bg-blue-200 rounded-lg p-3 min-h-[56px] border border-blue-300'>
-                      <p className='text-blue-800 font-bold text-sm'>
-                        Team Standup
-                      </p>
-                      <p className='text-gray-600 text-xs'>Due: Weekly</p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
+          <div className='w-full flex flex-col items-center justify-center text-center'>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className='text-4xl md:text-5xl font-bold leading-tight mb-4 text-gray-900 dark:text-white'>
+              Notes That Stay<br />
+              <span className='text-blue-600 dark:text-blue-400'>Truly Private</span>
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className='mb-6 text-gray-600 dark:text-gray-300 font-normal text-lg md:text-xl max-w-[560px]'>
+              Write freely, knowing your thoughts are yours alone. <span className='font-semibold'>No cloud. No tracking.</span> Just honest, local-first note-taking. 🌱
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className='flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 justify-center'>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                className='font-bold text-base px-8 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-all duration-200 shadow-md'
+                onClick={() => navigate('/app')}>
+                Start Taking Notes
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                className='font-bold text-base px-8 py-3 rounded-lg border-2 border-gray-800 dark:border-white text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200'
+                onClick={() => scrollToSection('privacy')}>
+                How It Works
+              </motion.button>
+            </motion.div>
+
+            {/* Trust Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1 }}
+              className='inline-flex items-center gap-2 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-full px-4 py-2 text-green-700 dark:text-green-300 text-sm font-medium'>
+              <Shield className='w-4 h-4' />
+              <span>Built by privacy lovers, for privacy lovers 💚</span>
+            </motion.div>
           </div>
         </motion.div>
       </div>
 
-      {/* Features Section */}
-      <div
-        id='features'
-        className='max-w-7xl mx-auto py-16 md:py-20 px-6 md:px-8'>
-        <div className='w-full max-w-full md:max-w-5xl mx-auto text-center'>
-          <h3 className='text-3xl md:text-4xl font-extrabold mb-3'>
-            Powerful Features for Better Organization
+      {/* Privacy Guarantee Section */}
+      <div id='privacy' className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6'>
+        <div className='text-center mb-12'>
+          <h3 className='text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white'>
+            Why Your Privacy is Actually Safe Here 🛡️
           </h3>
-          <p className='mb-10 text-gray-500 text-lg font-normal'>
-            Everything you need to manage your tasks and ideas efficiently
+          <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
+            Unlike most apps that promise privacy but store everything on their servers, we literally CAN'T see your notes. Here's the real deal:
           </p>
         </div>
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center max-w-full md:max-w-5xl mx-auto'>
+
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
+          {privacyGuarantees.map((guarantee, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              className='bg-gray-50 dark:bg-slate-800 rounded-lg p-6 border border-gray-200 dark:border-slate-700 hover:shadow-md dark:hover:shadow-slate-900/50 transition-shadow'>
+              <div className='text-4xl mb-3'>{guarantee.icon}</div>
+              <h4 className='text-lg font-bold mb-2 text-gray-900 dark:text-white'>
+                {guarantee.title}
+              </h4>
+              <p className='text-gray-600 dark:text-gray-400 text-sm'>
+                {guarantee.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Features Section */}
+      <div className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6 bg-gray-50 dark:bg-slate-800/50 rounded-lg'>
+        <div className='text-center mb-12'>
+          <h3 className='text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white'>
+            Everything You Need, Nothing You Don't ✨
+          </h3>
+          <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
+            No bloat. No nonsense. No data mining disguised as "features." Just pure, honest note-taking.
+          </p>
+        </div>
+
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
           {features.map((feature, idx) => (
             <motion.div
-              key={feature.title}
-              whileHover={{
-                y: -8,
-                boxShadow: '0 8px 32px rgba(80,80,180,0.18)',
-              }}
-              transition={{ type: 'spring', stiffness: 200 }}
-              className='bg-blue-50 rounded-2xl p-6 min-h-[220px] flex flex-col items-center border border-blue-100'
-              style={{ boxShadow: '0 2px 16px 0 rgba(80,80,180,0.06)' }}>
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.1 }}
+              whileHover={{ y: -4 }}
+              className='bg-white dark:bg-slate-700 rounded-lg p-6 border border-gray-200 dark:border-slate-600'>
               <div className='mb-4'>{feature.icon}</div>
-              <h4 className='text-xl font-bold mb-2 text-center'>
+              <h4 className='text-lg font-bold mb-2 text-gray-900 dark:text-white'>
                 {feature.title}
               </h4>
-              <p className='text-gray-600 text-center text-sm'>
+              <p className='text-gray-600 dark:text-gray-300 text-sm'>
                 {feature.desc}
               </p>
             </motion.div>
@@ -239,192 +221,207 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* Views Section */}
-      <div
-        id='views'
-        className='w-full bg-gray-100 py-16 md:py-20 border-t border-b border-gray-200'>
-        <div className='max-w-7xl mx-auto px-6 md:px-8'>
-          <div className='w-full max-w-full md:max-w-5xl mx-auto text-center'>
-            <h3 className='text-3xl md:text-4xl font-extrabold mb-3'>
-              Multiple Views for Every Workflow
-            </h3>
-            <p className='mb-10 text-gray-500 text-lg font-normal'>
-              Switch between different views to match your working style
-            </p>
-          </div>
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-center max-w-full md:max-w-5xl mx-auto'>
-            {views.map((view) => (
+      {/* Data Portability Section */}
+      <div className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6'>
+        <div className='bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-8 md:p-10'>
+          <div className='flex flex-col md:flex-row items-start gap-8'>
+            <div className='flex-1'>
+              <h3 className='text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white'>
+                No Data Hostage Situations 🔓
+              </h3>
+              <p className='text-gray-700 dark:text-gray-300 mb-4 text-base leading-relaxed'>
+                Tired of apps that make it impossible to leave? We're different. Your data walks out with you, any time you want. No "export premium" upgrade required.
+              </p>
+              <ul className='space-y-3 mb-6'>
+                <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
+                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>✓</span>
+                  <span><strong>Export as JSON</strong> for backup or migration</span>
+                </li>
+                <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
+                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>✓</span>
+                  <span><strong>Export as CSV</strong> to use in spreadsheets</span>
+                </li>
+                <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
+                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>✓</span>
+                  <span><strong>Import</strong> from backups or other apps</span>
+                </li>
+                <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
+                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>✓</span>
+                  <span><strong>Delete anytime</strong> with no questions asked</span>
+                </li>
+              </ul>
+            </div>
+            <div className='flex-1 flex items-center justify-center'>
               <motion.div
-                key={view.title}
-                whileHover={{
-                  scale: 1.04,
-                  boxShadow: '0 8px 32px rgba(80,80,180,0.14)',
-                }}
-                transition={{ type: 'spring', stiffness: 200 }}
-                className='bg-gray-200 rounded-2xl p-4 min-h-[120px] flex flex-col items-start border border-gray-300'
-                style={{ boxShadow: '0 2px 16px 0 rgba(80,80,180,0.06)' }}>
-                <div className='mb-3 text-4xl'>{view.icon}</div>
-                <h4 className='text-lg font-bold mb-1 text-left'>
-                  {view.title}
-                </h4>
-                <p className='text-gray-600 text-left text-sm'>{view.desc}</p>
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className='text-6xl'>
+                📦
               </motion.div>
-            ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Testimonials Section */}
-      <div
-        id='testimonials'
-        className='max-w-7xl mx-auto py-16 md:py-20 px-6 md:px-8'>
-        <div className='w-full max-w-full md:max-w-5xl mx-auto text-center'>
-          <h3 className='text-3xl md:text-4xl font-extrabold mb-3'>
-            Loved by Teams Worldwide
+      {/* Technical Transparency Section */}
+      <div className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6 bg-gray-50 dark:bg-slate-800/50 rounded-lg'>
+        <div className='text-center mb-12'>
+          <h3 className='text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white'>
+            The Nerdy Details (For Those Who Care) 🤓
           </h3>
-          <p className='mb-10 text-gray-500 text-lg font-normal'>
-            See what our users have to say about Sticky Memo
+          <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
+            Want to know EXACTLY how we keep your data private? Here's the honest technical breakdown:
           </p>
         </div>
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-center max-w-full md:max-w-5xl mx-auto'>
-          {testimonials.map((t) => (
-            <motion.div
-              key={t.name}
-              whileHover={{
-                y: -6,
-                boxShadow: '0 8px 32px rgba(80,80,180,0.10)',
-              }}
-              transition={{ type: 'spring', stiffness: 200 }}
-              className='bg-blue-50 rounded-2xl p-6 min-h-[200px] flex flex-col items-center border border-blue-100'
-              style={{ boxShadow: '0 2px 16px 0 rgba(80,80,180,0.06)' }}>
-              <img
-                src={t.avatar}
-                alt={t.name}
-                className='w-16 h-16 rounded-full mb-4 object-cover'
-              />
-              <h4 className='text-lg font-bold'>{t.name}</h4>
-              <p className='text-gray-500 mb-2 text-sm'>{t.role}</p>
-              <p className='text-gray-600 text-center text-sm'>{t.text}</p>
-            </motion.div>
-          ))}
+
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto'>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className='bg-white dark:bg-slate-700 rounded-lg p-6 border border-gray-200 dark:border-slate-600'>
+            <h4 className='text-xl font-bold mb-4 text-gray-900 dark:text-white'>Where Your Notes Actually Live 🏠</h4>
+            <ul className='space-y-3 text-gray-700 dark:text-gray-300'>
+              <li className='flex items-start gap-2'>
+                <span className='text-blue-600 dark:text-blue-400 mt-1'>→</span>
+                <span><strong>In Your Browser's Vault:</strong> Built-in storage that only YOU can access</span>
+              </li>
+              <li className='flex items-start gap-2'>
+                <span className='text-blue-600 dark:text-blue-400 mt-1'>→</span>
+                <span><strong>On Your Device:</strong> Whether it's your laptop, phone, or tablet</span>
+              </li>
+              <li className='flex items-start gap-2'>
+                <span className='text-blue-600 dark:text-blue-400 mt-1'>→</span>
+                <span><strong>NOT on Our Servers:</strong> Seriously, we have no database. Nothing to hack! 🎉</span>
+              </li>
+            </ul>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className='bg-white dark:bg-slate-700 rounded-lg p-6 border border-gray-200 dark:border-slate-600'>
+            <h4 className='text-xl font-bold mb-4 text-gray-900 dark:text-white'>What We Don't Do (Promise!) 🙅</h4>
+            <ul className='space-y-3 text-gray-700 dark:text-gray-300'>
+              <li className='flex items-start gap-2'>
+                <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
+                <span><strong>Zero Tracking:</strong> No sneaky pixels watching your every move</span>
+              </li>
+              <li className='flex items-start gap-2'>
+                <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
+                <span><strong>Zero Analytics:</strong> We don't care what you write or when you write it</span>
+              </li>
+              <li className='flex items-start gap-2'>
+                <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
+                <span><strong>Zero Ads:</strong> No selling your attention to the highest bidder</span>
+              </li>
+            </ul>
+          </motion.div>
         </div>
       </div>
 
-      {/* Call to Action Section */}
+      {/* CTA Section */}
       <motion.div
-        id='cta'
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7 }}
-        className='py-16 md:py-20 px-6 md:px-8 bg-gradient-to-br from-pink-500 to-blue-500 text-white border-t border-gray-200'>
-        <div className='max-w-4xl mx-auto text-center py-12'>
-          <h3 className='text-3xl md:text-4xl font-extrabold mb-4'>
-            Ready to Transform Your Productivity?
+        className='py-16 md:py-20 px-4 md:px-6 bg-gradient-to-br from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 text-white'>
+        <div className='max-w-4xl mx-auto text-center'>
+          <h3 className='text-3xl md:text-4xl font-bold mb-4'>
+            Ready to Write Without Worries? 📝
           </h3>
-          <p className='mb-8 text-white/90 font-normal text-lg md:text-xl'>
-            Join thousands of teams already using Sticky Memo to organize their
-            work and boost productivity.
+          <p className='mb-8 text-white/90 text-lg'>
+            Join thousands who have switched to truly private note-taking. No signup. No surveillance. No surprises.
           </p>
-          <div className='flex flex-col sm:flex-row gap-4 justify-center items-center mb-4'>
+          <div className='flex flex-col sm:flex-row gap-4 justify-center'>
             <motion.button
-              whileHover={{ scale: 1.07 }}
-              whileTap={{ scale: 0.97 }}
-              className='font-bold text-base px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200'
-              style={{ boxShadow: '0 2px 8px 0 rgba(80,80,180,0.10)' }}
-              onClick={() => navigate('/notes')}>
-              Start Free Trial
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className='font-bold text-base px-8 py-3 rounded-lg bg-white text-blue-600 hover:bg-gray-50 transition-colors duration-200 shadow-lg'
+              onClick={() => navigate('/app')}>
+              Open Sticky Memo
             </motion.button>
             <motion.button
-              whileHover={{ scale: 1.07 }}
-              whileTap={{ scale: 0.97 }}
-              className='font-bold text-base px-6 py-3 rounded-lg border-2 border-white text-white hover:bg-white/10 transition-colors duration-200'
-              onClick={() => navigate('/notes')}>
-              Open App Now
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.98 }}
+              className='font-bold text-base px-8 py-3 rounded-lg border-2 border-white text-white hover:bg-white/10 transition-colors duration-200'
+              onClick={() => scrollToSection('privacy')}>
+              Learn More
             </motion.button>
           </div>
-          <p className='text-white/85 text-sm mt-4'>
-            No credit card required • 14-day free trial
-          </p>
         </div>
       </motion.div>
 
-      {/* Footer */}
-      <div className='bg-gray-900 text-white py-10 px-6 md:px-8 border-t border-gray-700 mt-0'>
-        <div className='max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8'>
-          <div className='min-w-[180px] mb-6 md:mb-0'>
-            <div className='flex items-center mb-4'>
-              <Logo size={32} />
-              <h4 className='text-blue-400 text-xl font-extrabold ml-2'>
-                Sticky Memo
-              </h4>
+      {/* Support Section */}
+      <div className='bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 py-16 md:py-20 px-4 md:px-6'>
+        <div className='max-w-4xl mx-auto text-center'>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}>
+            <Coffee className='w-12 h-12 mx-auto mb-4 text-purple-600 dark:text-purple-400' />
+            <h3 className='text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white'>
+              Love Privacy-First Software? ☕
+            </h3>
+            <p className='text-gray-700 dark:text-gray-300 mb-8 text-lg max-w-2xl mx-auto'>
+              Building ethical, privacy-respecting software takes time and coffee (lots of coffee). If Sticky Memo makes your life easier, consider buying us a cup! Every bit helps keep this project independent and ad-free. 💚
+            </p>
+            <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
+              <motion.a
+                href='https://ko-fi.com/wisdomfox'
+                target='_blank'
+                rel='noopener noreferrer'
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                className='inline-flex items-center gap-2 font-bold text-base px-8 py-3 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200 shadow-lg'>
+                <Coffee className='w-5 h-5' />
+                Buy Us a Coffee on Ko-fi
+              </motion.a>
+              <motion.a
+                href='https://patreon.com/user?u=72747187'
+                target='_blank'
+                rel='noopener noreferrer'
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.98 }}
+                className='inline-flex items-center gap-2 font-bold text-base px-8 py-3 rounded-lg bg-gradient-to-r from-pink-500 to-orange-500 text-white hover:from-pink-600 hover:to-orange-600 transition-colors duration-200 shadow-lg'>
+                <Heart className='w-5 h-5' />
+                Support on Patreon
+              </motion.a>
             </div>
-            <p className='text-gray-400 text-sm'>
-              The ultimate digital sticky note solution for modern teams.
+            <p className='mt-6 text-sm text-gray-600 dark:text-gray-400'>
+              ✨ Donations are optional and never required. Sticky Memo will always be free and open source!
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className='bg-gray-900 dark:bg-black text-white py-10 px-4 md:px-6'>
+        <div className='max-w-7xl mx-auto'>
+          <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8'>
+            <div>
+              <div className='flex items-center mb-3'>
+                <Logo size={32} />
+                <h4 className='text-blue-400 text-xl font-bold ml-2'>Sticky Memo</h4>
+              </div>
+              <p className='text-gray-400 text-sm max-w-xs'>
+                Privacy-first notes that actually respect you. 💚
+              </p>
+            </div>
+            <div className='text-gray-400 text-sm space-y-1'>
+              <p>✓ No accounts, ever</p>
+              <p>✓ No tracking, never</p>
+              <p>✓ No data mining, not even a little</p>
+            </div>
+          </div>
+          <div className='border-t border-gray-700 pt-6'>
+            <p className='text-gray-400 text-xs text-center'>
+              © 2026 Sticky Memo. Made with 💚 by people who care about your privacy.
             </p>
           </div>
-          <div className='flex flex-row gap-12 flex-wrap'>
-            <div>
-              <h5 className='text-white mb-2 text-sm font-bold'>Product</h5>
-              <button
-                onClick={() => navigate('/features')}
-                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
-                Features
-              </button>
-              <button
-                onClick={() => navigate('/pricing')}
-                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
-                Pricing
-              </button>
-              <button
-                onClick={() => navigate('/updates')}
-                className='text-gray-400 hover:text-gray-300 text-sm w-full text-left transition-colors'>
-                Updates
-              </button>
-            </div>
-            <div>
-              <h5 className='text-white mb-2 text-sm font-bold'>Company</h5>
-              <button
-                onClick={() => navigate('/about')}
-                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
-                About
-              </button>
-              <button
-                onClick={() => navigate('/blog')}
-                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
-                Blog
-              </button>
-              <button
-                onClick={() => navigate('/contact')}
-                className='text-gray-400 hover:text-gray-300 text-sm w-full text-left transition-colors'>
-                Contact
-              </button>
-            </div>
-            <div>
-              <h5 className='text-white mb-2 text-sm font-bold'>Support</h5>
-              <button
-                onClick={() => navigate('/help')}
-                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
-                Help Center
-              </button>
-              <button
-                onClick={() => navigate('/docs')}
-                className='text-gray-400 hover:text-gray-300 text-sm mb-1 w-full text-left transition-colors'>
-                Documentation
-              </button>
-              <button
-                onClick={() => navigate('/community')}
-                className='text-gray-400 hover:text-gray-300 text-sm w-full text-left transition-colors'>
-                Community
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className='border-t border-gray-700 my-6'></div>
-        <div className='max-w-7xl mx-auto text-center'>
-          <p className='text-gray-400 text-xs'>
-            © 2024 Sticky Memo. All rights reserved.
-          </p>
         </div>
       </div>
     </div>

@@ -29,14 +29,13 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // Code splitting configuration
+        // Code splitting configuration for core dependencies
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'animation': ['framer-motion'],
           'dnd': ['@hello-pangea/dnd'],
           'icons': ['lucide-react'],
           'virtualization': ['react-window'],
-          'utils': ['lodash.debounce'],
         },
       },
     },

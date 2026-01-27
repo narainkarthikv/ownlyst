@@ -5,7 +5,7 @@
  * Framework-agnostic and side-effect free
  */
 
-import type { Note, NoteFormData, NoteUpdate } from './note.model';
+import type { Note } from './note.model';
 import {
   NOTE_COLORS,
   NOTE_PRIORITIES,
@@ -164,14 +164,14 @@ export function validateNoteFormData(data: unknown): ValidationResult {
  * @param note - Note with potentially string dates
  * @returns Note with Date objects
  */
-export function normalizeDateFields(note: any): Note {
+export function normalizeDateFields(note: Record<string, unknown>): Note {
   return {
     ...note,
     createdAt: typeof note.createdAt === 'string' ? new Date(note.createdAt) : note.createdAt,
     dueDate: note.dueDate
       ? (typeof note.dueDate === 'string' ? new Date(note.dueDate) : note.dueDate)
       : undefined,
-  };
+  } as Note;
 }
 
 /**
@@ -181,7 +181,7 @@ export function normalizeDateFields(note: any): Note {
  * @param note - Note to serialize
  * @returns Note-like object with serializable fields
  */
-export function serializeNote(note: Note): Record<string, any> {
+export function serializeNote(note: Note): Record<string, unknown> {
   return {
     ...note,
     createdAt: note.createdAt.toISOString(),

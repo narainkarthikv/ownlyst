@@ -1,581 +1,164 @@
-![License](https://img.shields.io/github/license/narainkarthikv/Sticky-Memo)
-![Last Commit](https://img.shields.io/github/last-commit/narainkarthikv/Sticky-Memo)
+![License](https://img.shields.io/github/license/narainkarthikv/sticky-memo)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Last Commit](https://img.shields.io/github/last-commit/narainkarthikv/sticky-memo)
 
-# Sticky-Memo
+# Sticky Memo
 
-Sticky-Memo is a lightweight web application that allows users to create, edit, and manage sticky notes directly in the browser.
+**Privacy-first note-taking that runs entirely in your browser.**
 
-The application uses browser localStorage to persist notes across sessions, without requiring a backend or database. It is built using React.js, Vite, and Material UI for a fast and modern user experience.
+Sticky Memo is a lightweight, local-first note management app. Create, organize, and search notes with complete privacy—your data never leaves your device.
 
+## 🔐 Privacy & Security First
 
-## Tech Stack
+- **Zero Server Dependency**: No backend, no cloud, no data transmission
+- **Local Storage Only**: All notes stored in browser IndexedDB/localStorage
+- **Offline Ready**: Works without internet after first load
+- **No Tracking**: No analytics, no cookies, no telemetry
+- **Full Data Control**: Export anytime as JSON or CSV
+- **Open Source**: Transparent, auditable code
 
-<table>
-    <tr>
-     <td>Frontend</td>
-     <td><img src="https://skillicons.dev/icons?i=react,mui,vite" /></td>
-    </tr>
-    <tr>
-     <td>CI/CD</td>
-     <td><img src="https://skillicons.dev/icons?i=netlify,githubactions" /></td>
-    </tr>
-</table>
+## ✨ Features
 
-## Table of Contents
+- **Multiple Views**: Notes grid, Kanban board, table view, and roadmap
+- **Color Coding**: Organize notes by priority and status
+- **Fast Search**: Instant note filtering and search
+- **Dark Mode**: Built-in theme toggle
+- **Drag & Drop**: Intuitive note organization
+- **Import/Export**: Full data portability
+- **Responsive**: Works on desktop, tablet, and mobile
 
-- [Installation](#installation)
-  - [Clone the Repository](#clone-the-repository)
-  - [Frontend Installation](#frontend-installation)
-- [Usage](#usage)
-  <!-- - [Docker Installation](#docker-installation) -->
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-  - [Forking the Repository](#forking-the-repository)
-  - [Cloning the Repository](#cloning-the-repository)
-  - [Creating a Branch](#creating-a-branch)
-  - [Making Changes](#making-changes)
-  - [Committing Changes](#committing-changes)
-  - [Pushing Changes](#pushing-changes)
-  - [Creating a Pull Request](#creating-a-pull-request)
-- [Contributors](#contributors)
-- [License](#license)
-
-## Installation
-
-### Clone the Repository
-
-1. **Fork the repository** by clicking the "Fork" button at the top right of the repository page on GitHub.
-   ![Forking the Repository](https://user-images.githubusercontent.com/github-fork-button.png)
-2. **Clone your forked repository** to your local machine:
-    ```sh
-    git clone https://github.com/your-username/Sticky-Memo.git
-    ```
-3. Navigate to the project directory:
-    ```sh
-    cd Sticky-Memo
-    ```
-
-### Frontend Installation
-
-After cloning the repository:
-
-1. **Install the dependencies**:
-    ```sh
-    npm install
-    ```
-2. **Start the development server**:
-    ```sh
-    npm run dev
-    ```
-
-## Usage
-
-- Create a new sticky note using the add button.
-- Edit notes directly by clicking on them.
-- Delete notes when they are no longer needed.
-- Notes are automatically saved in the browser using       localStorage.
-
-
-<!-- ### Docker Installation
-
-If you prefer using Docker:
-
-1. **Pull the Docker image**:
-    ```sh
-    docker pull narainkarthik/stickymemo:v1.0.0
-    ```
-2. **Run the Docker container**:
-    ```sh
-    docker run -d -p 3000:3000 narainkarthik/stickymemo:v1.0.0
-    ``` -->
-
-## Project Structure
-
-The `frontend` directory contains the React application.
-
-> **Your lightweight, fast, and intuitive sticky note app for organizing thoughts and ideas**
-
-Welcome to **Sticky-Memo** — a modern React application for creating, managing, and organizing digital sticky notes. Built with **React + TypeScript**, **Vite**, **TailwindCSS**, and **Framer Motion**, this project is perfect for learning full-stack development, contributing to open source, and building productive note-taking solutions.
-
-[![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/sticky-memo?style=flat-square)](https://github.com/narainkarthikv/sticky-memo/issues)
-[![GitHub forks](https://img.shields.io/github/forks/narainkarthikv/sticky-memo?style=flat-square)](https://github.com/narainkarthikv/sticky-memo/network)
-[![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/sticky-memo?style=flat-square)](https://github.com/narainkarthikv/sticky-memo/stargazers)
-[![MIT License](https://img.shields.io/github/license/narainkarthikv/sticky-memo?style=flat-square)](./MIT-LICENSE.txt)
-
----
-
-## 🌟 Why Sticky-Memo?
-
-Sticky-Memo is a lightweight, single-page application designed to help you **capture ideas**, **organize thoughts**, and **boost productivity**. Whether you're a student, professional, or developer, Sticky-Memo provides an intuitive interface for note management with beautiful UI and smooth animations.
-
-✨ **Key Features:**
-
-- ✍️ **Create & Edit Notes** — Instantly create, edit, and delete sticky notes
-- 🎨 **Customizable Themes** — Switch between light and dark themes
-- 🎯 **Multiple Views** — Organize notes with Kanban, Table, and Roadmap views
-- 📊 **Color Coding** — Assign colors to notes for better categorization
-- 💾 **Local Storage** — All notes are saved locally in your browser
-- ⚡ **Blazing Fast** — Powered by Vite for instant load times
-- 📱 **Fully Responsive** — Works seamlessly on desktop, tablet, and mobile
-- 🔗 **Drag & Drop** — Organize notes with smooth drag-and-drop functionality
-- 🌐 **Multi-Page Experience** — Features, Pricing, Blog, Documentation, and Help Center pages
-
----
-
-## 📑 Table of Contents
-
-- [Why Sticky-Memo?](#-why-sticky-memo)
-- [Live Demo](#-live-demo)
-- [Tech Stack](#-tech-stack)
-- [Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-  - [Running Locally](#running-locally)
-- [Project Structure](#-project-structure)
-- [Available Scripts](#-available-scripts)
-- [Environment Setup](#-environment-setup)
-- [Development Standards](#-development-standards)
-- [Troubleshooting](#-troubleshooting)
-- [Contributing](#-contributing)
-- [Contributors](#-contributors)
-- [Support](#-support)
-- [License](#-license)
-
----
-
-## 🌐 Live Demo
-
-👉 **[Live Preview](https://sticky-memo-dev.vercel.app/)** — Try Sticky-Memo now!
-
-Experience the power of effortless note-taking with our live demo.
-
----
-
-## 🛠️ Tech Stack
-
-| Layer        | Technologies                                                         |
-| ------------ | -------------------------------------------------------------------- |
-| **Frontend** | React 18, TypeScript, Vite, TailwindCSS, Framer Motion, React Router |
-| **Tooling**  | ESLint, Prettier, PostCSS, Autoprefixer                              |
-| **Storage**  | Browser LocalStorage                                                 |
-| **Build**    | Vite (Fast build tool), Vercel (Deployment)                          |
-
-<p align="center">
-  <img src="https://skillicons.dev/icons?i=react,typescript,vite,tailwind,javascript" />
-</p>
-
----
-
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
 
-Before you begin, ensure you have the following installed:
-
-- **Node.js** (v18.0.0 or higher) — [Download here](https://nodejs.org/)
-- **npm** (v9.0.0 or higher) — Usually comes with Node.js
-- **Git** — [Download here](https://git-scm.com/)
-
-To check your versions:
-
-```bash
-node --version
-npm --version
-git --version
-```
+- Node.js 18.0.0 or higher
+- npm 9.0.0 or higher
 
 ### Installation
 
-1. **Fork the repository**
-
-   Click the **Fork** button on the top-right corner of the [GitHub repository](https://github.com/narainkarthikv/sticky-memo).
-
-2. **Clone your fork**
-
-   ```bash
-   git clone https://github.com/<your-username>/sticky-memo.git
-   cd sticky-memo
-   ```
-
-3. **Install dependencies**
-
-   ```bash
-   npm install
-   ```
-
-### Running Locally
-
-Start the development server:
-
 ```bash
+# Clone the repository
+git clone https://github.com/narainkarthikv/sticky-memo.git
+cd sticky-memo
+
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
 ```
 
-Your app will be available at **[http://localhost:5173](http://localhost:5173)**
+Visit **http://localhost:5173** to see the app.
 
-For production build:
+### Production Build
 
 ```bash
 npm run build
-```
-
----
-
-## 🗂️ Project Structure
-
-```plaintext
-sticky-memo/
-├── public/
-│   └── site.webmanifest
-├── src/
-│   ├── components/
-│   │   ├── ColorPicker.tsx         # Color selection component
-│   │   ├── KanbanView.tsx          # Kanban board layout
-│   │   ├── Logo.tsx                # Logo component
-│   │   ├── NoteModal.tsx           # Note creation/editing modal
-│   │   ├── NotesView.tsx           # Default notes view
-│   │   ├── RoadmapView.tsx         # Roadmap visualization
-│   │   ├── TableView.tsx           # Table layout for notes
-│   │   ├── ThemeProvider.tsx       # Theme context provider
-│   │   └── ThemeToggle.tsx         # Dark/light mode toggle
-│   ├── data/
-│   │   └── sampleNotes.json        # Sample note data
-│   ├── hooks/
-│   │   ├── useLocalStorage.ts      # Custom hook for localStorage
-│   │   └── useTheme.ts             # Custom theme hook
-│   ├── pages/
-│   │   ├── AboutPage.tsx           # About page
-│   │   ├── BlogPage.tsx            # Blog page
-│   │   ├── CommunityPage.tsx       # Community page
-│   │   ├── ContactPage.tsx         # Contact page
-│   │   ├── DocumentationPage.tsx   # Documentation
-│   │   ├── FeaturesPage.tsx        # Features page
-│   │   ├── HelpCenterPage.tsx      # Help center
-│   │   ├── LandingPage.tsx         # Landing page
-│   │   ├── NotesApp.tsx            # Main notes application
-│   │   ├── PricingPage.tsx         # Pricing page
-│   │   └── UpdatesPage.tsx         # Updates/changelog page
-│   ├── types/
-│   │   └── Note.ts                 # TypeScript type definitions
-│   ├── App.tsx                     # Root component
-│   ├── main.tsx                    # Entry point
-│   ├── index.css                   # Global styles
-│   └── vite-env.d.ts               # Vite environment types
-├── index.html
-├── package.json
-├── vite.config.js                  # Vite configuration
-├── tsconfig.json                   # TypeScript configuration
-├── tailwind.config.js              # TailwindCSS configuration
-├── postcss.config.js               # PostCSS configuration
-├── eslint.config.js                # ESLint configuration
-└── README.md
-```
-
----
-
-## 📝 Available Scripts
-
-### Development
-
-```bash
-# Start development server with hot reload
-npm run dev
-```
-
-### Production
-
-```bash
-# Build for production
-npm run build
-
-# Preview production build locally
 npm run preview
 ```
 
-### Code Quality
+## 🛠️ Tech Stack
 
-```bash
-# Run ESLint to check code style
-npm run lint
+- **Frontend**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: TailwindCSS
+- **Animations**: Framer Motion
+- **Drag & Drop**: @hello-pangea/dnd
+- **Icons**: Lucide React
 
-# Fix linting issues automatically
-npm run lint -- --fix
+## 📁 Project Structure
+
 ```
-
----
-
-## 🔧 Development Standards
-
-### Code Style
-
-- **Formatting & Linting:**
-  - ESLint for code quality
-  - Prettier for consistent formatting
-  - 2-space indentation
-  - Max line length: 100 characters
-  - Use semicolons in all statements
-
-- **React Best Practices:**
-  - Use functional components with React Hooks
-  - Keep components small and reusable
-  - Props validation with TypeScript
-  - Proper error boundaries
-  - Memoization for performance optimization
-
-- **TypeScript:**
-  - Strict mode enabled
-  - Type all function parameters and returns
-  - No implicit `any` types
-  - Use interfaces for object shapes
-
-- **Documentation:**
-  - JSDoc comments for components and functions
-  - Inline comments for complex logic
-  - Keep README updated
-  - Document component props and usage
-
-### Git Workflow
-
-- **Branch Naming:**
-  - Features: `feature/description` (e.g., `feature/kanban-view`)
-  - Bugs: `fix/description` (e.g., `fix/color-picker-bug`)
-  - Docs: `docs/description` (e.g., `docs/update-readme`)
-  - Chores: `chore/description` (e.g., `chore/update-dependencies`)
-
-- **Commits:**
-  - Follow [Conventional Commits](https://www.conventionalcommits.org/) specification
-  - Examples:
-    - `feat: add kanban board view`
-    - `fix: resolve theme toggle not persisting`
-    - `docs: update installation guide`
-    - `refactor: optimize note filtering logic`
-    - `style: format components with prettier`
-
-- **Pull Requests:**
-  - Keep PRs small and focused on one feature/fix
-  - Link related issues using `Closes #123`
-  - Provide clear description and context
-  - Request reviews from maintainers
-  - Ensure all checks pass before merging
-
-### Testing (To be implemented)
-
-- **Coverage Goals:**
-  - Aim for ≥ 80% test coverage
-  - Test all critical paths
-
-- **Test Types:**
-  - **Unit Tests:** Test individual functions and components
-  - **Integration Tests:** Test component interactions
-  - **E2E Tests:** Test critical user workflows
-
-- **Tools:**
-  - Vitest for unit testing
-  - React Testing Library for component testing
-
-### Code Review Checklist
-
-Before submitting a PR, ensure:
-
-- [ ] Code follows project style guidelines
-- [ ] Changes are well-documented with comments
-- [ ] Tests added/updated (when applicable)
-- [ ] No console.log() statements in production code
-- [ ] No breaking changes without documentation
-- [ ] Performance impact has been considered
-- [ ] TypeScript types are properly defined
-- [ ] Mobile responsiveness is maintained
-
----
-
-## 🐛 Troubleshooting
-
-### Port Already in Use
-
-If port 5173 is already in use, Vite will automatically try the next available port. Check the terminal output for the correct URL.
-
-```bash
-# To find what's using port 5173
-lsof -i :5173
-
-# If needed, kill the process
-kill -9 <PID>
+sticky-memo/
+├── src/
+│   ├── components/     # Reusable UI components
+│   ├── constants/      # App constants and configs
+│   ├── context/        # React context providers
+│   ├── hooks/          # Custom React hooks
+│   ├── models/         # TypeScript type definitions
+│   ├── pages/          # Page components
+│   ├── services/       # Business logic and storage
+│   ├── utils/          # Helper functions
+│   └── views/          # View-specific components
+├── public/             # Static assets
+└── .github/            # GitHub templates and workflows
 ```
-
-### Dependencies Installation Issues
-
-```bash
-# Clear npm cache
-npm cache clean --force
-
-# Remove node_modules
-rm -rf node_modules
-
-# Reinstall dependencies
-npm install
-```
-
-### Build Errors
-
-```bash
-# Check Node.js version (should be 18+)
-node --version
-
-# Clear Vite cache
-rm -rf node_modules/.vite
-
-# Reinstall and rebuild
-npm install
-npm run build
-```
-
-### Hot Reload Not Working
-
-```bash
-# Ensure you're running the dev server correctly
-npm run dev
-
-# Check if file watchers are working
-cat /proc/sys/fs/inotify/max_user_watches
-
-# If limit is low, increase it (Linux)
-echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
-sudo sysctl -p
-```
-
-### Theme Not Persisting
-
-Check your browser's LocalStorage is enabled:
-
-```javascript
-// In browser console
-localStorage.getItem('theme');
-```
-
----
 
 ## 🤝 Contributing
 
-We ❤️ contributions! Here's how to get started:
+We welcome contributions from the community! Here's how to get started:
 
-1. **Fork the repository**
+1. **Read the Guidelines**: Check [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed instructions
+2. **Pick an Issue**: Browse [open issues](https://github.com/narainkarthikv/sticky-memo/issues) or create a new one
+3. **Fork & Branch**: Create a feature branch from your fork
+4. **Code**: Follow our code style and commit conventions
+5. **Test**: Ensure everything works locally
+6. **Submit PR**: Open a pull request with a clear description
 
-   Click the **Fork** button on [GitHub](https://github.com/narainkarthikv/sticky-memo).
+**Good First Issues**: Look for issues labeled `good first issue` to get started.
 
-2. **Clone your fork**
+### Ways to Contribute
 
-   ```bash
-   git clone https://github.com/<your-username>/sticky-memo.git
-   cd sticky-memo
-   ```
+- 🐛 **Fix bugs** and improve stability
+- ✨ **Add features** that enhance productivity
+- 📚 **Improve documentation** and examples
+- 🎨 **Enhance UI/UX** and accessibility
+- ⚡ **Optimize performance**
+- 🌍 **Add translations** and i18n support
 
-3. **Create a feature branch**
+## 🧪 Development
 
-   ```bash
-   git switch -c feature/your-feature-name
-   ```
+### Available Scripts
 
-4. **Make your changes**
-   - Write clean, well-documented code
-   - Follow the development standards above
-   - Test your changes locally
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm run preview      # Preview production build
+npm run lint         # Run ESLint
+```
 
-5. **Stage and commit**
+### Code Style
 
-   ```bash
-   git add .
-   git commit -m "feat: add your feature description"
-   ```
+- Follow existing code conventions
+- Use TypeScript for type safety
+- Write clear, descriptive commit messages
+- Keep PRs focused and small
+- Test changes across browsers
 
-6. **Push to your fork**
+## 📖 Documentation
 
-   ```bash
-   git push origin feature/your-feature-name
-   ```
+- [Contributing Guide](./CONTRIBUTING.md) - How to contribute
+- [Code of Conduct](./CODE_OF_CONDUCT.md) - Community guidelines
+- [Security Policy](./SECURITY.md) - How to report vulnerabilities
+- [Changelog](./CHANGELOG.md) - Version history
 
-7. **Open a Pull Request**
-   - Go to the original repository
-   - Click "New Pull Request"
-   - Select your branch and provide a clear description
-   - Reference any related issues (e.g., "Closes #42")
+## 💬 Community & Support
 
-### Types of Contributions We Welcome
-
-- 🎯 **New Features** — Add functionality that improves productivity
-- 🐛 **Bug Fixes** — Help us squash bugs
-- 📖 **Documentation** — Improve guides, comments, and examples
-- 🎨 **UI/UX Improvements** — Make the interface more beautiful and intuitive
-- ♿ **Accessibility** — Ensure the app works for everyone
-- ⚡ **Performance** — Optimize speed and efficiency
-- 🌍 **Internationalization** — Add language support
-
----
-
-## 👥 Contributors
-
-Thanks to everyone who has helped make Sticky-Memo awesome! 💪
-
-<a href="https://github.com/narainkarthikv/sticky-memo/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=narainkarthikv/sticky-memo" />
-</a>
-
-See the [Contributors Page](https://github.com/narainkarthikv/sticky-memo/blob/main/Contributors.md) for the full list.
-
-### How to Add Yourself
-
-When your PR is merged, add yourself to the `Contributors.md` file following the format in that file.
-
-> Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) file before submitting issues or pull requests.
-
-We welcome contributions!
-To contribute to Sticky-Memo, follow these steps:
-
-
-## 🙏 Support
-
-If you find Sticky-Memo helpful:
-
-- ⭐ **Star the repository** on GitHub
-- 🐛 **Report bugs** through [Issues](https://github.com/narainkarthikv/sticky-memo/issues)
-- 💡 **Suggest features** in [Discussions](https://github.com/narainkarthikv/sticky-memo/discussions)
-- 📢 **Share** Sticky-Memo with your network
-- 💬 **Participate** in community discussions
-
----
+- **Issues**: [Report bugs or request features](https://github.com/narainkarthikv/sticky-memo/issues)
+- **Discussions**: [Ask questions and share ideas](https://github.com/narainkarthikv/sticky-memo/discussions)
+- **Pull Requests**: [Contribute code improvements](https://github.com/narainkarthikv/sticky-memo/pulls)
 
 ## 📜 License
 
-This project is licensed under the **MIT License**.
+This project is licensed under the **MIT License** - see [MIT-LICENSE.txt](./MIT-LICENSE.txt) for details.
 
-See the [MIT-LICENSE.txt](https://github.com/narainkarthikv/sticky-memo/blob/main/MIT-LICENSE.txt) file for full details.
+You are free to use, modify, and distribute this software for any purpose, including commercial use.
 
-**Summary:** You are free to use, modify, and distribute this software for any purpose, including commercial use.
+## 🌟 Show Your Support
 
----
+If Sticky Memo helps you stay organized:
 
-## 🔗 Quick Links
+- ⭐ Star the repository
+- 🐛 Report issues you encounter
+- 💡 Share your feature ideas
+- 🤝 Contribute code or docs
+- 📢 Tell others about the project
 
-- **Website:** [sticky-memo-dev.vercel.app](https://sticky-memo-dev.vercel.app/)
-- **GitHub Repository:** [narainkarthikv/sticky-memo](https://github.com/narainkarthikv/sticky-memo)
-- **Issues:** [Report a bug or request a feature](https://github.com/narainkarthikv/sticky-memo/issues)
-- **Discussions:** [Join the community](https://github.com/narainkarthikv/sticky-memo/discussions)
-- **Contributing Guide:** [CONTRIBUTING.md](./CONTRIBUTING.md)
+## 🔗 Links
 
----
-
-## 💡 Final Thoughts
-
-We're building **Sticky-Memo** as a collaborative tool to help people organize their thoughts and boost productivity. Your code, ideas, and feedback make it stronger every day.
-
-Whether you're fixing a typo, improving performance, adding a new view type, or building amazing features — **every contribution matters!** 🏗️💚
-
-Let's build the best note-taking app together! 🚀
+- **Live Demo**: [https://wisdomfox-sticky-memo.netlify.app/](https://sticky-memo-dev.vercel.app/)
+- **Repository**: [https://github.com/narainkarthikv/sticky-memo](https://github.com/narainkarthikv/sticky-memo)
 
 ---
 
-<p align="center">
-  <strong>Made with ❤️ by the Sticky-Memo community</strong>
-</p>
-
----
+**Built with ❤️ by the open source community**

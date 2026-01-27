@@ -37,6 +37,7 @@ type NotesAction =
   | { type: 'ADD_NOTE'; payload: Note }
   | { type: 'UPDATE_NOTE'; payload: { id: string; updates: NoteUpdate } }
   | { type: 'DELETE_NOTE'; payload: string }
+  | { type: 'IMPORT_NOTES'; payload: Note[] }
   | { type: 'SET_ERROR'; payload: string }
   | { type: 'CLEAR_ERROR' };
 
@@ -95,6 +96,20 @@ function notesReducer(state: NotesState, action: NotesAction): NotesState {
         notes: state.notes.filter(n => n.id !== action.payload),
       };
 
+    case 'IMPORT_NOTES': {
+      // Create a Set of existing note IDs for efficient lookup
+      const existingIds = new Set(state.notes.map(n => n.id));
+      
+      // Filter out notes with IDs that already exist
+      const newNotes = action.payload.filter(note => !existingIds.has(note.id));
+      
+      // Merge new notes with existing ones
+      return {
+        ...state,
+        notes: [...newNotes, ...state.notes],
+      };
+    }
+
     case 'SET_ERROR':
       return {
         ...state,
@@ -133,16 +148,19 @@ export function useNotesController() {
     hasInitializedRef.current = true;
 
     try {
-      // Try to load from storage
+      // Try to load from storage (storage service now handles deduplication)
       let notes = storageService.readNotes();
 
       // If no notes exist, load sample data
       if (notes.length === 0) {
-        notes = sampleNotesData.notes.map((note: any) => ({
+        notes = sampleNotesData.notes.map((note: Record<string, unknown>) => ({
           ...note,
           createdAt: new Date(note.createdAt),
           dueDate: note.dueDate ? new Date(note.dueDate) : undefined,
         }));
+        // Immediately save sample notes to storage
+        storageService.writeNotes(notes);
+        storageService.flush();
       }
 
       dispatch({ type: 'INITIALIZE', payload: notes });
@@ -204,6 +222,25 @@ export function useNotesController() {
       dispatch({ type: 'CLEAR_ERROR' });
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to delete note';
+      dispatch({ type: 'SET_ERROR', payload: errorMessage });
+    }
+  }, []);
+
+  /**
+   * Import multiple notes (bulk operation)
+   * 
+   * @param notes - Array of notes to import
+   */
+  const importNotes = useCallback((notes: Note[]) => {
+    try {
+      if (notes.length === 0) {
+        dispatch({ type: 'SET_ERROR', payload: 'No notes to import' });
+        return;
+      }
+      dispatch({ type: 'IMPORT_NOTES', payload: notes });
+      dispatch({ type: 'CLEAR_ERROR' });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to import notes';
       dispatch({ type: 'SET_ERROR', payload: errorMessage });
     }
   }, []);
@@ -301,6 +338,7 @@ export function useNotesController() {
     createNote,
     updateNote,
     deleteNote,
+    importNotes,
     getNote,
 
     // Filtering

@@ -1,13 +1,21 @@
 ---
-name: Feature Request
-about: Suggest an idea or enhancement
+name: 🚀 Feature Request
+about: Suggest an idea for this project
+title: '[Feature]: '
+labels: enhancement
+assignees: ''
 ---
 
-## 🚀 Feature Description
-Describe the feature clearly.
+## 📃 Description
 
-## 🎯 Motivation
-Why is this feature useful?
+Please describe the feature you'd like to see implemented. Be as clear and concise as possible.
 
-## 🔧 Possible Solution
-Optional: how it could be implemented.
+## ✅ Tasks
+
+- [ ] Task 1
+- [ ] Task 2
+- [ ] Task 3
+
+## 💡 Additional Context
+
+Add any other context, screenshots, or ideas about the feature here.

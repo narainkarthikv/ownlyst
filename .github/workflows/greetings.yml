@@ -1,24 +1,43 @@
-name: Greetings
+name: First-time Contributor Greeting
 
 on:
-  issues:
-    types: [opened]
+  push:
+    branches:
+      - develop
   pull_request_target:
-    types: [opened]
+    types: [opened, reopened, synchronize]
 
 jobs:
   greeting:
     runs-on: ubuntu-latest
     permissions:
+      issues: write
       pull-requests: write
     steps:
-      - uses: actions/first-interaction@v1
+      - name: Welcome first-time contributors
+        uses: actions/first-interaction@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            👋 **Welcome to Sticky Memo!**
+            
+            Thank you for opening your first issue! We appreciate you taking the time to contribute to this project.
+            
+            A maintainer will review your issue and respond as soon as possible. In the meantime:
+            - Please ensure you've provided all the requested information
+            - Check out our [Contributing Guide](https://github.com/${{ github.repository }}/blob/main/CONTRIBUTING.md)
+            - Join our [Discussions](https://github.com/${{ github.repository }}/discussions) to connect with the community
+            
+            Thanks for being part of our community! 🎉
           pr-message: |
-            # 🎉 Welcome to sticky-memo!
+            🎉 **Thank you for your first pull request!**
+            
+            We're excited to review your contribution to Sticky Memo. Here's what happens next:
+            
+            - A maintainer will review your PR within 3-7 days
+            - Please ensure all checks pass and address any feedback
+            - Feel free to ask questions in the PR comments
+            - Make sure you've read our [Contributing Guide](https://github.com/${{ github.repository }}/blob/main/CONTRIBUTING.md)
+            
+            Thank you for helping make Sticky Memo better! 🚀
 
-            Thank you for your first pull request! The Wisdom Fox community truly appreciates your contribution.
-                    
-            Need help? Don't hesitate to ask questions in the comments!
-            Thank you for helping make sticky-memo better! 🚀

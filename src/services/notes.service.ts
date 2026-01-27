@@ -6,9 +6,10 @@
  * Framework-agnostic and reusable with any frontend framework or backend.
  */
 
+import { v4 as uuidv4 } from 'uuid';
 import type { Note, NoteFormData, NoteUpdate } from '../models/note.model';
 import { validateNoteFormData } from '../models/validation';
-import { PRIORITY_ORDER, STATUS_ORDER } from '../models/enums';
+import { PRIORITY_ORDER } from '../models/enums';
 
 /**
  * NotesService - Business logic for note operations
@@ -22,12 +23,12 @@ import { PRIORITY_ORDER, STATUS_ORDER } from '../models/enums';
 export class NotesService {
   /**
    * Generates a unique ID for a new note
-   * Uses timestamp to ensure uniqueness
+   * Uses UUID v4 to ensure uniqueness across devices and sessions
    * 
    * @returns Unique ID string
    */
   private generateId(): string {
-    return Date.now().toString();
+    return uuidv4();
   }
 
   /**
