@@ -1,6 +1,6 @@
 /**
  * NotesView Component - View Layer for Notes Feature
- * 
+ *
  * Pure presentation component that displays notes in a grid layout.
  * Responsibilities:
  * - Render notes in responsive grid
@@ -8,22 +8,14 @@
  * - Display empty state
  * - Show note modals
  * - Zero business logic
- * 
+ *
  * All state management and filtering happens in the controller.
  * This component only receives props and emits callbacks.
  */
 
 import { useState, memo, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Plus,
-  FileText,
-  Pin,
-  X,
-  Edit3,
-  Trash2,
-  Calendar,
-} from 'lucide-react';
+import { Plus, FileText, Pin, X, Edit3, Trash2, Calendar } from 'lucide-react';
 import type { Note } from '../../models/note.model';
 import NoteModal from '../../components/NoteModal';
 import EmptyState from '../../components/shared/EmptyState';
@@ -82,7 +74,7 @@ const priorityColors = {
 
 /**
  * NotesView - Grid view for displaying notes
- * 
+ *
  * Pure presentation component that:
  * - Receives notes from controller via props
  * - Emits user actions via callbacks

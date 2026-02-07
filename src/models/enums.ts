@@ -1,6 +1,6 @@
 /**
  * Enums and Constants for Note Model
- * 
+ *
  * Centralized definitions for all enumerable values used across the application.
  * Prevents duplication and ensures consistency.
  */
@@ -95,16 +95,16 @@ export const NOTE_STATUSES: ReadonlyArray<NoteStatus> = [
  * Human-readable labels for status values
  */
 export const STATUS_LABELS: Record<NoteStatus, string> = {
-  'todo': 'To Do',
+  todo: 'To Do',
   'in-progress': 'In Progress',
-  'done': 'Done',
+  done: 'Done',
 };
 
 /**
  * Order of statuses for Kanban board display
  */
 export const STATUS_ORDER: Record<NoteStatus, number> = {
-  'todo': 1,
+  todo: 1,
   'in-progress': 2,
-  'done': 3,
+  done: 3,
 };

@@ -1,6 +1,6 @@
 /**
  * useNotesSync Hook
- * 
+ *
  * Provides real-time synchronization monitoring and callbacks
  * when notes state changes across any view
  */
@@ -20,7 +20,7 @@ interface UseSyncOptions {
 
 /**
  * Hook to monitor and react to notes state changes
- * 
+ *
  * Usage:
  * ```tsx
  * useNotesSync(notes, {
@@ -76,7 +76,7 @@ export function useNotesSync(
 
 /**
  * Hook to sync a single note's changes and trigger side effects
- * 
+ *
  * Usage:
  * ```tsx
  * useSingleNoteSync(noteId, {
@@ -90,7 +90,10 @@ export function useSingleNoteSync(
   noteId: string,
   note: Note | undefined,
   options: {
-    onStatusChange?: (newStatus: Note['status'], oldStatus?: Note['status']) => void;
+    onStatusChange?: (
+      newStatus: Note['status'],
+      oldStatus?: Note['status']
+    ) => void;
     onUpdate?: (note: Note) => void;
     debug?: boolean;
   } = {}

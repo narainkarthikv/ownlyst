@@ -11,7 +11,8 @@ const NotesApp = lazy(() => import('./pages/NotesApp'));
 // Fallback component for lazy loading
 function PageFallback() {
   return (
-    <div className={`flex items-center justify-center min-h-screen ${BG_CLASSES.surface}`}>
+    <div
+      className={`flex items-center justify-center min-h-screen ${BG_CLASSES.surface}`}>
       <LoadingSpinner />
     </div>
   );

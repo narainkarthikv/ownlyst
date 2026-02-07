@@ -1,6 +1,6 @@
 /**
  * Storage Service - Persistence layer for notes
- * 
+ *
  * Handles all localStorage operations with error handling and debouncing.
  * Abstracts storage implementation details from business logic.
  * Can be easily swapped with IndexedDB, API calls, or other storage mechanisms.
@@ -18,7 +18,7 @@ interface StorageConfig {
 
 /**
  * StorageService - Handles all persistence operations
- * 
+ *
  * Responsibilities:
  * - Reading and writing to localStorage
  * - Error handling and graceful degradation
@@ -40,7 +40,7 @@ export class StorageService {
    * Reads notes from localStorage
    * Safely handles missing or corrupted data
    * Automatically deduplicates notes by ID
-   * 
+   *
    * @returns Array of notes or empty array if none found
    */
   readNotes(): Note[] {
@@ -52,20 +52,25 @@ export class StorageService {
 
       const parsed = JSON.parse(stored) as unknown[];
       // Normalize date strings back to Date objects
-      const notes = parsed.map(note => normalizeDateFields(note));
-      
+      const notes = parsed.map((note) => normalizeDateFields(note));
+
       // Deduplicate notes by ID (keep the first occurrence)
       const seen = new Set<string>();
-      return notes.filter(note => {
+      return notes.filter((note) => {
         if (seen.has(note.id)) {
-          console.warn(`[StorageService] Duplicate note ID found: ${note.id}, removing duplicate`);
+          console.warn(
+            `[StorageService] Duplicate note ID found: ${note.id}, removing duplicate`
+          );
           return false;
         }
         seen.add(note.id);
         return true;
       });
     } catch (error) {
-      console.error(`[StorageService] Error reading notes from localStorage:`, error);
+      console.error(
+        `[StorageService] Error reading notes from localStorage:`,
+        error
+      );
       return [];
     }
   }
@@ -73,7 +78,7 @@ export class StorageService {
   /**
    * Writes notes to localStorage with debouncing
    * Prevents excessive disk I/O from rapid state changes
-   * 
+   *
    * @param notes - Array of notes to persist
    */
   writeNotes(notes: Note[]): void {
@@ -101,10 +106,13 @@ export class StorageService {
     }
 
     try {
-      const serialized = this.pendingData.map(note => serializeNote(note));
+      const serialized = this.pendingData.map((note) => serializeNote(note));
       window.localStorage.setItem(this.storageKey, JSON.stringify(serialized));
     } catch (error) {
-      console.error(`[StorageService] Error writing notes to localStorage:`, error);
+      console.error(
+        `[StorageService] Error writing notes to localStorage:`,
+        error
+      );
     }
 
     this.pendingData = null;

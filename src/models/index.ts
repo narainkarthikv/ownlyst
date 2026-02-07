@@ -1,6 +1,6 @@
 /**
  * Models Export
- * 
+ *
  * Core data types and definitions
  */
 

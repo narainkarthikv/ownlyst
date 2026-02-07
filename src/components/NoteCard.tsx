@@ -1,19 +1,13 @@
 /**
  * NoteCard Component - Individual Note Display
- * 
+ *
  * Uses unified surface color across all views.
  * Status/Priority indicators use semantic colors.
  */
 
 import React, { memo, useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  Pin,
-  Edit3,
-  Trash2,
-  Calendar,
-  Palette,
-} from 'lucide-react';
+import { Pin, Edit3, Trash2, Calendar, Palette } from 'lucide-react';
 import { Note } from '../types/Note';
 import ColorPicker from './ColorPicker';
 import { highlightSearchTerm } from '../utils/highlighting';
@@ -76,13 +70,13 @@ export const NoteCard = memo(function NoteCard({
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, scale: 0.8, rotateZ: -5 }}
-      animate={{ opacity: 1, scale: 1, rotateZ: 0 }}
-      exit={{ opacity: 0, scale: 0.8, rotateZ: 5 }}
+      initial={{ opacity: 0, scale: 0.98, y: 8 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.98, y: 8 }}
       whileHover={{
-        scale: 1.02,
-        boxShadow: '0 10px 25px rgba(0,0,0,0.15)',
-        transition: { type: 'spring', stiffness: 300 },
+        scale: 1.01,
+        boxShadow: '0 12px 28px rgba(2, 10, 18, 0.18)',
+        transition: { type: 'spring', stiffness: 220, damping: 20 },
       }}
       className={`relative p-3 sm:p-4 rounded-lg cursor-pointer transform transition-all duration-200 h-full ${
         SURFACE_CLASSES.base
@@ -95,8 +89,8 @@ export const NoteCard = memo(function NoteCard({
       {/* Pin indicator */}
       {note.isPinned && (
         <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
           className='absolute -top-2 -right-2 bg-blue-500 dark:bg-blue-400 text-white rounded-full p-1'>
           <Pin size={12} />
         </motion.div>
@@ -104,7 +98,8 @@ export const NoteCard = memo(function NoteCard({
 
       {/* Note content */}
       <div className='space-y-3'>
-        <h3 className={`font-bold text-lg leading-tight ${TEXT_CLASSES.primary}`}>
+        <h3
+          className={`font-bold text-lg leading-tight ${TEXT_CLASSES.primary}`}>
           {searchTerm
             ? highlightSearchTerm(
                 note.title,
@@ -136,11 +131,15 @@ export const NoteCard = memo(function NoteCard({
             </div>
           )}
           {/* Status Badge */}
-          <div className={`inline-block px-2 py-1 rounded text-xs font-semibold ${STATUS_CLASSES[note.status]}`}>
-            {note.status === 'in-progress' ? 'In Progress' : note.status.charAt(0).toUpperCase() + note.status.slice(1)}
+          <div
+            className={`inline-block px-2 py-1 rounded text-xs font-semibold ${STATUS_CLASSES[note.status]}`}>
+            {note.status === 'in-progress'
+              ? 'In Progress'
+              : note.status.charAt(0).toUpperCase() + note.status.slice(1)}
           </div>
           {/* Priority Badge */}
-          <div className={`inline-block ml-2 px-2 py-1 rounded text-xs font-semibold ${PRIORITY_CLASSES[note.priority]}`}>
+          <div
+            className={`inline-block ml-2 px-2 py-1 rounded text-xs font-semibold ${PRIORITY_CLASSES[note.priority]}`}>
             {note.priority.charAt(0).toUpperCase() + note.priority.slice(1)}
           </div>
         </div>
@@ -156,7 +155,11 @@ export const NoteCard = memo(function NoteCard({
           whileTap={{ scale: 0.9 }}
           onClick={handleTogglePin}
           aria-label={note.isPinned ? 'Unpin note' : 'Pin note'}
-          className={note.isPinned ? ICON_BUTTON_CLASSES.pinned : ICON_BUTTON_CLASSES.default}>
+          className={
+            note.isPinned
+              ? ICON_BUTTON_CLASSES.pinned
+              : ICON_BUTTON_CLASSES.default
+          }>
           <Pin size={14} aria-hidden='true' />
         </motion.button>
         <motion.button
@@ -175,9 +178,7 @@ export const NoteCard = memo(function NoteCard({
             whileTap={{ scale: 0.9 }}
             onClick={(e) => {
               e.stopPropagation();
-              setColorPickerNote(
-                colorPickerNote === note.id ? null : note.id
-              );
+              setColorPickerNote(colorPickerNote === note.id ? null : note.id);
             }}
             aria-label='Change note color'
             className={ICON_BUTTON_CLASSES.default}>

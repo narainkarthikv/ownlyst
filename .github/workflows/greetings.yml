@@ -20,24 +20,23 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: |
             👋 **Welcome to Sticky Memo!**
-            
+
             Thank you for opening your first issue! We appreciate you taking the time to contribute to this project.
-            
+
             A maintainer will review your issue and respond as soon as possible. In the meantime:
             - Please ensure you've provided all the requested information
             - Check out our [Contributing Guide](https://github.com/${{ github.repository }}/blob/main/CONTRIBUTING.md)
             - Join our [Discussions](https://github.com/${{ github.repository }}/discussions) to connect with the community
-            
+
             Thanks for being part of our community! 🎉
           pr-message: |
             🎉 **Thank you for your first pull request!**
-            
+
             We're excited to review your contribution to Sticky Memo. Here's what happens next:
-            
+
             - A maintainer will review your PR within 3-7 days
             - Please ensure all checks pass and address any feedback
             - Feel free to ask questions in the PR comments
             - Make sure you've read our [Contributing Guide](https://github.com/${{ github.repository }}/blob/main/CONTRIBUTING.md)
-            
-            Thank you for helping make Sticky Memo better! 🚀
 
+            Thank you for helping make Sticky Memo better! 🚀

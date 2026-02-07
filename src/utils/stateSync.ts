@@ -1,6 +1,6 @@
 /**
  * State Synchronization Utilities
- * 
+ *
  * Provides helper functions for:
  * - Detecting state changes across views
  * - Batching updates for performance
@@ -27,8 +27,7 @@ export function hasNotesChanged(prev: Note[], current: Note[]): boolean {
       prevNote.priority !== currNote.priority ||
       prevNote.color !== currNote.color ||
       prevNote.isPinned !== currNote.isPinned ||
-      (prevNote.dueDate?.getTime() || 0) !==
-        (currNote.dueDate?.getTime() || 0)
+      (prevNote.dueDate?.getTime() || 0) !== (currNote.dueDate?.getTime() || 0)
     );
   });
 }
@@ -110,8 +109,7 @@ export function getChangedNoteIds(prev: Note[], current: Note[]): string[] {
       prevNote.content !== currNote.content ||
       prevNote.color !== currNote.color ||
       prevNote.isPinned !== currNote.isPinned ||
-      (prevNote.dueDate?.getTime() || 0) !==
-        (currNote.dueDate?.getTime() || 0)
+      (prevNote.dueDate?.getTime() || 0) !== (currNote.dueDate?.getTime() || 0)
     ) {
       changed.push(currNote.id); // Modified note
     }
@@ -151,7 +149,9 @@ export function mergeNotes(
  * Get notes grouped by status
  * Useful for rendering status-based views
  */
-export function groupNotesByStatus(notes: Note[]): Record<Note['status'], Note[]> {
+export function groupNotesByStatus(
+  notes: Note[]
+): Record<Note['status'], Note[]> {
   return {
     todo: notes.filter((n) => n.status === 'todo'),
     'in-progress': notes.filter((n) => n.status === 'in-progress'),
@@ -163,7 +163,9 @@ export function groupNotesByStatus(notes: Note[]): Record<Note['status'], Note[]
  * Get notes grouped by priority
  * Useful for filtering and display
  */
-export function groupNotesByPriority(notes: Note[]): Record<Note['priority'], Note[]> {
+export function groupNotesByPriority(
+  notes: Note[]
+): Record<Note['priority'], Note[]> {
   return {
     low: notes.filter((n) => n.priority === 'low'),
     medium: notes.filter((n) => n.priority === 'medium'),
@@ -177,7 +179,13 @@ export function groupNotesByPriority(notes: Note[]): Record<Note['priority'], No
  */
 export function sortNotes(
   notes: Note[],
-  sortBy: 'createdAt' | 'dueDate' | 'priority' | 'title' | 'status' | 'isPinned',
+  sortBy:
+    | 'createdAt'
+    | 'dueDate'
+    | 'priority'
+    | 'title'
+    | 'status'
+    | 'isPinned',
   direction: 'asc' | 'desc' = 'desc'
 ): Note[] {
   const sorted = [...notes];
@@ -194,8 +202,7 @@ export function sortNotes(
     switch (sortBy) {
       case 'createdAt':
         comparison =
-          new Date(b.createdAt).getTime() -
-          new Date(a.createdAt).getTime();
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
         break;
       case 'dueDate': {
         const aDue = a.dueDate ? new Date(a.dueDate).getTime() : Infinity;
@@ -205,8 +212,7 @@ export function sortNotes(
       }
       case 'priority': {
         const priorityOrder = { high: 3, medium: 2, low: 1 };
-        comparison =
-          priorityOrder[b.priority] - priorityOrder[a.priority];
+        comparison = priorityOrder[b.priority] - priorityOrder[a.priority];
         break;
       }
       case 'title':
@@ -214,8 +220,7 @@ export function sortNotes(
         break;
       case 'status': {
         const statusOrder = { 'in-progress': 3, todo: 2, done: 1 };
-        comparison =
-          statusOrder[b.status] - statusOrder[a.status];
+        comparison = statusOrder[b.status] - statusOrder[a.status];
         break;
       }
       case 'isPinned':
@@ -234,8 +239,7 @@ export function sortNotes(
  */
 export function isNoteUrgent(note: Note): boolean {
   const isHighPriority = note.priority === 'high';
-  const isOverdue =
-    note.dueDate && new Date(note.dueDate) < new Date();
+  const isOverdue = note.dueDate && new Date(note.dueDate) < new Date();
 
   return (isHighPriority || (isOverdue ?? false)) && !note.isPinned;
 }

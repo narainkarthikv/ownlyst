@@ -1,6 +1,6 @@
 /**
  * Controllers Export
- * 
+ *
  * State management and coordination hooks
  */
 

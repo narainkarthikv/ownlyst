@@ -1,10 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
-import {
-  COLOR_PICKER_PALETTE,
-  type NoteColor,
-} from '../constants/colors';
+import { COLOR_PICKER_PALETTE, type NoteColor } from '../constants/colors';
 import { COLOR_PICKER_CLASSES } from '../constants/ui-colors';
 
 interface ColorPickerProps {

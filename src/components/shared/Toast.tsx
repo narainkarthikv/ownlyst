@@ -4,7 +4,13 @@
  * Supports success, error, info, and warning messages
  */
 
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  ReactNode,
+} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, AlertCircle, Info, AlertTriangle, X } from 'lucide-react';
 

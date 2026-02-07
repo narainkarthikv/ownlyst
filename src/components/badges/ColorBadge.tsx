@@ -1,6 +1,6 @@
 /**
  * ColorBadge Component - Pure UI Component
- * 
+ *
  * Displays a colored badge representing a note's color.
  * Pure presentation component with no business logic.
  */
@@ -29,14 +29,11 @@ const sizeClasses = {
 
 /**
  * ColorBadge - Displays a color indicator
- * 
+ *
  * Simple, memoized component for displaying note colors.
  * Used in badges, status indicators, and color selectors.
  */
-export default function ColorBadge({
-  color,
-  size = 'md',
-}: ColorBadgeProps) {
+export default function ColorBadge({ color, size = 'md' }: ColorBadgeProps) {
   return (
     <div
       className={`${sizeClasses[size]} rounded-full border-2 ${ACTIVE_COLOR_CLASSES[color]}`}

@@ -16,10 +16,7 @@ const sizeClasses = {
   lg: 'h-6 w-6',
 };
 
-export default function ColorBadge({
-  color,
-  size = 'md',
-}: ColorBadgeProps) {
+export default function ColorBadge({ color, size = 'md' }: ColorBadgeProps) {
   return (
     <div
       className={`${sizeClasses[size]} rounded-full border-2 ${DISPLAY_COLOR_CLASSES[color]}`}

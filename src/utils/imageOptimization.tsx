@@ -1,6 +1,6 @@
 /**
  * Image Optimization Utilities
- * 
+ *
  * Provides utilities for lazy loading images and optimizing image performance
  */
 
@@ -77,32 +77,32 @@ export function ResponsiveImage({
 
 /**
  * Image optimization tips:
- * 
+ *
  * 1. Use WebP format when possible
  *    - Reduces file size by 25-35% compared to PNG/JPG
  *    - Use <picture> tag with fallbacks
- * 
+ *
  * 2. Implement lazy loading
  *    - Use loading="lazy" attribute for native lazy loading
  *    - Use Intersection Observer API for advanced control
- * 
+ *
  * 3. Optimize SVG files
  *    - Inline critical SVGs to avoid extra HTTP requests
  *    - Minify SVG code using tools like SVGO
  *    - Use <use> tags to reuse SVG elements
- * 
+ *
  * 4. Responsive images
  *    - Use srcset for different screen sizes
  *    - Use sizes attribute to specify layout widths
- * 
+ *
  * 5. Image compression
  *    - Use tools like TinyPNG, ImageOptim, or ImageMagick
  *    - Compress before adding to project
- * 
+ *
  * 6. CDN delivery
  *    - Use CDN for image delivery
  *    - Enable caching headers
- * 
+ *
  * 7. Modern formats
  *    - Use AVIF when supported (even smaller than WebP)
  *    - Provide fallbacks for older browsers

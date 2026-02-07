@@ -26,39 +26,48 @@ export function useLocalStorage<T>(
   const pendingValueRef = useRef<T | null>(null);
 
   // Debounced write to localStorage
-  const writeToStorage = useCallback((value: T) => {
-    try {
-      window.localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.error(`Error setting localStorage key "${key}":`, error);
-    }
-  }, [key]);
+  const writeToStorage = useCallback(
+    (value: T) => {
+      try {
+        window.localStorage.setItem(key, JSON.stringify(value));
+      } catch (error) {
+        console.error(`Error setting localStorage key "${key}":`, error);
+      }
+    },
+    [key]
+  );
 
   // Return a wrapped version of useState's setter function that persists the new value to localStorage
-  const setValue = useCallback((value: T | ((val: T) => T)) => {
-    try {
-      // Allow value to be a function so we have the same API as useState
-      const valueToStore =
-        value instanceof Function ? value(storedValue) : value;
+  const setValue = useCallback(
+    (value: T | ((val: T) => T)) => {
+      try {
+        // Allow value to be a function so we have the same API as useState
+        const valueToStore =
+          value instanceof Function ? value(storedValue) : value;
 
-      setStoredValue(valueToStore);
-      pendingValueRef.current = valueToStore;
+        setStoredValue(valueToStore);
+        pendingValueRef.current = valueToStore;
 
-      // Clear existing timeout
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-
-      // Debounce the localStorage write
-      timeoutRef.current = setTimeout(() => {
-        if (pendingValueRef.current !== null) {
-          writeToStorage(pendingValueRef.current);
+        // Clear existing timeout
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
         }
-      }, debounceDelay);
-    } catch (error) {
-      console.error(`Error in useLocalStorage setter for key "${key}":`, error);
-    }
-  }, [storedValue, debounceDelay, key, writeToStorage]);
+
+        // Debounce the localStorage write
+        timeoutRef.current = setTimeout(() => {
+          if (pendingValueRef.current !== null) {
+            writeToStorage(pendingValueRef.current);
+          }
+        }, debounceDelay);
+      } catch (error) {
+        console.error(
+          `Error in useLocalStorage setter for key "${key}":`,
+          error
+        );
+      }
+    },
+    [storedValue, debounceDelay, key, writeToStorage]
+  );
 
   // Cleanup timeout on unmount and flush pending writes
   useEffect(() => {

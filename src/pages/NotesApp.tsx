@@ -34,13 +34,8 @@ export default memo(function NotesApp() {
   const [activeView, setActiveView] = useState('notes');
 
   // Get notes from controller
-  const {
-    notes,
-    createNote,
-    updateNote,
-    deleteNote,
-    importNotes,
-  } = useNotesContext();
+  const { notes, createNote, updateNote, deleteNote, importNotes } =
+    useNotesContext();
 
   const renderView = () => {
     const props = {
@@ -84,7 +79,8 @@ export default memo(function NotesApp() {
             </motion.button>
             <div className='flex items-center space-x-2 sm:space-x-3'>
               <Logo size={28} className='sm:w-8' />
-              <h1 className={`text-lg sm:text-xl font-bold ${HEADER_CLASSES.title}`}>
+              <h1
+                className={`text-lg sm:text-xl font-bold ${HEADER_CLASSES.title}`}>
                 Sticky Memo
               </h1>
             </div>
@@ -92,7 +88,8 @@ export default memo(function NotesApp() {
 
           <div className='flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto'>
             {/* View Switcher */}
-            <div className={`flex rounded-lg p-1 w-full sm:w-auto justify-between sm:justify-start ${HEADER_CLASSES.tabContainer}`}>
+            <div
+              className={`flex rounded-lg p-1 w-full sm:w-auto justify-between sm:justify-start ${HEADER_CLASSES.tabContainer}`}>
               {views.map((view) => {
                 const Icon = view.icon;
                 return (
@@ -107,19 +104,14 @@ export default memo(function NotesApp() {
                         : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                     }`}>
                     <Icon size={16} />
-                    <span className='hidden sm:inline'>
-                      {view.name}
-                    </span>
+                    <span className='hidden sm:inline'>{view.name}</span>
                   </motion.button>
                 );
               })}
             </div>
             {/* Theme Toggle and Import/Export */}
             <div className='flex items-center gap-2'>
-              <ImportExport 
-                notes={notes} 
-                onImportNotes={importNotes}
-              />
+              <ImportExport notes={notes} onImportNotes={importNotes} />
               <ThemeToggle />
             </div>
           </div>

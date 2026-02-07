@@ -1,6 +1,6 @@
 /**
  * Note Filtering and Sorting Utilities
- * 
+ *
  * Pure functions for filtering and sorting notes based on various criteria
  */
 
@@ -41,7 +41,10 @@ export function filterByPriority(notes: Note[], priority: string): Note[] {
 /**
  * Filter pinned notes only
  */
-export function filterPinnedOnly(notes: Note[], showPinnedOnly: boolean): Note[] {
+export function filterPinnedOnly(
+  notes: Note[],
+  showPinnedOnly: boolean
+): Note[] {
   if (!showPinnedOnly) return notes;
   return notes.filter((note) => note.isPinned);
 }
@@ -55,12 +58,14 @@ export function sortNotes(notes: Note[], sortOption: SortOption): Note[] {
   switch (sortOption) {
     case 'date-desc':
       return sorted.sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
 
     case 'date-asc':
       return sorted.sort(
-        (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        (a, b) =>
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       );
 
     case 'title-asc':
@@ -78,7 +83,8 @@ export function sortNotes(notes: Note[], sortOption: SortOption): Note[] {
     case 'priority-low':
       const priorityOrderReverse = { low: 0, medium: 1, high: 2 };
       return sorted.sort(
-        (a, b) => priorityOrderReverse[a.priority] - priorityOrderReverse[b.priority]
+        (a, b) =>
+          priorityOrderReverse[a.priority] - priorityOrderReverse[b.priority]
       );
 
     case 'status':

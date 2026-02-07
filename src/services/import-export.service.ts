@@ -1,6 +1,6 @@
 /**
  * Import/Export Service - Data portability for privacy and user control
- * 
+ *
  * Handles importing and exporting notes in JSON and CSV formats.
  * All operations are local - no server involvement.
  */
@@ -25,7 +25,7 @@ interface ImportResult {
 
 /**
  * ImportExportService - Handles data portability
- * 
+ *
  * Responsibilities:
  * - Exporting notes to JSON and CSV formats
  * - Importing notes from JSON and CSV files
@@ -73,10 +73,20 @@ export class ImportExportService {
   static exportAsCSV(notes: Note[]): ExportResult {
     try {
       // CSV headers
-      const headers = ['ID', 'Title', 'Content', 'Status', 'Priority', 'isPinned', 'Created', 'DueDate', 'Tags'];
-      
+      const headers = [
+        'ID',
+        'Title',
+        'Content',
+        'Status',
+        'Priority',
+        'isPinned',
+        'Created',
+        'DueDate',
+        'Tags',
+      ];
+
       // Convert notes to CSV rows
-      const rows = notes.map(note => [
+      const rows = notes.map((note) => [
         this.escapeCsvField(note.id),
         this.escapeCsvField(note.title),
         this.escapeCsvField(note.content),
@@ -91,7 +101,7 @@ export class ImportExportService {
       // Combine headers and rows
       const csvContent = [
         headers.join(','),
-        ...rows.map(row => row.join(',')),
+        ...rows.map((row) => row.join(',')),
       ].join('\n');
 
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -148,7 +158,7 @@ export class ImportExportService {
 
       for (let i = 0; i < parsed.length; i++) {
         const item = parsed[i];
-        
+
         // Validate required fields
         if (!item.title) {
           errors.push(`Row ${i + 1}: Missing required field (title)`);
@@ -217,12 +227,13 @@ export class ImportExportService {
       }
 
       const text = await file.text();
-      const lines = text.split('\n').filter(line => line.trim());
+      const lines = text.split('\n').filter((line) => line.trim());
 
       if (lines.length < 2) {
         return {
           success: false,
-          message: 'Invalid CSV format. File must contain headers and at least one row.',
+          message:
+            'Invalid CSV format. File must contain headers and at least one row.',
         };
       }
 
@@ -233,13 +244,23 @@ export class ImportExportService {
       // Skip header row and process data rows
       for (let i = 1; i < lines.length; i++) {
         const values = this.parseCSVLine(lines[i]);
-        
+
         if (values.length < 2) {
           errors.push(`Row ${i + 1}: Invalid CSV format`);
           continue;
         }
 
-        const [id, title, content, status, priority, isPinned, created, dueDate, tags] = values;
+        const [
+          id,
+          title,
+          content,
+          status,
+          priority,
+          isPinned,
+          created,
+          dueDate,
+          tags,
+        ] = values;
 
         if (!title || !title.trim()) {
           errors.push(`Row ${i + 1}: Missing required field (Title)`);
@@ -261,8 +282,15 @@ export class ImportExportService {
           priority: (priority?.trim() as Note['priority']) || 'medium',
           isPinned: isPinned?.trim().toLowerCase() === 'true',
           createdAt: created ? new Date(created.trim()) : new Date(),
-          dueDate: dueDate && dueDate.trim() ? new Date(dueDate.trim()) : undefined,
-          tags: tags && tags.trim() ? tags.trim().split(';').filter(t => t) : undefined,
+          dueDate:
+            dueDate && dueDate.trim() ? new Date(dueDate.trim()) : undefined,
+          tags:
+            tags && tags.trim()
+              ? tags
+                  .trim()
+                  .split(';')
+                  .filter((t) => t)
+              : undefined,
         };
 
         validatedNotes.push(note);
@@ -298,7 +326,11 @@ export class ImportExportService {
   private static escapeCsvField(field: string): string {
     if (field === null || field === undefined) return '';
     const stringField = String(field);
-    if (stringField.includes(',') || stringField.includes('"') || stringField.includes('\n')) {
+    if (
+      stringField.includes(',') ||
+      stringField.includes('"') ||
+      stringField.includes('\n')
+    ) {
       return `"${stringField.replace(/"/g, '""')}"`;
     }
     return stringField;

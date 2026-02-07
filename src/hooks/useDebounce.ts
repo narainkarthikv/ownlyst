@@ -1,6 +1,6 @@
 /**
  * useDebounce Hook
- * 
+ *
  * Provides debouncing functionality for expensive operations like search and storage writes
  */
 
@@ -13,7 +13,7 @@ interface UseDebounceOptions {
 
 /**
  * Hook to debounce a value and trigger a callback
- * 
+ *
  * @param value The value to debounce
  * @param callback Function to call when debounce completes
  * @param options Configuration options
@@ -61,7 +61,7 @@ export function useDebounce<T>(
 
 /**
  * Hook for debouncing a callback function
- * 
+ *
  * @param callback Function to debounce
  * @param delay Delay in milliseconds
  * @returns Debounced callback function

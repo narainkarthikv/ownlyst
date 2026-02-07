@@ -1,6 +1,6 @@
 /**
  * FilterBar Component - Unified Search, Sort, and Filter Controls
- * 
+ *
  * Reusable component providing consistent filtering experience across all views.
  * Features:
  * - Real-time search with debouncing
@@ -12,13 +12,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Search,
-  SlidersHorizontal,
-  ArrowUpDown,
-  X,
-  Check,
-} from 'lucide-react';
+import { Search, SlidersHorizontal, ArrowUpDown, X, Check } from 'lucide-react';
 import { useDebounce } from '../../hooks/useDebounce';
 import type { Note } from '../../models/note.model';
 
@@ -339,11 +333,13 @@ export default function FilterBar({
           animate={{ opacity: 1, y: 0 }}
           className='flex items-center justify-between text-sm text-gray-500 dark:text-gray-400'>
           <span>
-            Showing {filteredCount} of {totalCount} note{totalCount !== 1 ? 's' : ''}
+            Showing {filteredCount} of {totalCount} note
+            {totalCount !== 1 ? 's' : ''}
           </span>
           {(filters.search || activeFiltersCount > 0) && (
             <span className='text-xs'>
-              {activeFiltersCount > 0 && `${activeFiltersCount} filter${activeFiltersCount !== 1 ? 's' : ''} active`}
+              {activeFiltersCount > 0 &&
+                `${activeFiltersCount} filter${activeFiltersCount !== 1 ? 's' : ''} active`}
             </span>
           )}
         </motion.div>

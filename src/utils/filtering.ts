@@ -47,9 +47,7 @@ export function filterBySearch(notes: Note[], searchTerm: string): Note[] {
  * Separate pinned notes from unpinned notes
  * Returns [pinned, unpinned]
  */
-export function separatePinnedNotes(
-  notes: Note[]
-): [Note[], Note[]] {
+export function separatePinnedNotes(notes: Note[]): [Note[], Note[]] {
   const pinned = notes.filter((note) => note.isPinned);
   const unpinned = notes.filter((note) => !note.isPinned);
   return [pinned, unpinned];

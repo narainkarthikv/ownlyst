@@ -28,21 +28,23 @@ Fixes #
 
 <!-- Describe what you changed and why. Use bullet points for clarity. -->
 
-- 
-- 
-- 
+-
+-
+-
 
 ## Testing
 
 <!-- Describe how you tested these changes -->
 
 ### Manual Testing
+
 - [ ] Tested locally in development mode
 - [ ] Tested in production build
 - [ ] Tested in multiple browsers (if applicable)
 - [ ] Tested on mobile/responsive (if applicable)
 
 ### Test Coverage
+
 - [ ] Added new tests for new functionality
 - [ ] Updated existing tests
 - [ ] All tests pass locally
@@ -73,6 +75,7 @@ Fixes #
 - [ ] Migration guide added to CHANGELOG.md or docs
 
 **Breaking Changes:**
+
 <!-- Describe what breaks and how users should adapt -->
 
 ## Documentation
@@ -81,6 +84,8 @@ Fixes #
 - [ ] Updated CHANGELOG.md
 - [ ] Updated code comments
 - [ ] Updated external documentation (if applicable)
+
+<!-- If there is no CHANGELOG.md in the repo, note release-impact details in the PR description instead. -->
 
 ## Checklist
 
