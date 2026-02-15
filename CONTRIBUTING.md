@@ -34,36 +34,36 @@ Before contributing, ensure you have:
 ### Local Setup
 
 1. **Fork the repository**
-   
+
    Click the "Fork" button at the top-right of the [repository page](https://github.com/narainkarthikv/sticky-memo).
 
 2. **Clone your fork**
-   
+
    ```bash
    git clone https://github.com/your-username/sticky-memo.git
    cd sticky-memo
    ```
 
 3. **Add upstream remote**
-   
+
    ```bash
    git remote add upstream https://github.com/narainkarthikv/sticky-memo.git
    ```
 
 4. **Install dependencies**
-   
+
    ```bash
    npm install
    ```
 
 5. **Start development server**
-   
+
    ```bash
    npm run dev
    ```
 
 6. **Verify setup**
-   
+
    Open http://localhost:5173 and verify the app runs correctly.
 
 ## How to Contribute
@@ -111,6 +111,7 @@ git checkout -b docs/update-readme
 ```
 
 **Branch Naming Convention**:
+
 - `feature/` - New features
 - `fix/` - Bug fixes
 - `docs/` - Documentation changes
@@ -263,7 +264,7 @@ style: format code with prettier
 - Capitalize the subject line
 - Don't end subject with a period
 - Separate subject from body with a blank line
-- Explain *what* and *why* in the body, not *how*
+- Explain _what_ and _why_ in the body, not _how_
 
 ## Pull Request Process
 
@@ -345,6 +346,7 @@ Have an idea? We'd love to hear it!
 ### Recognition
 
 Contributors are recognized in:
+
 - [Contributors.md](./Contributors.md) file
 - GitHub contributors graph
 - Release notes (for significant contributions)

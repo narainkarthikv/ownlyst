@@ -29,9 +29,7 @@ export default function LoadingSpinner({
         transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
         className={`${sizeClasses[size]} border-2 border-blue-200 dark:border-blue-900 border-t-blue-600 dark:border-t-blue-400 rounded-full`}
       />
-      {label && (
-        <p className={`text-sm ${TEXT_CLASSES.secondary}`}>{label}</p>
-      )}
+      {label && <p className={`text-sm ${TEXT_CLASSES.secondary}`}>{label}</p>}
     </div>
   );
 }

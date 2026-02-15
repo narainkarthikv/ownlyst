@@ -1,6 +1,6 @@
 /**
  * PriorityBadge Component - Pure UI Component
- * 
+ *
  * Displays a badge indicating note priority level.
  * Pure presentation component with no business logic.
  */
@@ -38,7 +38,7 @@ const sizeClasses = {
 
 /**
  * PriorityBadge - Displays priority indicator
- * 
+ *
  * Simple component for showing note priority levels.
  * Used in note cards, lists, and detail views.
  */

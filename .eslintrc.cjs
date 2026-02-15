@@ -1,14 +1,17 @@
-// Legacy ESLint config for tooling that expects .eslintrc.* files.
-// The canonical configuration lives in eslint.config.js (flat config).
 module.exports = {
   root: true,
   env: {
-    browser: true,
-    es2020: true,
+    es2022: true,
   },
-  extends: ['eslint:recommended'],
+  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
   ignorePatterns: ['node_modules/', 'dist/', 'build/', 'coverage/'],
   overrides: [
+    {
+      files: ['frontend/**/*.{js,jsx}'],
+      env: {
+        browser: true,
+      },
+    },
     {
       files: ['**/*.{test,spec}.{js,jsx}'],
       env: {

@@ -83,15 +83,19 @@ After a security issue is fixed:
 3. We will credit the reporter (unless they prefer to remain anonymous)
 4. We will update the CHANGELOG with security fix details
 
+If a CHANGELOG is not present in the repository, the GitHub Security Advisory and release notes will serve as the public record for the fix.
+
 ## Scope
 
 ### In Scope
+
 - Security vulnerabilities in the application code
 - Client-side security issues (XSS, CSRF, etc.)
 - Dependency vulnerabilities with active exploits
 - Privacy leaks or data exposure issues
 
 ### Out of Scope
+
 - Social engineering attacks
 - Physical attacks on user devices
 - Browser vulnerabilities (report to browser vendors)
@@ -101,12 +105,14 @@ After a security issue is fixed:
 ## Contact
 
 For general security questions (non-vulnerabilities), you can:
+
 - Open a [GitHub Discussion](https://github.com/narainkarthikv/sticky-memo/discussions)
 - Email the maintainers (check repository for current contact)
 
 ## Recognition
 
 We appreciate security researchers who help keep Sticky Memo secure. With your permission, we will acknowledge your contribution in:
+
 - Security advisories
 - CHANGELOG
 - Contributors list

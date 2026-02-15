@@ -6,7 +6,12 @@
 import { Note } from '../types/Note';
 import { PRIORITY_ORDER } from '../constants/priorities';
 
-export type SortField = 'title' | 'status' | 'priority' | 'createdAt' | 'dueDate';
+export type SortField =
+  | 'title'
+  | 'status'
+  | 'priority'
+  | 'createdAt'
+  | 'dueDate';
 export type SortDirection = 'asc' | 'desc';
 
 /**
@@ -84,8 +89,6 @@ export function sortByPinnedAndDate(notes: Note[]): Note[] {
 /**
  * Toggle sort direction
  */
-export function toggleSortDirection(
-  direction: SortDirection
-): SortDirection {
+export function toggleSortDirection(direction: SortDirection): SortDirection {
   return direction === 'asc' ? 'desc' : 'asc';
 }

@@ -23,9 +23,11 @@ const features = [
     desc: 'No tracking pixels. No analytics scripts. No "oops, we shared your data" moments. Just you and your notes. Forever. 🛡️',
   },
   {
-    icon: <Download className='w-10 h-10 text-purple-600 dark:text-purple-400' />,
+    icon: (
+      <Download className='w-10 h-10 text-purple-600 dark:text-purple-400' />
+    ),
     title: 'Break Free Anytime',
-    desc: 'Export everything as JSON or CSV with one click. Your data isn\'t held hostage here. Take it wherever you want! 📦',
+    desc: "Export everything as JSON or CSV with one click. Your data isn't held hostage here. Take it wherever you want! 📦",
   },
   {
     icon: <Zap className='w-10 h-10 text-amber-600 dark:text-amber-400' />,
@@ -53,7 +55,7 @@ const privacyGuarantees = [
   {
     icon: '📱',
     title: 'Stored 100% Locally',
-    desc: 'Your browser has a built-in vault for your notes. We never touch it, see it, or even know it exists. That\'s the way it should be!',
+    desc: "Your browser has a built-in vault for your notes. We never touch it, see it, or even know it exists. That's the way it should be!",
   },
   {
     icon: '🚫',
@@ -62,8 +64,8 @@ const privacyGuarantees = [
   },
   {
     icon: '✂️',
-    title: 'You\'re the Boss',
-    desc: 'Want to export? Do it. Delete everything? Go ahead. Backup offline? Sure thing. it\'s YOUR data, so YOU make the rules.',
+    title: "You're the Boss",
+    desc: "Want to export? Do it. Delete everything? Go ahead. Backup offline? Sure thing. it's YOUR data, so YOU make the rules.",
   },
   {
     icon: '⚡',
@@ -112,15 +114,20 @@ export default function LandingPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
               className='text-4xl md:text-5xl font-bold leading-tight mb-4 text-gray-900 dark:text-white'>
-              Notes That Stay<br />
-              <span className='text-blue-600 dark:text-blue-400'>Truly Private</span>
+              Notes That Stay
+              <br />
+              <span className='text-blue-600 dark:text-blue-400'>
+                Truly Private
+              </span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
               className='mb-6 text-gray-600 dark:text-gray-300 font-normal text-lg md:text-xl max-w-[560px]'>
-              Write freely, knowing your thoughts are yours alone. <span className='font-semibold'>No cloud. No tracking.</span> Just honest, local-first note-taking. 🌱
+              Write freely, knowing your thoughts are yours alone.{' '}
+              <span className='font-semibold'>No cloud. No tracking.</span> Just
+              honest, local-first note-taking. 🌱
             </motion.p>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -157,13 +164,16 @@ export default function LandingPage() {
       </div>
 
       {/* Privacy Guarantee Section */}
-      <div id='privacy' className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6'>
+      <div
+        id='privacy'
+        className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6'>
         <div className='text-center mb-12'>
           <h3 className='text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white'>
             Why Your Privacy is Actually Safe Here 🛡️
           </h3>
           <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
-            Unlike most apps that promise privacy but store everything on their servers, we literally CAN'T see your notes. Here's the real deal:
+            Unlike most apps that promise privacy but store everything on their
+            servers, we literally CAN'T see your notes. Here's the real deal:
           </p>
         </div>
 
@@ -195,7 +205,8 @@ export default function LandingPage() {
             Everything You Need, Nothing You Don't ✨
           </h3>
           <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
-            No bloat. No nonsense. No data mining disguised as "features." Just pure, honest note-taking.
+            No bloat. No nonsense. No data mining disguised as "features." Just
+            pure, honest note-taking.
           </p>
         </div>
 
@@ -230,24 +241,42 @@ export default function LandingPage() {
                 No Data Hostage Situations 🔓
               </h3>
               <p className='text-gray-700 dark:text-gray-300 mb-4 text-base leading-relaxed'>
-                Tired of apps that make it impossible to leave? We're different. Your data walks out with you, any time you want. No "export premium" upgrade required.
+                Tired of apps that make it impossible to leave? We're different.
+                Your data walks out with you, any time you want. No "export
+                premium" upgrade required.
               </p>
               <ul className='space-y-3 mb-6'>
                 <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
-                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>✓</span>
-                  <span><strong>Export as JSON</strong> for backup or migration</span>
+                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
+                    ✓
+                  </span>
+                  <span>
+                    <strong>Export as JSON</strong> for backup or migration
+                  </span>
                 </li>
                 <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
-                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>✓</span>
-                  <span><strong>Export as CSV</strong> to use in spreadsheets</span>
+                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
+                    ✓
+                  </span>
+                  <span>
+                    <strong>Export as CSV</strong> to use in spreadsheets
+                  </span>
                 </li>
                 <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
-                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>✓</span>
-                  <span><strong>Import</strong> from backups or other apps</span>
+                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
+                    ✓
+                  </span>
+                  <span>
+                    <strong>Import</strong> from backups or other apps
+                  </span>
                 </li>
                 <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
-                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>✓</span>
-                  <span><strong>Delete anytime</strong> with no questions asked</span>
+                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
+                    ✓
+                  </span>
+                  <span>
+                    <strong>Delete anytime</strong> with no questions asked
+                  </span>
                 </li>
               </ul>
             </div>
@@ -271,7 +300,8 @@ export default function LandingPage() {
             The Nerdy Details (For Those Who Care) 🤓
           </h3>
           <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
-            Want to know EXACTLY how we keep your data private? Here's the honest technical breakdown:
+            Want to know EXACTLY how we keep your data private? Here's the
+            honest technical breakdown:
           </p>
         </div>
 
@@ -281,19 +311,30 @@ export default function LandingPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className='bg-white dark:bg-slate-700 rounded-lg p-6 border border-gray-200 dark:border-slate-600'>
-            <h4 className='text-xl font-bold mb-4 text-gray-900 dark:text-white'>Where Your Notes Actually Live 🏠</h4>
+            <h4 className='text-xl font-bold mb-4 text-gray-900 dark:text-white'>
+              Where Your Notes Actually Live 🏠
+            </h4>
             <ul className='space-y-3 text-gray-700 dark:text-gray-300'>
               <li className='flex items-start gap-2'>
                 <span className='text-blue-600 dark:text-blue-400 mt-1'>→</span>
-                <span><strong>In Your Browser's Vault:</strong> Built-in storage that only YOU can access</span>
+                <span>
+                  <strong>In Your Browser's Vault:</strong> Built-in storage
+                  that only YOU can access
+                </span>
               </li>
               <li className='flex items-start gap-2'>
                 <span className='text-blue-600 dark:text-blue-400 mt-1'>→</span>
-                <span><strong>On Your Device:</strong> Whether it's your laptop, phone, or tablet</span>
+                <span>
+                  <strong>On Your Device:</strong> Whether it's your laptop,
+                  phone, or tablet
+                </span>
               </li>
               <li className='flex items-start gap-2'>
                 <span className='text-blue-600 dark:text-blue-400 mt-1'>→</span>
-                <span><strong>NOT on Our Servers:</strong> Seriously, we have no database. Nothing to hack! 🎉</span>
+                <span>
+                  <strong>NOT on Our Servers:</strong> Seriously, we have no
+                  database. Nothing to hack! 🎉
+                </span>
               </li>
             </ul>
           </motion.div>
@@ -303,19 +344,30 @@ export default function LandingPage() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className='bg-white dark:bg-slate-700 rounded-lg p-6 border border-gray-200 dark:border-slate-600'>
-            <h4 className='text-xl font-bold mb-4 text-gray-900 dark:text-white'>What We Don't Do (Promise!) 🙅</h4>
+            <h4 className='text-xl font-bold mb-4 text-gray-900 dark:text-white'>
+              What We Don't Do (Promise!) 🙅
+            </h4>
             <ul className='space-y-3 text-gray-700 dark:text-gray-300'>
               <li className='flex items-start gap-2'>
                 <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
-                <span><strong>Zero Tracking:</strong> No sneaky pixels watching your every move</span>
+                <span>
+                  <strong>Zero Tracking:</strong> No sneaky pixels watching your
+                  every move
+                </span>
               </li>
               <li className='flex items-start gap-2'>
                 <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
-                <span><strong>Zero Analytics:</strong> We don't care what you write or when you write it</span>
+                <span>
+                  <strong>Zero Analytics:</strong> We don't care what you write
+                  or when you write it
+                </span>
               </li>
               <li className='flex items-start gap-2'>
                 <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
-                <span><strong>Zero Ads:</strong> No selling your attention to the highest bidder</span>
+                <span>
+                  <strong>Zero Ads:</strong> No selling your attention to the
+                  highest bidder
+                </span>
               </li>
             </ul>
           </motion.div>
@@ -334,7 +386,8 @@ export default function LandingPage() {
             Ready to Write Without Worries? 📝
           </h3>
           <p className='mb-8 text-white/90 text-lg'>
-            Join thousands who have switched to truly private note-taking. No signup. No surveillance. No surprises.
+            Join thousands who have switched to truly private note-taking. No
+            signup. No surveillance. No surprises.
           </p>
           <div className='flex flex-col sm:flex-row gap-4 justify-center'>
             <motion.button
@@ -367,7 +420,10 @@ export default function LandingPage() {
               Love Privacy-First Software? ☕
             </h3>
             <p className='text-gray-700 dark:text-gray-300 mb-8 text-lg max-w-2xl mx-auto'>
-              Building ethical, privacy-respecting software takes time and coffee (lots of coffee). If Sticky Memo makes your life easier, consider buying us a cup! Every bit helps keep this project independent and ad-free. 💚
+              Building ethical, privacy-respecting software takes time and
+              coffee (lots of coffee). If Sticky Memo makes your life easier,
+              consider buying us a cup! Every bit helps keep this project
+              independent and ad-free. 💚
             </p>
             <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
               <motion.a
@@ -392,7 +448,8 @@ export default function LandingPage() {
               </motion.a>
             </div>
             <p className='mt-6 text-sm text-gray-600 dark:text-gray-400'>
-              ✨ Donations are optional and never required. Sticky Memo will always be free and open source!
+              ✨ Donations are optional and never required. Sticky Memo will
+              always be free and open source!
             </p>
           </motion.div>
         </div>
@@ -405,7 +462,9 @@ export default function LandingPage() {
             <div>
               <div className='flex items-center mb-3'>
                 <Logo size={32} />
-                <h4 className='text-blue-400 text-xl font-bold ml-2'>Sticky Memo</h4>
+                <h4 className='text-blue-400 text-xl font-bold ml-2'>
+                  Sticky Memo
+                </h4>
               </div>
               <p className='text-gray-400 text-sm max-w-xs'>
                 Privacy-first notes that actually respect you. 💚
@@ -419,7 +478,8 @@ export default function LandingPage() {
           </div>
           <div className='border-t border-gray-700 pt-6'>
             <p className='text-gray-400 text-xs text-center'>
-              © 2026 Sticky Memo. Made with 💚 by people who care about your privacy.
+              © 2026 Sticky Memo. Made with 💚 by people who care about your
+              privacy.
             </p>
           </div>
         </div>

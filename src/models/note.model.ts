@@ -1,6 +1,6 @@
 /**
  * Note Model - Core data structure and type definitions
- * 
+ *
  * This file defines the Note interface and all related type definitions.
  * Framework-agnostic and contains no React dependencies.
  * Serves as the single source of truth for the Note data structure across the application.
@@ -22,7 +22,7 @@ export type NoteStatus = 'todo' | 'in-progress' | 'done';
 /**
  * Core Note model interface
  * Represents a single note in the application
- * 
+ *
  * @property id - Unique identifier (generated from timestamp)
  * @property title - Brief heading for the note
  * @property content - Full text content of the note

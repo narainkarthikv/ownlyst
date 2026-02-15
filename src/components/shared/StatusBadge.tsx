@@ -16,10 +16,7 @@ const sizeClasses = {
   md: 'px-3 py-1.5 text-sm',
 };
 
-export default function StatusBadge({
-  status,
-  size = 'md',
-}: StatusBadgeProps) {
+export default function StatusBadge({ status, size = 'md' }: StatusBadgeProps) {
   return (
     <span
       className={`inline-block rounded-full font-medium border ${STATUS_BADGE_COLORS[status]} ${sizeClasses[size]}`}>

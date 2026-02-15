@@ -35,7 +35,8 @@ export default function EmptyState({
       <div className='text-5xl mb-4'>{icon}</div>
 
       {/* Title */}
-      <h3 className={`text-xl font-semibold text-center mb-2 ${TEXT_CLASSES.primary}`}>
+      <h3
+        className={`text-xl font-semibold text-center mb-2 ${TEXT_CLASSES.primary}`}>
         {title}
       </h3>
 

@@ -21,13 +21,19 @@ export function getFirstLine(text: string): string {
  * Count words in text
  */
 export function countWords(text: string): number {
-  return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+  return text
+    .trim()
+    .split(/\s+/)
+    .filter((word) => word.length > 0).length;
 }
 
 /**
  * Estimate reading time in minutes
  */
-export function estimateReadingTime(text: string, wordsPerMinute: number = 200): number {
+export function estimateReadingTime(
+  text: string,
+  wordsPerMinute: number = 200
+): number {
   const words = countWords(text);
   return Math.ceil(words / wordsPerMinute);
 }
@@ -35,10 +41,14 @@ export function estimateReadingTime(text: string, wordsPerMinute: number = 200):
 /**
  * Get text summary for preview
  */
-export function getTextSummary(text: string, lines: number = 2, charsPerLine: number = 60): string {
+export function getTextSummary(
+  text: string,
+  lines: number = 2,
+  charsPerLine: number = 60
+): string {
   const lineArray = text.split('\n').slice(0, lines);
   return lineArray
-    .map(line => {
+    .map((line) => {
       if (line.length > charsPerLine) {
         return line.substring(0, charsPerLine).trim() + '...';
       }
@@ -51,24 +61,61 @@ export function getTextSummary(text: string, lines: number = 2, charsPerLine: nu
  * Format time since creation
  */
 export function getTimeSince(date: Date): string {
-  const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000);
-  
+  const seconds = Math.floor(
+    (new Date().getTime() - new Date(date).getTime()) / 1000
+  );
+
   let interval = seconds / 31536000;
-  if (interval > 1) return Math.floor(interval) + ' year' + (Math.floor(interval) > 1 ? 's' : '') + ' ago';
-  
+  if (interval > 1)
+    return (
+      Math.floor(interval) +
+      ' year' +
+      (Math.floor(interval) > 1 ? 's' : '') +
+      ' ago'
+    );
+
   interval = seconds / 2592000;
-  if (interval > 1) return Math.floor(interval) + ' month' + (Math.floor(interval) > 1 ? 's' : '') + ' ago';
-  
+  if (interval > 1)
+    return (
+      Math.floor(interval) +
+      ' month' +
+      (Math.floor(interval) > 1 ? 's' : '') +
+      ' ago'
+    );
+
   interval = seconds / 86400;
-  if (interval > 1) return Math.floor(interval) + ' day' + (Math.floor(interval) > 1 ? 's' : '') + ' ago';
-  
+  if (interval > 1)
+    return (
+      Math.floor(interval) +
+      ' day' +
+      (Math.floor(interval) > 1 ? 's' : '') +
+      ' ago'
+    );
+
   interval = seconds / 3600;
-  if (interval > 1) return Math.floor(interval) + ' hour' + (Math.floor(interval) > 1 ? 's' : '') + ' ago';
-  
+  if (interval > 1)
+    return (
+      Math.floor(interval) +
+      ' hour' +
+      (Math.floor(interval) > 1 ? 's' : '') +
+      ' ago'
+    );
+
   interval = seconds / 60;
-  if (interval > 1) return Math.floor(interval) + ' minute' + (Math.floor(interval) > 1 ? 's' : '') + ' ago';
-  
-  return Math.floor(seconds) + ' second' + (Math.floor(seconds) > 1 ? 's' : '') + ' ago';
+  if (interval > 1)
+    return (
+      Math.floor(interval) +
+      ' minute' +
+      (Math.floor(interval) > 1 ? 's' : '') +
+      ' ago'
+    );
+
+  return (
+    Math.floor(seconds) +
+    ' second' +
+    (Math.floor(seconds) > 1 ? 's' : '') +
+    ' ago'
+  );
 }
 
 /**

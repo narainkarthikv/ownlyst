@@ -32,10 +32,10 @@ export default defineConfig({
         // Code splitting configuration for core dependencies
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'animation': ['framer-motion'],
-          'dnd': ['@hello-pangea/dnd'],
-          'icons': ['lucide-react'],
-          'virtualization': ['react-window'],
+          animation: ['framer-motion'],
+          dnd: ['@hello-pangea/dnd'],
+          icons: ['lucide-react'],
+          virtualization: ['react-window'],
         },
       },
     },

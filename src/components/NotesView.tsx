@@ -1,6 +1,6 @@
 /**
  * NotesView - Optimized Notes Grid View
- * 
+ *
  * Features:
  * - Memoized component to prevent unnecessary re-renders
  * - Debounced search input for better performance
@@ -203,7 +203,10 @@ export default memo(function NotesView({
               <div className='flex items-center justify-between p-6 border-b border-gray-200/50 dark:border-slate-600/50'>
                 <div className='flex items-center space-x-3'>
                   {viewingNote.isPinned && (
-                    <Pin size={20} className='text-blue-600 dark:text-blue-400' />
+                    <Pin
+                      size={20}
+                      className='text-blue-600 dark:text-blue-400'
+                    />
                   )}
                   <h2 className='text-2xl font-bold text-gray-900 dark:text-white'>
                     {viewingNote.title}

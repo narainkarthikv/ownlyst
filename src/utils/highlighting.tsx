@@ -16,7 +16,10 @@ export function getHighlightedSegments(
     return [{ text, isMatch: false }];
   }
 
-  const regex = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  const regex = new RegExp(
+    `(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`,
+    'gi'
+  );
   const parts = text.split(regex);
 
   return parts
@@ -92,7 +95,10 @@ export function getMatchContext(
   }
 
   const startIndex = Math.max(0, match.index - contextLength);
-  const endIndex = Math.min(text.length, match.index + match[0].length + contextLength);
+  const endIndex = Math.min(
+    text.length,
+    match.index + match[0].length + contextLength
+  );
 
   let context = text.substring(startIndex, endIndex);
 

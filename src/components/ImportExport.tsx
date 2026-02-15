@@ -1,6 +1,6 @@
 /**
  * ImportExport Component - Data Portability Controls
- * 
+ *
  * Subtle, secondary UI for importing and exporting notes
  * Positioned at bottom as a utility area, not competing with core actions
  */
@@ -91,9 +91,7 @@ export default function ImportExport({
               : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-gray-300'
           }`}>
         <Download size={16} />
-        <span className='hidden sm:inline'>
-          Import/Export
-        </span>
+        <span className='hidden sm:inline'>Import/Export</span>
       </motion.button>
 
       {/* Dropdown Menu */}

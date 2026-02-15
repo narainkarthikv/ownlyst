@@ -130,7 +130,8 @@ const KanbanCard = memo(
                   <Calendar size={12} strokeWidth={2.5} />
                   <span>{formatDate(note.createdAt)}</span>
                 </div>
-                <span className={`font-bold uppercase ${PRIORITY_TEXT_COLORS[note.priority]}`}>
+                <span
+                  className={`font-bold uppercase ${PRIORITY_TEXT_COLORS[note.priority]}`}>
                   {note.priority}
                 </span>
               </div>
@@ -180,7 +181,7 @@ const KanbanCard = memo(
   }
 ); // KanbanColumn Component
 interface KanbanColumnProps {
-  column: typeof KANBAN_COLUMNS[number];
+  column: (typeof KANBAN_COLUMNS)[number];
   notes: Note[];
   onAddNote: () => void;
   onUpdateNote: (id: string, updates: Partial<Note>) => void;
@@ -271,7 +272,7 @@ type ColumnId = 'todo' | 'in-progress' | 'done';
 
 /**
  * Main KanbanView Component
- * 
+ *
  * Features:
  * - Maps notes to Kanban columns based on their status
  * - Synchronizes status updates when items are dragged between columns
@@ -290,11 +291,14 @@ export default function KanbanView({
   const onAddNote = propsOnAddNote || contextNotes.createNote;
   const onUpdateNote = propsOnUpdateNote || contextNotes.updateNote;
   const onDeleteNote = propsOnDeleteNote || contextNotes.deleteNote;
-  
+
   // Helper to update note status (maps droppable ID to status)
-  const updateNoteStatus = useCallback((noteId: string, newStatus: string) => {
-    onUpdateNote(noteId, { status: newStatus as Note['status'] });
-  }, [onUpdateNote]);
+  const updateNoteStatus = useCallback(
+    (noteId: string, newStatus: string) => {
+      onUpdateNote(noteId, { status: newStatus as Note['status'] });
+    },
+    [onUpdateNote]
+  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filters, setFilters] = useState<FilterState>(getDefaultFilters());

@@ -1,6 +1,6 @@
 /**
  * Notes View Export
- * 
+ *
  * Exposes all notes-related view components
  */
 

@@ -1,6 +1,6 @@
 /**
  * Modals Export
- * 
+ *
  * Exposes all modal components
  */
 

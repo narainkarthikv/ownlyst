@@ -1,12 +1,6 @@
 import { useState, useMemo, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
-import {
-  Plus,
-  Pin,
-  Edit3,
-  Trash2,
-  Table as TableIcon,
-} from 'lucide-react';
+import { Plus, Pin, Edit3, Trash2, Table as TableIcon } from 'lucide-react';
 import { Note } from '../types/Note';
 import NoteModal from './NoteModal';
 import EmptyState from './shared/EmptyState';
@@ -90,36 +84,36 @@ export default memo(function TableView({
       {/* Header with FilterBar and Actions */}
       <div className='flex items-center justify-between gap-3'>
         <div className='flex-1'>
-          <FilterBar 
+          <FilterBar
             filters={filters}
             onFilterChange={setFilters}
             totalCount={notes.length}
             filteredCount={filteredNotes.length}
           />
         </div>
-          
+
         <div className='flex gap-2 sm:gap-3 flex-shrink-0'>
-            {selectedRows.size > 0 && (
-              <motion.button
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={handleBulkDelete}
-                className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium gap-2 transition-colors'>
-                <Trash2 className='h-5 w-5' />
-                <span>Delete ({selectedRows.size})</span>
-              </motion.button>
-            )}
+          {selectedRows.size > 0 && (
             <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={handleAddNote}
-              className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors'>
-              <Plus className='h-5 w-5' />
-              <span>New Note</span>
+              onClick={handleBulkDelete}
+              className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium gap-2 transition-colors'>
+              <Trash2 className='h-5 w-5' />
+              <span>Delete ({selectedRows.size})</span>
             </motion.button>
-          </div>
+          )}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleAddNote}
+            className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors'>
+            <Plus className='h-5 w-5' />
+            <span>New Note</span>
+          </motion.button>
+        </div>
       </div>
 
       {/* Table */}
@@ -185,7 +179,10 @@ export default memo(function TableView({
                   <td className='px-4 py-3'>
                     <div className='flex items-center gap-2'>
                       {note.isPinned && (
-                        <Pin size={16} className='text-blue-600 flex-shrink-0' />
+                        <Pin
+                          size={16}
+                          className='text-blue-600 flex-shrink-0'
+                        />
                       )}
                       <span className='font-medium text-gray-900 dark:text-gray-100 truncate'>
                         {note.title}

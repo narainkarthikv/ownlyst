@@ -1,6 +1,6 @@
 /**
  * NotesContext - Centralized state management for notes across all views
- * 
+ *
  * This context provides:
  * - Global notes state accessible from any component
  * - Consistent data representation across all views
@@ -8,7 +8,12 @@
  * - Optimized re-renders using React Context
  */
 
-import React, { createContext, useContext, useCallback, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useCallback,
+  useEffect,
+} from 'react';
 import { Note } from '../types/Note';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import sampleNotesData from '../data/sampleNotes.json';
@@ -30,7 +35,7 @@ const NotesContext = createContext<NotesContextType | undefined>(undefined);
 
 /**
  * NotesProvider - Wraps the application to provide centralized notes state
- * 
+ *
  * Features:
  * - Persists notes to localStorage
  * - Initializes with sample data on first load
@@ -166,10 +171,10 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
 
 /**
  * useNotes - Hook to access the notes context
- * 
+ *
  * Usage:
  * const { notes, updateNote, updateNoteStatus } = useNotes();
- * 
+ *
  * @throws Error if used outside NotesProvider
  */
 export function useNotes(): NotesContextType {

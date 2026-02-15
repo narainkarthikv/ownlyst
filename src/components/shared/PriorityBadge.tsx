@@ -3,7 +3,10 @@
  * Displays note priority with visual styling
  */
 
-import { PRIORITY_BADGE_COLORS, type NotePriority } from '../../constants/colors';
+import {
+  PRIORITY_BADGE_COLORS,
+  type NotePriority,
+} from '../../constants/colors';
 import { PRIORITY_LABELS } from '../../constants/priorities';
 
 interface PriorityBadgeProps {

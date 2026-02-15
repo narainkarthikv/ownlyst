@@ -65,7 +65,8 @@ export function useTouchDevice(): boolean {
       setIsTouch(
         () =>
           navigator.maxTouchPoints > 0 ||
-          (navigator as unknown as { msMaxTouchPoints: number }).msMaxTouchPoints > 0
+          (navigator as unknown as { msMaxTouchPoints: number })
+            .msMaxTouchPoints > 0
       );
     };
 

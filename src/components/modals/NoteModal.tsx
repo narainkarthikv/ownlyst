@@ -1,13 +1,13 @@
 /**
  * NoteModal Component - Modern Modal for Note Creation/Editing
- * 
+ *
  * Clean, engaging presentation component for creating and editing notes.
  * Responsibilities:
  * - Render modern form with all note fields
  * - Handle form validation
  * - Keyboard shortcuts (Escape to close, Ctrl+Enter to save)
  * - NO business logic - all data operations via callbacks
- * 
+ *
  * All note operations (create, update) are delegated to parent via callbacks.
  */
 
@@ -38,7 +38,7 @@ interface NoteModalProps {
 
 /**
  * NoteModal - Form for creating and editing notes
- * 
+ *
  * Pure presentation component that:
  * - Renders form fields with validation
  * - Handles keyboard shortcuts
@@ -203,9 +203,15 @@ export default function NoteModal({
               <div className='flex items-center gap-3'>
                 <div className='p-2 bg-white dark:bg-slate-700 rounded-xl shadow-sm'>
                   {note ? (
-                    <Pin className='text-blue-600 dark:text-blue-400' size={20} />
+                    <Pin
+                      className='text-blue-600 dark:text-blue-400'
+                      size={20}
+                    />
                   ) : (
-                    <Tag className='text-purple-600 dark:text-purple-400' size={20} />
+                    <Tag
+                      className='text-purple-600 dark:text-purple-400'
+                      size={20}
+                    />
                   )}
                 </div>
                 <h2
@@ -234,7 +240,10 @@ export default function NoteModal({
                       ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
                       : 'bg-white dark:bg-slate-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-600'
                   }`}>
-                  <Pin size={18} fill={formData.isPinned ? 'currentColor' : 'none'} />
+                  <Pin
+                    size={18}
+                    fill={formData.isPinned ? 'currentColor' : 'none'}
+                  />
                 </motion.button>
 
                 {/* Close Button */}
@@ -251,7 +260,9 @@ export default function NoteModal({
             </div>
 
             {/* Form Content - Scrollable */}
-            <form onSubmit={handleSubmit} className='flex-1 overflow-y-auto p-6 space-y-5'>
+            <form
+              onSubmit={handleSubmit}
+              className='flex-1 overflow-y-auto p-6 space-y-5'>
               {/* Title Field */}
               <div>
                 <input
@@ -311,7 +322,10 @@ export default function NoteModal({
                 {/* Status */}
                 <div className='bg-gray-50 dark:bg-slate-700/50 rounded-2xl p-4 border border-gray-200 dark:border-slate-600'>
                   <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
-                    <ListTodo size={16} className='text-blue-600 dark:text-blue-400' />
+                    <ListTodo
+                      size={16}
+                      className='text-blue-600 dark:text-blue-400'
+                    />
                     Status
                   </label>
                   <select
@@ -325,7 +339,9 @@ export default function NoteModal({
                     className='w-full px-3 py-2 border-0 bg-white dark:bg-slate-800 dark:text-white rounded-xl focus:ring-2 focus:ring-blue-500 text-sm font-medium shadow-sm'>
                     {NOTE_STATUSES.map((status) => (
                       <option key={status} value={status}>
-                        {status.replace('-', ' ').replace(/\b\w/g, (l) => l.toUpperCase())}
+                        {status
+                          .replace('-', ' ')
+                          .replace(/\b\w/g, (l) => l.toUpperCase())}
                       </option>
                     ))}
                   </select>
@@ -334,7 +350,10 @@ export default function NoteModal({
                 {/* Priority */}
                 <div className='bg-gray-50 dark:bg-slate-700/50 rounded-2xl p-4 border border-gray-200 dark:border-slate-600'>
                   <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
-                    <Flag size={16} className='text-purple-600 dark:text-purple-400' />
+                    <Flag
+                      size={16}
+                      className='text-purple-600 dark:text-purple-400'
+                    />
                     Priority
                   </label>
                   <select
@@ -357,7 +376,10 @@ export default function NoteModal({
                 {/* Due Date */}
                 <div className='bg-gray-50 dark:bg-slate-700/50 rounded-2xl p-4 border border-gray-200 dark:border-slate-600'>
                   <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2'>
-                    <Calendar size={16} className='text-amber-600 dark:text-amber-400' />
+                    <Calendar
+                      size={16}
+                      className='text-amber-600 dark:text-amber-400'
+                    />
                     Due Date
                   </label>
                   <input
