@@ -1,25 +1,19 @@
 ---
-name: 📝 Other Request
-about: Propose documentation updates, questions, or other types of requests
+name: Other Request
+about: Docs, questions, or anything else
 title: '[Other] '
 labels: question, documentation
 assignees: '' # Add default GitHub usernames if desired
 ---
 
-## 📝 Request Description
+## Summary
 
-Clearly describe the request and its purpose.
+What you are asking for.
 
-## 🔍 Context or Background
+## Details (optional)
 
-Provide any relevant context, background, or references to support the request.
+Context, links, or examples that help.
 
-## ✅ Tasks
+## Extra Info (optional)
 
-- [ ] Task 1: Describe the first step needed
-- [ ] Task 2: Describe the next part
-- [ ] Task 3: Add as many checklist items as needed
-
-## 📎 Additional Context
-
-Add any other context, screenshots, or references here.
+Screenshots or references.
