@@ -1,12 +1,17 @@
 /**
  * Import/Export Service - Data portability for privacy and user control
  *
- * Handles importing and exporting notes in JSON and CSV formats.
+ * Handles importing and exporting backups in JSON and CSV.
  * All operations are local - no server involvement.
  */
 
 import { v4 as uuidv4 } from 'uuid';
 import type { Note } from '../models/note.model';
+import type {
+  UserPreferences,
+  UserProfileExport,
+} from '../models/user-preferences.model';
+import { EMOTE_AVATARS } from '../constants/emotes';
 
 interface ExportResult {
   success: boolean;
@@ -18,6 +23,7 @@ interface ImportResult {
   success: boolean;
   message: string;
   notes?: Note[];
+  preferences?: UserPreferences;
   errors?: string[];
   duplicateCount?: number;
   newCount?: number;
@@ -27,25 +33,35 @@ interface ImportResult {
  * ImportExportService - Handles data portability
  *
  * Responsibilities:
- * - Exporting notes to JSON and CSV formats
+ * - Exporting backups to JSON and CSV
  * - Importing notes from JSON and CSV files
  * - Validating imported data
  * - Providing user feedback
  */
 export class ImportExportService {
   /**
-   * Exports notes as JSON file
+   * Exports backup (notes + preferences) as JSON file
    * @param notes - Array of notes to export
+   * @param preferences - User preferences to export
    * @returns Result object with success status
    */
-  static exportAsJSON(notes: Note[]): ExportResult {
+  static exportBackupJSON(
+    notes: Note[],
+    preferences: UserPreferences
+  ): ExportResult {
     try {
-      const jsonString = JSON.stringify(notes, null, 2);
+      const profile: UserProfileExport = {
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        preferences,
+        notes,
+      };
+      const jsonString = JSON.stringify(profile, null, 2);
       const blob = new Blob([jsonString], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `sticky-memo-notes-${this.getTimestamp()}.json`;
+      link.download = `sticky-memo-backup-${this.getTimestamp()}.json`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -53,25 +69,47 @@ export class ImportExportService {
 
       return {
         success: true,
-        message: `Exported ${notes.length} note(s) as JSON`,
+        message: `Exported ${notes.length} note(s) with profile`,
         fileName: link.download,
       };
     } catch (error) {
-      console.error('[ImportExportService] Error exporting as JSON:', error);
+      console.error(
+        '[ImportExportService] Error exporting backup JSON:',
+        error
+      );
       return {
         success: false,
-        message: 'Failed to export notes as JSON',
+        message: 'Failed to export backup as JSON',
       };
     }
   }
 
   /**
-   * Exports notes as CSV file
+   * Exports backup (notes + preferences) as CSV file
    * @param notes - Array of notes to export
+   * @param preferences - User preferences to export
    * @returns Result object with success status
    */
-  static exportAsCSV(notes: Note[]): ExportResult {
+  static exportAsCSV(
+    notes: Note[],
+    preferences: UserPreferences
+  ): ExportResult {
     try {
+      const profileHeaders = [
+        '__PROFILE__',
+        'themePreference',
+        'defaultView',
+        'avatar',
+        'username',
+      ];
+      const profileRow = [
+        '__PROFILE__',
+        preferences.themePreference,
+        preferences.defaultView,
+        preferences.avatar,
+        preferences.username,
+      ];
+
       // CSV headers
       const headers = [
         'ID',
@@ -98,8 +136,10 @@ export class ImportExportService {
         note.tags ? note.tags.join(';') : '',
       ]);
 
-      // Combine headers and rows
+      // Combine profile, headers, and rows
       const csvContent = [
+        profileHeaders.map((header) => this.escapeCsvField(header)).join(','),
+        profileRow.map((value) => this.escapeCsvField(value)).join(','),
         headers.join(','),
         ...rows.map((row) => row.join(',')),
       ].join('\n');
@@ -108,7 +148,7 @@ export class ImportExportService {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `sticky-memo-notes-${this.getTimestamp()}.csv`;
+      link.download = `sticky-memo-backup-${this.getTimestamp()}.csv`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -116,21 +156,21 @@ export class ImportExportService {
 
       return {
         success: true,
-        message: `Exported ${notes.length} note(s) as CSV`,
+        message: `Exported ${notes.length} note(s) with profile as CSV`,
         fileName: link.download,
       };
     } catch (error) {
       console.error('[ImportExportService] Error exporting as CSV:', error);
       return {
         success: false,
-        message: 'Failed to export notes as CSV',
+        message: 'Failed to export backup as CSV',
       };
     }
   }
 
   /**
-   * Imports notes from JSON file
-   * @param file - JSON file to import
+   * Imports notes (and optional preferences) from JSON backup file
+   * @param file - JSON backup file to import
    * @returns Promise with import result
    */
   static async importFromJSON(file: File): Promise<ImportResult> {
@@ -145,10 +185,14 @@ export class ImportExportService {
       const text = await file.text();
       const parsed = JSON.parse(text);
 
-      if (!Array.isArray(parsed)) {
+      const isLegacyNotes = Array.isArray(parsed);
+      const notesPayload = isLegacyNotes ? parsed : parsed?.notes;
+
+      if (!Array.isArray(notesPayload)) {
         return {
           success: false,
-          message: 'Invalid JSON format. Expected an array of notes.',
+          message:
+            'Invalid JSON format. Expected notes array or backup payload.',
         };
       }
 
@@ -156,8 +200,8 @@ export class ImportExportService {
       const errors: string[] = [];
       const seenIds = new Set<string>();
 
-      for (let i = 0; i < parsed.length; i++) {
-        const item = parsed[i];
+      for (let i = 0; i < notesPayload.length; i++) {
+        const item = notesPayload[i];
 
         // Validate required fields
         if (!item.title) {
@@ -200,6 +244,10 @@ export class ImportExportService {
         success: true,
         message: `Successfully imported ${validatedNotes.length} note(s)${errors.length > 0 ? ` (${errors.length} skipped)` : ''}`,
         notes: validatedNotes,
+        preferences:
+          !isLegacyNotes && parsed?.preferences
+            ? (parsed.preferences as UserPreferences)
+            : undefined,
         errors: errors.length > 0 ? errors : undefined,
       };
     } catch (error) {
@@ -213,7 +261,7 @@ export class ImportExportService {
   }
 
   /**
-   * Imports notes from CSV file
+   * Imports notes (and optional preferences) from CSV file
    * @param file - CSV file to import
    * @returns Promise with import result
    */
@@ -227,7 +275,10 @@ export class ImportExportService {
       }
 
       const text = await file.text();
-      const lines = text.split('\n').filter((line) => line.trim());
+      const lines = text
+        .split('\n')
+        .map((line) => line.trimEnd())
+        .filter((line) => line.trim());
 
       if (lines.length < 2) {
         return {
@@ -240,9 +291,42 @@ export class ImportExportService {
       const validatedNotes: Note[] = [];
       const errors: string[] = [];
       const seenIds = new Set<string>();
+      let preferences: UserPreferences | undefined;
+
+      let startIndex = 0;
+      const possibleProfileHeader = this.parseCSVLine(lines[0] ?? '');
+      if (possibleProfileHeader[0] === '__PROFILE__') {
+        const profileRowLine = lines[1];
+        if (!profileRowLine) {
+          return {
+            success: false,
+            message: 'Invalid CSV format. Profile row is missing.',
+          };
+        }
+        const profileValues = this.parseCSVLine(profileRowLine);
+        if (profileValues[0] !== '__PROFILE__') {
+          return {
+            success: false,
+            message: 'Invalid CSV format. Profile row is invalid.',
+          };
+        }
+        preferences = this.parseProfileCSV(
+          possibleProfileHeader,
+          profileValues
+        );
+        startIndex = 2;
+      }
+
+      const headerLine = lines[startIndex];
+      if (!headerLine) {
+        return {
+          success: false,
+          message: 'Invalid CSV format. Missing notes header row.',
+        };
+      }
 
       // Skip header row and process data rows
-      for (let i = 1; i < lines.length; i++) {
+      for (let i = startIndex + 1; i < lines.length; i++) {
         const values = this.parseCSVLine(lines[i]);
 
         if (values.length < 2) {
@@ -308,6 +392,7 @@ export class ImportExportService {
         success: true,
         message: `Successfully imported ${validatedNotes.length} note(s)${errors.length > 0 ? ` (${errors.length} skipped)` : ''}`,
         notes: validatedNotes,
+        preferences,
         errors: errors.length > 0 ? errors : undefined,
       };
     } catch (error) {
@@ -365,6 +450,53 @@ export class ImportExportService {
 
     result.push(current);
     return result;
+  }
+
+  private static parseProfileCSV(
+    header: string[],
+    values: string[]
+  ): UserPreferences | undefined {
+    const profile = new Map<string, string>();
+    for (let i = 1; i < header.length; i++) {
+      profile.set(header[i], values[i] ?? '');
+    }
+
+    const themePreference = profile.get('themePreference')?.trim();
+    const defaultView = profile.get('defaultView')?.trim();
+    const avatar = profile.get('avatar')?.trim();
+    const username = profile.get('username')?.trim();
+
+    if (!this.isThemePreference(themePreference)) {
+      return undefined;
+    }
+
+    if (!this.isDefaultView(defaultView)) {
+      return undefined;
+    }
+
+    return {
+      themePreference,
+      defaultView,
+      avatar: avatar || EMOTE_AVATARS[0],
+      username: username || 'Friend',
+    };
+  }
+
+  private static isThemePreference(
+    value: string | undefined
+  ): value is UserPreferences['themePreference'] {
+    return value === 'system' || value === 'light' || value === 'dark';
+  }
+
+  private static isDefaultView(
+    value: string | undefined
+  ): value is UserPreferences['defaultView'] {
+    return (
+      value === 'notes' ||
+      value === 'kanban' ||
+      value === 'table' ||
+      value === 'roadmap'
+    );
   }
 
   /**

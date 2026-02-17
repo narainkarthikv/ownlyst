@@ -1,10 +1,13 @@
-import { createContext, useContext, useEffect } from 'react';
-import { useLocalStorage } from './useLocalStorage';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useUserPreferences } from '../context/UserPreferencesContext';
+import type { ThemePreference } from '../models/user-preferences.model';
 
 type Theme = 'light' | 'dark';
 
 interface ThemeContextType {
   theme: Theme;
+  themePreference: ThemePreference;
+  setThemePreference: (value: ThemePreference) => void;
   toggleTheme: () => void;
 }
 
@@ -21,17 +24,47 @@ export function useTheme() {
 }
 
 export function useThemeProvider() {
-  const [theme, setTheme] = useLocalStorage<Theme>('theme', 'light');
+  const { preferences, setThemePreference } = useUserPreferences();
+  const { themePreference } = preferences;
+  const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const prefersDarkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const applySystemTheme = (isDark: boolean) => {
+      setTheme(isDark ? 'dark' : 'light');
+    };
+
+    if (themePreference === 'system') {
+      applySystemTheme(prefersDarkQuery.matches);
+      const handler = (event: MediaQueryListEvent) => {
+        applySystemTheme(event.matches);
+      };
+      prefersDarkQuery.addEventListener('change', handler);
+      return () => prefersDarkQuery.removeEventListener('change', handler);
+    }
+
+    setTheme(themePreference);
+    return undefined;
+  }, [themePreference]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
     const root = window.document.documentElement;
     root.classList.remove(theme === 'light' ? 'dark' : 'light');
     root.classList.add(theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    setThemePreference(nextTheme);
   };
 
-  return { theme, toggleTheme };
+  return {
+    theme,
+    themePreference,
+    setThemePreference,
+    toggleTheme,
+  };
 }

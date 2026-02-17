@@ -27,7 +27,7 @@ const features = [
       <Download className='w-10 h-10 text-purple-600 dark:text-purple-400' />
     ),
     title: 'Break Free Anytime',
-    desc: "Export everything as JSON or CSV with one click. Your data isn't held hostage here. Take it wherever you want! 📦",
+    desc: 'Export a complete backup (notes + profile) as JSON or CSV with one click. Your data is never locked in. 📦',
   },
   {
     icon: <Zap className='w-10 h-10 text-amber-600 dark:text-amber-400' />,
@@ -37,7 +37,7 @@ const features = [
   {
     icon: <Heart className='w-10 h-10 text-red-600 dark:text-red-400' />,
     title: 'Designed for Humans',
-    desc: 'Clean, beautiful, and actually enjoyable to use. No clutter, no ads, no dark patterns trying to trick you. ✨',
+    desc: 'Personalize your workspace with system/light/dark themes, a default view, and an emote avatar + username. ✨',
   },
   {
     icon: <Shield className='w-10 h-10 text-cyan-600 dark:text-cyan-400' />,
@@ -251,7 +251,7 @@ export default function LandingPage() {
                     ✓
                   </span>
                   <span>
-                    <strong>Export as JSON</strong> for backup or migration
+                    <strong>Export backup as JSON</strong> (notes + profile)
                   </span>
                 </li>
                 <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
@@ -259,7 +259,8 @@ export default function LandingPage() {
                     ✓
                   </span>
                   <span>
-                    <strong>Export as CSV</strong> to use in spreadsheets
+                    <strong>Export backup as CSV</strong> for spreadsheets or
+                    archives
                   </span>
                 </li>
                 <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
@@ -267,7 +268,7 @@ export default function LandingPage() {
                     ✓
                   </span>
                   <span>
-                    <strong>Import</strong> from backups or other apps
+                    <strong>Import backups</strong> with preferences intact
                   </span>
                 </li>
                 <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>

@@ -10,10 +10,13 @@ import { Download, Upload, CheckCircle, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ImportExportService } from '../services/import-export.service';
 import type { Note } from '../models/note.model';
+import type { UserPreferences } from '../models/user-preferences.model';
 
 interface ImportExportProps {
   notes: Note[];
   onImportNotes: (notes: Note[]) => void;
+  userPreferences: UserPreferences;
+  onImportPreferences: (preferences: UserPreferences) => void;
   layout?: 'horizontal' | 'vertical'; // For bottom utility area
 }
 
@@ -25,19 +28,21 @@ interface Toast {
 export default function ImportExport({
   notes,
   onImportNotes,
+  userPreferences,
+  onImportPreferences,
 }: ImportExportProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [toast, setToast] = useState<Toast | null>(null);
   const [isImporting, setIsImporting] = useState(false);
 
   const handleExportJSON = () => {
-    const result = ImportExportService.exportAsJSON(notes);
+    const result = ImportExportService.exportBackupJSON(notes, userPreferences);
     showToast(result.message, result.success ? 'success' : 'error');
     setIsOpen(false);
   };
 
   const handleExportCSV = () => {
-    const result = ImportExportService.exportAsCSV(notes);
+    const result = ImportExportService.exportAsCSV(notes, userPreferences);
     showToast(result.message, result.success ? 'success' : 'error');
     setIsOpen(false);
   };
@@ -58,6 +63,9 @@ export default function ImportExport({
 
       if (result.success && result.notes) {
         onImportNotes(result.notes);
+        if (result.preferences) {
+          onImportPreferences(result.preferences);
+        }
         showToast(result.message, 'success');
       } else {
         showToast(result.message, 'error');
@@ -124,14 +132,14 @@ export default function ImportExport({
                     onClick={handleExportJSON}
                     className='w-full text-left px-3 py-2 rounded-md text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors'>
                     <Download size={16} />
-                    <span>JSON</span>
+                    <span>Backup (JSON)</span>
                   </motion.button>
                   <motion.button
                     whileHover={{ backgroundColor: 'rgba(0,0,0,0.05)' }}
                     onClick={handleExportCSV}
                     className='w-full text-left px-3 py-2 rounded-md text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors'>
                     <Download size={16} />
-                    <span>CSV</span>
+                    <span>Backup (CSV)</span>
                   </motion.button>
                 </div>
 
