@@ -15,9 +15,11 @@ Sticky Memo is a lightweight, local-first note management app. Create, organize,
 - **Multiple Views**: Notes grid, Kanban board, table view, and roadmap
 - **Color Coding**: Organize notes by priority and status
 - **Fast Search**: Instant note filtering and search
-- **Dark Mode**: Built-in theme toggle
+- **Theme Preferences**: System, light, or dark
+- **Default View**: Start in your favorite view
+- **User Profile**: Emote avatar + username
 - **Drag & Drop**: Intuitive note organization
-- **Import/Export**: Full data portability (JSON/CSV)
+- **Backup Import/Export**: Combined profile + notes (JSON/CSV)
 - **Responsive**: Works on desktop, tablet, and mobile
 - **Offline Ready**: Works without internet after first load
 - **No Tracking**: No analytics, no cookies, no telemetry

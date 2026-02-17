@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -15,10 +15,16 @@ import RoadmapView from '../components/RoadmapView';
 import ImportExport from '../components/ImportExport';
 import { useNotesContext } from '../controllers/NotesProvider';
 import Logo from '../components/Logo';
-import ThemeToggle from '../components/ThemeToggle';
+import UserPreferencesMenu from '../components/UserPreferencesMenu';
 import { HEADER_CLASSES, BG_CLASSES } from '../constants/ui-colors';
+import { useUserPreferences } from '../context/UserPreferencesContext';
+import type { DefaultView } from '../models/user-preferences.model';
 
-const views = [
+const views: {
+  id: DefaultView;
+  name: string;
+  icon: typeof StickyNote;
+}[] = [
   { id: 'notes', name: 'Notes', icon: StickyNote },
   {
     id: 'kanban',
@@ -31,7 +37,14 @@ const views = [
 
 export default memo(function NotesApp() {
   const navigate = useNavigate();
-  const [activeView, setActiveView] = useState('notes');
+  const { preferences, setPreferences } = useUserPreferences();
+  const [activeView, setActiveView] = useState<DefaultView>(
+    preferences.defaultView
+  );
+
+  useEffect(() => {
+    setActiveView(preferences.defaultView);
+  }, [preferences.defaultView]);
 
   // Get notes from controller
   const { notes, createNote, updateNote, deleteNote, importNotes } =
@@ -111,8 +124,15 @@ export default memo(function NotesApp() {
             </div>
             {/* Theme Toggle and Import/Export */}
             <div className='flex items-center gap-2'>
-              <ImportExport notes={notes} onImportNotes={importNotes} />
-              <ThemeToggle />
+              <ImportExport
+                notes={notes}
+                onImportNotes={importNotes}
+                userPreferences={preferences}
+                onImportPreferences={setPreferences}
+              />
+              <UserPreferencesMenu
+                viewOptions={views.map(({ id, name }) => ({ id, name }))}
+              />
             </div>
           </div>
         </div>

@@ -1,27 +1,32 @@
 ---
-name: 🐛 Bug Report
-about: Report a bug to help us improve the project
+name: Bug Report
+about: Report something that is not working as expected
 title: '[Bug] '
 labels: bug
 assignees: '' # Add default GitHub usernames if desired
 ---
 
-## 🐞 Bug Description
+## Summary
 
-Clearly describe the bug and the expected behavior.
+What went wrong, in one or two sentences.
 
-## 🔍 Steps to Reproduce
+## Steps to Reproduce
 
-1. Step 1: Describe the first step to reproduce the issue.
-2. Step 2: Describe the next step.
-3. Step 3: Add as many steps as needed.
+1.
+2.
+3.
 
-## 💻 Environment
+## Expected vs Actual
 
-- **OS**: [e.g., Windows, macOS, Linux]
-- **Browser**: [e.g., Chrome, Firefox, Safari]
-- **Version**: [e.g., 1.0.0]
+- Expected:
+- Actual:
 
-## 📎 Additional Context
+## Environment (optional)
 
-Add any other context, screenshots, or references here.
+- OS:
+- Browser:
+- App version:
+
+## Extra Info (optional)
+
+Screenshots, logs, or links.
