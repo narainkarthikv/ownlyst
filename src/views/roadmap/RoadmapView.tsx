@@ -12,11 +12,13 @@ import {
   BarChart3,
   Map,
 } from 'lucide-react';
-import { Note } from '../types/Note';
-import NoteModal from './NoteModal';
-import EmptyState from './shared/EmptyState';
-import FilterBar, { type FilterState } from './shared/FilterBar';
-import { applyFilters, getDefaultFilters } from '../utils/noteFilters';
+import { Note } from '../../types/Note';
+import NoteModal from '../../components/NoteModal';
+import EmptyState from '../../components/shared/EmptyState';
+import FilterBar, {
+  type FilterState,
+} from '../../components/shared/FilterBar';
+import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 
 interface RoadmapViewProps {
   notes: Note[];
@@ -47,7 +49,6 @@ type GroupingOption = 'none' | 'status' | 'priority';
 export default memo(function RoadmapView({
   notes,
   onAddNote,
-  onUpdateNote: _onUpdateNote,
 }: RoadmapViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [isModalOpen, setIsModalOpen] = useState(false);

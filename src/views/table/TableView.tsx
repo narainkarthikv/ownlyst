@@ -1,15 +1,17 @@
 import { useState, useMemo, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pin, Edit3, Trash2, Table as TableIcon } from 'lucide-react';
-import { Note } from '../types/Note';
-import NoteModal from './NoteModal';
-import EmptyState from './shared/EmptyState';
-import FilterBar, { type FilterState } from './shared/FilterBar';
-import { applyFilters, getDefaultFilters } from '../utils/noteFilters';
+import { Note } from '../../types/Note';
+import NoteModal from '../../components/NoteModal';
+import EmptyState from '../../components/shared/EmptyState';
+import FilterBar, {
+  type FilterState,
+} from '../../components/shared/FilterBar';
+import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 import {
   STATUS_BADGE_COLORS,
   PRIORITY_BADGE_COLORS,
-} from '../constants/colors';
+} from '../../constants/colors';
 
 interface TableViewProps {
   notes: Note[];

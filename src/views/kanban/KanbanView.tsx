@@ -9,23 +9,27 @@ import {
 import {
   Plus,
   Pin,
+  Edit3,
   Calendar,
   Trash2,
   GripVertical,
   Kanban,
 } from 'lucide-react';
-import { Note } from '../types/Note';
-import NoteModal from './NoteModal';
-import EmptyState from './shared/EmptyState';
-import FilterBar, { type FilterState } from './shared/FilterBar';
-import { applyFilters, getDefaultFilters } from '../utils/noteFilters';
+import { Note } from '../../types/Note';
+import NoteModal from '../../components/NoteModal';
+import EmptyState from '../../components/shared/EmptyState';
+import FilterBar, {
+  type FilterState,
+} from '../../components/shared/FilterBar';
+import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 import {
   PRIORITY_CARD_CLASSES,
   PRIORITY_INDICATOR_CLASSES,
   PRIORITY_TEXT_COLORS,
-} from '../constants/colors';
-import { KANBAN_COLUMNS } from '../constants/kanban';
-import { useNotesContext } from '../controllers/NotesProvider';
+  STATUS_TEXT_COLORS,
+} from '../../constants/colors';
+import { KANBAN_COLUMNS } from '../../constants/kanban';
+import { useNotesContext } from '../../controllers/NotesProvider';
 
 // Types
 interface KanbanViewProps {
@@ -40,11 +44,12 @@ interface KanbanCardProps {
   index: number;
   onUpdate: (id: string, updates: Partial<Note>) => void;
   onDelete: (id: string) => void;
+  onEdit: (note: Note) => void;
 }
 
 const KanbanCard = memo(
-  ({ note, index, onUpdate, onDelete }: KanbanCardProps) => {
-    const formatDate = useCallback((date: Date) => {
+  ({ note, index, onUpdate, onDelete, onEdit }: KanbanCardProps) => {
+    const formatDate = useCallback((date: Date | string) => {
       return new Intl.DateTimeFormat('en-US', {
         month: 'short',
         day: 'numeric',
@@ -67,6 +72,14 @@ const KanbanCard = memo(
       [note.id, onDelete]
     );
 
+    const handleEdit = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        onEdit(note);
+      },
+      [note, onEdit]
+    );
+
     return (
       <Draggable draggableId={note.id} index={index}>
         {(provided, snapshot) => (
@@ -75,7 +88,7 @@ const KanbanCard = memo(
             {...provided.draggableProps}
             style={provided.draggableProps.style}
             className={`
-            relative p-4 rounded-lg backdrop-blur-sm group
+            relative p-4 rounded-lg cursor-pointer group
             ${PRIORITY_CARD_CLASSES[note.priority]}
             transition-all duration-200 transform
             ${
@@ -83,86 +96,90 @@ const KanbanCard = memo(
                 ? 'shadow-lg scale-[1.02] z-50 cursor-grabbing ring-2 ring-blue-500 dark:ring-blue-400 opacity-90'
                 : 'shadow hover:shadow-md hover:scale-[1.01] z-10 cursor-grab'
             }
-          `}>
+          `}
+            onClick={() => onEdit(note)}>
             {/* Drag Handle */}
             <div
               {...provided.dragHandleProps}
-              className='absolute top-3 left-3 p-1.5 rounded-md opacity-0 group-hover:opacity-100
+              className='absolute top-2 left-2 p-1 rounded-md opacity-0 group-hover:opacity-100
               transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5 cursor-grab active:cursor-grabbing'>
               <GripVertical
-                size={16}
+                size={10}
                 className='text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300'
               />
             </div>
 
             {/* Pin & Priority Indicators */}
-            <div className='absolute top-2 right-2 flex items-center space-x-2'>
-              {note.isPinned && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className='bg-blue-500 dark:bg-blue-400 text-white rounded-full p-1.5 shadow-lg'>
-                  <Pin size={12} />
-                </motion.div>
-              )}
-              <motion.div
-                className={`w-3 h-3 rounded-full ${PRIORITY_INDICATOR_CLASSES[note.priority]} shadow-sm`}
-                whileHover={{ scale: 1.2 }}
-              />
-            </div>
+            <div
+              className={`absolute top-3 right-3 w-2 h-2 rounded-full ${PRIORITY_INDICATOR_CLASSES[note.priority]}`}
+            />
+
+            {note.isPinned && (
+              <div className='absolute -top-2 -right-2 bg-blue-500 dark:bg-blue-400 text-white rounded-full p-1'>
+                <Pin size={10} />
+              </div>
+            )}
 
             {/* Content */}
-            <div className='space-y-3 mt-6'>
+            <div className='space-y-3 pr-6 pl-5'>
               <motion.h4
-                className='font-bold text-base leading-snug pr-16'
+                className='font-bold text-base leading-tight'
                 layout>
                 {note.title}
               </motion.h4>
               <motion.p
-                className='text-sm opacity-80 line-clamp-3 leading-relaxed break-words'
+                className='text-sm opacity-80 line-clamp-4'
                 layout>
                 {note.content}
               </motion.p>
 
               {/* Metadata */}
-              <div className='flex items-center justify-between text-xs opacity-70 pt-3 mt-2 border-t border-gray-200 dark:border-slate-600/50'>
-                <div className='flex items-center gap-1.5'>
-                  <Calendar size={12} strokeWidth={2.5} />
+              <div className='flex items-center justify-between text-xs'>
+                <div className='flex items-center space-x-2 opacity-70'>
+                  <Calendar size={12} />
                   <span>{formatDate(note.createdAt)}</span>
+                  {note.dueDate && (
+                    <span className='text-red-600 dark:text-red-400'>
+                      Due: {formatDate(note.dueDate)}
+                    </span>
+                  )}
                 </div>
-                <span
-                  className={`font-bold uppercase ${PRIORITY_TEXT_COLORS[note.priority]}`}>
-                  {note.priority}
-                </span>
-              </div>
-              {note.dueDate && (
-                <div className='text-xs'>
+                <div className='flex items-center gap-2'>
                   <span
-                    className={`font-medium ${
-                      new Date(note.dueDate) < new Date()
-                        ? 'text-red-600 dark:text-red-400'
-                        : 'text-orange-600 dark:text-orange-400'
-                    }`}>
-                    Due: {formatDate(note.dueDate)}
+                    className={`font-bold uppercase text-xs ${STATUS_TEXT_COLORS[note.status]}`}>
+                    {note.status.replace('-', ' ')}
+                  </span>
+                  <span
+                    className={`font-bold uppercase text-xs ${PRIORITY_TEXT_COLORS[note.priority]}`}>
+                    {note.priority}
                   </span>
                 </div>
-              )}
+              </div>
             </div>
 
             {/* Action Buttons */}
-            <div className='absolute top-3 right-3 flex items-center space-x-1.5 opacity-0 group-hover:opacity-100 transition-opacity'>
+            <div className='absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
               <motion.button
                 type='button'
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={handleTogglePin}
                 aria-label={note.isPinned ? 'Unpin note' : 'Pin note'}
-                className={`p-1.5 rounded-lg bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all focus:ring-2 focus:ring-blue-500 focus:outline-none ${
+                className={`p-1 rounded-md bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none ${
                   note.isPinned
                     ? 'text-blue-600 dark:text-blue-400'
                     : 'text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
                 }`}>
-                <Pin size={14} aria-hidden='true' />
+                <Pin size={10} aria-hidden='true' />
+              </motion.button>
+              <motion.button
+                type='button'
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleEdit}
+                aria-label='Edit note'
+                className='p-1 rounded-md bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none'>
+                <Edit3 size={10} aria-hidden='true' />
               </motion.button>
               <motion.button
                 type='button'
@@ -170,8 +187,8 @@ const KanbanCard = memo(
                 whileTap={{ scale: 0.9 }}
                 onClick={handleDelete}
                 aria-label='Delete note'
-                className='p-1.5 rounded-lg bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 focus:ring-2 focus:ring-red-500 focus:outline-none'>
-                <Trash2 size={14} aria-hidden='true' />
+                className='p-1 rounded-md bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none'>
+                <Trash2 size={10} aria-hidden='true' />
               </motion.button>
             </div>
           </div>
@@ -186,6 +203,7 @@ interface KanbanColumnProps {
   onAddNote: () => void;
   onUpdateNote: (id: string, updates: Partial<Note>) => void;
   onDeleteNote: (id: string) => void;
+  onEditNote: (note: Note) => void;
 }
 
 const KanbanColumn = memo(
@@ -195,6 +213,7 @@ const KanbanColumn = memo(
     onAddNote,
     onUpdateNote,
     onDeleteNote,
+    onEditNote,
   }: KanbanColumnProps) => {
     return (
       <div
@@ -247,6 +266,7 @@ const KanbanColumn = memo(
                     index={index}
                     onUpdate={onUpdateNote}
                     onDelete={onDeleteNote}
+                    onEdit={onEditNote}
                   />
                 ))}
                 {provided.placeholder}
@@ -301,7 +321,18 @@ export default function KanbanView({
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingNote, setEditingNote] = useState<Note | null>(null);
   const [filters, setFilters] = useState<FilterState>(getDefaultFilters());
+
+  const handleAddNote = useCallback(() => {
+    setEditingNote(null);
+    setIsModalOpen(true);
+  }, []);
+
+  const handleEditNote = useCallback((note: Note) => {
+    setEditingNote(note);
+    setIsModalOpen(true);
+  }, []);
 
   // Apply filters to notes
   const filteredNotes = useMemo(() => {
@@ -372,7 +403,7 @@ export default function KanbanView({
               type='button'
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => setIsModalOpen(true)}
+              onClick={handleAddNote}
               aria-label='Create a new note'
               className='inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none shadow-sm whitespace-nowrap'>
               <Plus className='h-5 w-5' aria-hidden='true' />
@@ -390,7 +421,7 @@ export default function KanbanView({
           description='Create your first note to get started with the Kanban board'
           action={{
             label: 'Create Note',
-            onClick: () => setIsModalOpen(true),
+            onClick: handleAddNote,
           }}
         />
       ) : (
@@ -402,9 +433,10 @@ export default function KanbanView({
                   key={column.id}
                   column={column}
                   notes={columnState[column.id as ColumnId]}
-                  onAddNote={() => setIsModalOpen(true)}
+                  onAddNote={handleAddNote}
                   onUpdateNote={onUpdateNote}
                   onDeleteNote={onDeleteNote}
+                  onEditNote={handleEditNote}
                 />
               ))}
             </div>
@@ -418,9 +450,13 @@ export default function KanbanView({
           <NoteModal
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
-            note={null}
+            note={editingNote}
             onSave={(noteData) => {
-              onAddNote(noteData);
+              if (editingNote) {
+                onUpdateNote(editingNote.id, noteData);
+              } else {
+                onAddNote(noteData);
+              }
               setIsModalOpen(false);
             }}
           />

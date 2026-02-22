@@ -20,6 +20,7 @@ import {
   PRIORITY_CARD_CLASSES,
   PRIORITY_INDICATOR_CLASSES,
   PRIORITY_TEXT_COLORS,
+  STATUS_TEXT_COLORS,
 } from '../../constants/colors';
 
 /**
@@ -158,9 +159,15 @@ const NoteCard = memo(
                 </span>
               )}
             </div>
-            <div
-              className={`font-bold uppercase text-xs ${PRIORITY_TEXT_COLORS[note.priority]}`}>
-              {note.priority}
+            <div className='flex items-center gap-2'>
+              <span
+                className={`font-bold uppercase text-xs ${STATUS_TEXT_COLORS[note.status]}`}>
+                {note.status.replace('-', ' ')}
+              </span>
+              <span
+                className={`font-bold uppercase text-xs ${PRIORITY_TEXT_COLORS[note.priority]}`}>
+                {note.priority}
+              </span>
             </div>
           </div>
         </div>

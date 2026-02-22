@@ -8,10 +8,7 @@ import {
   Baseline as Timeline,
   ArrowLeft,
 } from 'lucide-react';
-import NotesView from '../views/notes/NotesView';
-import KanbanView from '../components/KanbanView';
-import TableView from '../components/TableView';
-import RoadmapView from '../components/RoadmapView';
+import { NotesView, KanbanView, TableView, RoadmapView } from '../views';
 import ImportExport from '../components/ImportExport';
 import { useNotesContext } from '../controllers/NotesProvider';
 import Logo from '../components/Logo';

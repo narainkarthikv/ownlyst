@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { ThemeContext, useThemeProvider } from '../hooks/useTheme';
+import { ThemeContext, useThemeProvider } from './useTheme';
 
 interface ThemeProviderProps {
   children: ReactNode;
@@ -12,3 +12,5 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
   );
 }
+
+export default ThemeProvider;
