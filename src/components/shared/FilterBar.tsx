@@ -47,6 +47,8 @@ interface FilterBarProps {
   filteredCount?: number;
   /** Placeholder for search input */
   searchPlaceholder?: string;
+  /** Additional action buttons rendered in the same row as Sort/Filter */
+  actions?: React.ReactNode;
 }
 
 const sortOptions: { value: SortOption; label: string }[] = [
@@ -79,6 +81,7 @@ export default function FilterBar({
   totalCount = 0,
   filteredCount = 0,
   searchPlaceholder = 'Search notes...',
+  actions,
 }: FilterBarProps) {
   const [localSearch, setLocalSearch] = useState(filters.search);
   const [showFilters, setShowFilters] = useState(false);
@@ -323,6 +326,9 @@ export default function FilterBar({
               )}
             </AnimatePresence>
           </div>
+
+          {/* Injected action buttons (e.g. New Note, Delete) */}
+          {actions && <>{actions}</>}
         </div>
       </div>
 

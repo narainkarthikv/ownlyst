@@ -141,19 +141,11 @@ sticky-memo/
 
 ---
 
-## UI/UX Guidelines
+### Design System & UI Guidelines
 
-### Design Philosophy
+Refer to `design-system.md` for detailed design tokens, color palette, typography, and component patterns. When implementing UI components, always reference the design system for consistency. 
 
-- Privacy-first, clean, and minimal.
-- Fast and responsive with smooth interactions.
-- Subtle animations; avoid heavy motion.
-
-### Visual Design
-
-- Respect existing color tokens and theme system.
-- Ensure contrast in both light and dark themes.
-- Use consistent spacing and typography.
+---
 
 ### Interaction Design
 

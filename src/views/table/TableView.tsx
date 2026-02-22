@@ -1,15 +1,17 @@
 import { useState, useMemo, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pin, Edit3, Trash2, Table as TableIcon } from 'lucide-react';
-import { Note } from '../types/Note';
-import NoteModal from './NoteModal';
-import EmptyState from './shared/EmptyState';
-import FilterBar, { type FilterState } from './shared/FilterBar';
-import { applyFilters, getDefaultFilters } from '../utils/noteFilters';
+import { Note } from '../../types/Note';
+import NoteModal from '../../components/NoteModal';
+import EmptyState from '../../components/shared/EmptyState';
+import FilterBar, {
+  type FilterState,
+} from '../../components/shared/FilterBar';
+import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 import {
   STATUS_BADGE_COLORS,
   PRIORITY_BADGE_COLORS,
-} from '../constants/colors';
+} from '../../constants/colors';
 
 interface TableViewProps {
   notes: Note[];
@@ -82,39 +84,37 @@ export default memo(function TableView({
   return (
     <div className='space-y-6 p-4'>
       {/* Header with FilterBar and Actions */}
-      <div className='flex items-center justify-between gap-3'>
-        <div className='flex-1'>
-          <FilterBar
-            filters={filters}
-            onFilterChange={setFilters}
-            totalCount={notes.length}
-            filteredCount={filteredNotes.length}
-          />
-        </div>
-
-        <div className='flex gap-2 sm:gap-3 flex-shrink-0'>
-          {selectedRows.size > 0 && (
+      <FilterBar
+        filters={filters}
+        onFilterChange={setFilters}
+        totalCount={notes.length}
+        filteredCount={filteredNotes.length}
+        actions={
+          <>
             <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={selectedRows.size > 0 ? { scale: 1.02 } : {}}
+              whileTap={selectedRows.size > 0 ? { scale: 0.98 } : {}}
               onClick={handleBulkDelete}
-              className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium gap-2 transition-colors'>
-              <Trash2 className='h-5 w-5' />
+              aria-label={`Delete ${selectedRows.size} selected notes`}
+              className={`inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium gap-2 transition-all duration-200 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none shadow-sm whitespace-nowrap ${
+                selectedRows.size > 0 ? '' : 'invisible pointer-events-none'
+              }`}>
+              <Trash2 className='h-5 w-5' aria-hidden='true' />
               <span>Delete ({selectedRows.size})</span>
             </motion.button>
-          )}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleAddNote}
-            className='inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-colors'>
-            <Plus className='h-5 w-5' />
-            <span>New Note</span>
-          </motion.button>
-        </div>
-      </div>
+            <motion.button
+              type='button'
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleAddNote}
+              aria-label='Create a new note'
+              className='inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none shadow-sm whitespace-nowrap'>
+              <Plus className='h-5 w-5' aria-hidden='true' />
+              <span>New Note</span>
+            </motion.button>
+          </>
+        }
+      />
 
       {/* Table */}
       <div className='rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden'>

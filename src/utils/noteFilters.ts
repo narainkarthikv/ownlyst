@@ -75,23 +75,29 @@ export function sortNotes(notes: Note[], sortOption: SortOption): Note[] {
       return sorted.sort((a, b) => b.title.localeCompare(a.title));
 
     case 'priority-high':
-      const priorityOrder = { high: 0, medium: 1, low: 2 };
-      return sorted.sort(
-        (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
-      );
+      {
+        const priorityOrder = { high: 0, medium: 1, low: 2 };
+        return sorted.sort(
+          (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
+        );
+      }
 
     case 'priority-low':
-      const priorityOrderReverse = { low: 0, medium: 1, high: 2 };
-      return sorted.sort(
-        (a, b) =>
-          priorityOrderReverse[a.priority] - priorityOrderReverse[b.priority]
-      );
+      {
+        const priorityOrderReverse = { low: 0, medium: 1, high: 2 };
+        return sorted.sort(
+          (a, b) =>
+            priorityOrderReverse[a.priority] - priorityOrderReverse[b.priority]
+        );
+      }
 
     case 'status':
-      const statusOrder = { todo: 0, 'in-progress': 1, done: 2 };
-      return sorted.sort(
-        (a, b) => statusOrder[a.status] - statusOrder[b.status]
-      );
+      {
+        const statusOrder = { todo: 0, 'in-progress': 1, done: 2 };
+        return sorted.sort(
+          (a, b) => statusOrder[a.status] - statusOrder[b.status]
+        );
+      }
 
     default:
       return sorted;
