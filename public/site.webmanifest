@@ -1,6 +1,6 @@
 {
-  "name": "Sticky Memo",
-  "short_name": "Sticky Memo",
+  "name": "Ownlyst",
+  "short_name": "Ownlyst",
   "description": "A modern note-taking app with multiple views and team collaboration features",
   "start_url": "/",
   "display": "standalone",

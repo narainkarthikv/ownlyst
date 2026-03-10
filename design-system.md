@@ -18,33 +18,34 @@ Use semantic tokens in implementation (background, surface, text, border, intera
 
 ### Semantic color tokens
 
-| Token | Light | Dark | Usage |
-|---|---|---|---|
-| `background.primary` | `#FFFFFF` | `#0B1118` | App/page background |
-| `background.secondary` | `#F5F5F5` | `#121B26` | Section or alternate background |
-| `surface.primary` | `#FFFFFF` | `#121B26` | Cards, panels, containers |
-| `surface.secondary` | `#F5F5F5` | `#0F1822` | Elevated or inset surface |
-| `surface.overlay` | `rgba(0,0,0,0.5)` | `rgba(2,10,18,0.65)` | Modal and backdrop layers |
-| `text.primary` | `#1A1A1A` | `#EAF2F6` | Main content text |
-| `text.secondary` | `#6B7280` | `#9FB0C3` | Supportive text |
-| `text.muted` | `#9CA3AF` | `#7C8CA0` | Captions, placeholders, disabled text |
-| `text.inverse` | `#FFFFFF` | `#0B1118` | Text on saturated/contrasting backgrounds |
-| `border.primary` | `#E5E7EB` | `#1E2C3C` | Main borders and outlines |
-| `border.subtle` | `#F0F0F0` | `#0F1822` | Dividers and subtle separators |
+| Token                  | Light             | Dark                 | Usage                                     |
+| ---------------------- | ----------------- | -------------------- | ----------------------------------------- |
+| `background.primary`   | `#FFFFFF`         | `#0B1118`            | App/page background                       |
+| `background.secondary` | `#F5F5F5`         | `#121B26`            | Section or alternate background           |
+| `surface.primary`      | `#FFFFFF`         | `#121B26`            | Cards, panels, containers                 |
+| `surface.secondary`    | `#F5F5F5`         | `#0F1822`            | Elevated or inset surface                 |
+| `surface.overlay`      | `rgba(0,0,0,0.5)` | `rgba(2,10,18,0.65)` | Modal and backdrop layers                 |
+| `text.primary`         | `#1A1A1A`         | `#EAF2F6`            | Main content text                         |
+| `text.secondary`       | `#6B7280`         | `#9FB0C3`            | Supportive text                           |
+| `text.muted`           | `#9CA3AF`         | `#7C8CA0`            | Captions, placeholders, disabled text     |
+| `text.inverse`         | `#FFFFFF`         | `#0B1118`            | Text on saturated/contrasting backgrounds |
+| `border.primary`       | `#E5E7EB`         | `#1E2C3C`            | Main borders and outlines                 |
+| `border.subtle`        | `#F0F0F0`         | `#0F1822`            | Dividers and subtle separators            |
 
 ### Interactive and semantic tokens
 
-| Token | Light | Dark | Usage |
-|---|---|---|---|
-| `interactive.default` | `#3B82F6` | `#3B82F6` | Primary actions and emphasis |
-| `interactive.hover` | `#2563EB` | `#2563EB` | Hover state |
-| `interactive.active` | `#1D4ED8` | `#1E4FBF` | Active/pressed state |
-| `interactive.disabled` | `#D1D5DB` | `#1F2C3B` | Disabled controls |
-| `success` | `#22C55E` | `#22C55E` | Positive state |
-| `warning` | `#F59E0B` | `#F59E0B` | Caution state |
-| `error` | `#EF4444` | `#EF4444` | Destructive/invalid state |
+| Token                  | Light     | Dark      | Usage                        |
+| ---------------------- | --------- | --------- | ---------------------------- |
+| `interactive.default`  | `#3B82F6` | `#3B82F6` | Primary actions and emphasis |
+| `interactive.hover`    | `#2563EB` | `#2563EB` | Hover state                  |
+| `interactive.active`   | `#1D4ED8` | `#1E4FBF` | Active/pressed state         |
+| `interactive.disabled` | `#D1D5DB` | `#1F2C3B` | Disabled controls            |
+| `success`              | `#22C55E` | `#22C55E` | Positive state               |
+| `warning`              | `#F59E0B` | `#F59E0B` | Caution state                |
+| `error`                | `#EF4444` | `#EF4444` | Destructive/invalid state    |
 
 Rules:
+
 - Use blue only for interaction and focus-related affordances.
 - Use semantic colors only for status meaning (success, warning, error).
 - Do not introduce decorative accent colors.
@@ -96,6 +97,7 @@ Use a consistent radius scale:
 - **XL**: 16px–24px (hero/feature blocks)
 
 Rules:
+
 - Do not mix too many radius values in one screen.
 - Interactive controls should generally use small/medium radii.
 
@@ -130,6 +132,7 @@ Every interactive element should define:
 - **Disabled** (visibly inactive, still legible)
 
 Rules:
+
 - Never remove visible focus indicators.
 - Color alone should not be the only signal for state.
 

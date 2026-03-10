@@ -8,7 +8,7 @@ export default function Logo({ size = 32, className = '' }: LogoProps) {
     <div className={`flex items-center cursor-pointer ${className}`}>
       <img
         src='/favicon.svg'
-        alt='Sticky Memo Logo'
+        alt='Ownlyst Logo'
         width={size}
         height={size}
         className='rounded-lg w-auto h-auto'

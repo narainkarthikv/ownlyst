@@ -2,7 +2,7 @@
 
 ## Purpose
 
-These instructions onboard GitHub Copilot Coding Agent to the Sticky Memo repository.
+These instructions onboard GitHub Copilot Coding Agent to the Ownlyst repository.
 Use this document as the source of truth for repo context, architecture, and development practices.
 Only search the repository if details here are missing or incorrect.
 
@@ -10,7 +10,7 @@ Only search the repository if details here are missing or incorrect.
 
 ## Repository Summary
 
-**Sticky Memo** is a privacy-first, local-only note-taking app that runs entirely in the browser.
+**Ownlyst** is a privacy-first, local-only note-taking app that runs entirely in the browser.
 It is a lightweight, local-first app for creating, organizing, and searching notes with zero server dependency.
 
 Key features:
@@ -80,7 +80,7 @@ npm run lint
 ## Project Architecture & Layout
 
 ```
-sticky-memo/
+ownlyst/
 ├── src/
 │   ├── components/     # Reusable UI components
 │   ├── constants/      # App constants and configs
@@ -143,7 +143,7 @@ sticky-memo/
 
 ### Design System & UI Guidelines
 
-Refer to `design-system.md` for detailed design tokens, color palette, typography, and component patterns. When implementing UI components, always reference the design system for consistency. 
+Refer to `design-system.md` for detailed design tokens, color palette, typography, and component patterns. When implementing UI components, always reference the design system for consistency.
 
 ---
 

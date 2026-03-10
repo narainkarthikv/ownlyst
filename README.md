@@ -1,14 +1,14 @@
-![License](https://img.shields.io/github/license/narainkarthikv/sticky-memo)
+![License](https://img.shields.io/github/license/narainkarthikv/ownlyst)
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Last Commit](https://img.shields.io/github/last-commit/narainkarthikv/sticky-memo)
-[![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/sticky-memo)](https://github.com/narainkarthikv/sticky-memo/issues)
-[![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/sticky-memo)](https://github.com/narainkarthikv/sticky-memo/stargazers)
+![Last Commit](https://img.shields.io/github/last-commit/narainkarthikv/ownlyst)
+[![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/ownlyst)](https://github.com/narainkarthikv/ownlyst/issues)
+[![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/ownlyst)](https://github.com/narainkarthikv/ownlyst/stargazers)
 
-# Sticky Memo
+# Ownlyst
 
-**Privacy-first note-taking that runs entirely in your browser.**
+**Own your notes. Own your data.**
 
-Sticky Memo is a lightweight, local-first note management app. Create, organize, and search notes with complete privacy and zero backend dependency.
+Ownlyst is a privacy-first, local-first note management app. Create, organize, and search notes with complete user ownership and zero backend dependency.
 
 ## ✨ Features
 
@@ -42,8 +42,8 @@ Sticky Memo is a lightweight, local-first note management app. Create, organize,
 
 ```bash
 # Clone the repository
-git clone https://github.com/narainkarthikv/sticky-memo.git
-cd sticky-memo
+git clone https://github.com/narainkarthikv/ownlyst.git
+cd ownlyst
 
 # Install dependencies
 npm install
@@ -80,7 +80,7 @@ npm run preview
 ## 📁 Project Structure
 
 ```
-sticky-memo/
+ownlyst/
 ├── src/
 │   ├── components/     # Reusable UI components
 │   ├── constants/      # App constants and configs
@@ -99,7 +99,7 @@ sticky-memo/
 
 ## 🔑 Environment Variables
 
-Sticky Memo does not require any environment variables for local development.
+Ownlyst does not require any environment variables for local development.
 
 ## 🧪 Development
 
@@ -136,7 +136,7 @@ npx prettier --write .
 We welcome contributions from the community! Here's how to get started:
 
 1. **Read the Guidelines**: Check [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed instructions
-2. **Pick an Issue**: Browse [open issues](https://github.com/narainkarthikv/sticky-memo/issues) or create a new one
+2. **Pick an Issue**: Browse [open issues](https://github.com/narainkarthikv/ownlyst/issues) or create a new one
 3. **Fork & Branch**: Create a feature branch from your fork
 4. **Code**: Follow our code style and commit conventions
 5. **Test**: Ensure everything works locally
@@ -153,9 +153,9 @@ We welcome contributions from the community! Here's how to get started:
 
 ## 💬 Community & Support
 
-- **Issues**: [Report bugs or request features](https://github.com/narainkarthikv/sticky-memo/issues)
-- **Discussions**: [Ask questions and share ideas](https://github.com/narainkarthikv/sticky-memo/discussions)
-- **Pull Requests**: [Contribute code improvements](https://github.com/narainkarthikv/sticky-memo/pulls)
+- **Issues**: [Report bugs or request features](https://github.com/narainkarthikv/ownlyst/issues)
+- **Discussions**: [Ask questions and share ideas](https://github.com/narainkarthikv/ownlyst/discussions)
+- **Pull Requests**: [Contribute code improvements](https://github.com/narainkarthikv/ownlyst/pulls)
 
 ## 📖 Documentation
 
@@ -173,7 +173,7 @@ This project is licensed under the **MIT License** - see [MIT-LICENSE.txt](./MIT
 
 ## 🌟 Show Your Support
 
-If Sticky Memo helps you stay organized:
+If Ownlyst helps you stay organized:
 
 - ⭐ Star the repository
 - 🐛 Report issues you encounter
@@ -183,8 +183,9 @@ If Sticky Memo helps you stay organized:
 
 ## 🔗 Links
 
-- **Live Demo**: [https://wisdomfox-sticky-memo.netlify.app/](https://wisdomfox-sticky-memo.netlify.app/)
-- **Repository**: [https://github.com/narainkarthikv/sticky-memo](https://github.com/narainkarthikv/sticky-memo)
+- **Production Demo**: [https://ownlyst.netlify.app/](https://ownlyst.netlify.app/)
+- **Development Demo**: [https://ownlyst-dev.vercel.app/](https://ownlyst-dev.vercel.app/)
+- **Repository**: [https://github.com/narainkarthikv/ownlyst](https://github.com/narainkarthikv/ownlyst)
 
 ---
 

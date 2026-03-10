@@ -2,7 +2,7 @@
 
 ## Our Commitment
 
-The Sticky Memo project takes security seriously. We appreciate the security research community's efforts in responsibly disclosing vulnerabilities and are committed to working with security researchers to verify, reproduce, and respond to legitimate reported vulnerabilities.
+The Ownlyst project takes security seriously. We appreciate the security research community's efforts in responsibly disclosing vulnerabilities and are committed to working with security researchers to verify, reproduce, and respond to legitimate reported vulnerabilities.
 
 ## Supported Versions
 
@@ -21,7 +21,7 @@ We release security updates for the following versions:
 
 If you discover a critical security vulnerability, please use GitHub's Security Advisory feature:
 
-1. Navigate to the [Security tab](https://github.com/narainkarthikv/sticky-memo/security/advisories)
+1. Navigate to the [Security tab](https://github.com/narainkarthikv/ownlyst/security/advisories)
 2. Click **"Report a vulnerability"**
 3. Fill out the security advisory form with as much detail as possible
 
@@ -54,7 +54,7 @@ We will make our best effort to respond to security reports according to the fol
 
 ## Security Best Practices for Users
 
-Since Sticky Memo is a client-side application that stores data locally:
+Since Ownlyst is a client-side application that stores data locally:
 
 1. **Keep Your Browser Updated**: Use the latest version of your browser
 2. **Export Regularly**: Regularly export your notes as backups
@@ -106,15 +106,15 @@ If a CHANGELOG is not present in the repository, the GitHub Security Advisory an
 
 For general security questions (non-vulnerabilities), you can:
 
-- Open a [GitHub Discussion](https://github.com/narainkarthikv/sticky-memo/discussions)
+- Open a [GitHub Discussion](https://github.com/narainkarthikv/ownlyst/discussions)
 - Email the maintainers (check repository for current contact)
 
 ## Recognition
 
-We appreciate security researchers who help keep Sticky Memo secure. With your permission, we will acknowledge your contribution in:
+We appreciate security researchers who help keep Ownlyst secure. With your permission, we will acknowledge your contribution in:
 
 - Security advisories
 - CHANGELOG
 - Contributors list
 
-Thank you for helping keep Sticky Memo and its users safe!
+Thank you for helping keep Ownlyst and its users safe!

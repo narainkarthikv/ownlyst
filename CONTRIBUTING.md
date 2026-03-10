@@ -1,6 +1,6 @@
-# Contributing to Sticky Memo
+# Contributing to Ownlyst
 
-Thank you for your interest in contributing! Sticky Memo is built by volunteers like you, and we appreciate every contribution—no matter how small.
+Thank you for your interest in contributing! Ownlyst is built by volunteers like you, and we appreciate every contribution—no matter how small.
 
 ## Table of Contents
 
@@ -35,19 +35,19 @@ Before contributing, ensure you have:
 
 1. **Fork the repository**
 
-   Click the "Fork" button at the top-right of the [repository page](https://github.com/narainkarthikv/sticky-memo).
+   Click the "Fork" button at the top-right of the [repository page](https://github.com/narainkarthikv/ownlyst).
 
 2. **Clone your fork**
 
    ```bash
-   git clone https://github.com/your-username/sticky-memo.git
-   cd sticky-memo
+   git clone https://github.com/your-username/ownlyst.git
+   cd ownlyst
    ```
 
 3. **Add upstream remote**
 
    ```bash
-   git remote add upstream https://github.com/narainkarthikv/sticky-memo.git
+   git remote add upstream https://github.com/narainkarthikv/ownlyst.git
    ```
 
 4. **Install dependencies**
@@ -81,9 +81,9 @@ Before contributing, ensure you have:
 
 ### Finding Something to Work On
 
-- Browse [open issues](https://github.com/narainkarthikv/sticky-memo/issues)
+- Browse [open issues](https://github.com/narainkarthikv/ownlyst/issues)
 - Look for `good first issue` or `help wanted` labels
-- Check [discussions](https://github.com/narainkarthikv/sticky-memo/discussions) for ideas
+- Check [discussions](https://github.com/narainkarthikv/ownlyst/discussions) for ideas
 - Propose your own ideas by opening an issue first
 
 **Pro Tip**: Comment on an issue to let others know you're working on it.
@@ -365,12 +365,12 @@ Contributors are recognized in:
 
 If you have questions not covered here:
 
-- Open a [GitHub Discussion](https://github.com/narainkarthikv/sticky-memo/discussions)
+- Open a [GitHub Discussion](https://github.com/narainkarthikv/ownlyst/discussions)
 - Comment on a related issue
 - Reach out to maintainers
 
 ---
 
-**Thank you for contributing to Sticky Memo!** 🚀
+**Thank you for contributing to Ownlyst!** 🚀
 
 Every contribution makes this project better for everyone.
