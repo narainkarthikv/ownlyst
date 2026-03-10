@@ -104,7 +104,7 @@ export default function LandingPage() {
             onClick={() => navigate('/')}>
             <Logo size={48} />
             <h1 className='ml-3 text-3xl md:text-4xl font-bold text-gray-900 dark:text-white'>
-              Sticky Memo
+              Ownlyst
             </h1>
           </motion.div>
 
@@ -396,7 +396,7 @@ export default function LandingPage() {
               whileTap={{ scale: 0.98 }}
               className='font-bold text-base px-8 py-3 rounded-lg bg-white text-blue-600 hover:bg-gray-50 transition-colors duration-200 shadow-lg'
               onClick={() => navigate('/app')}>
-              Open Sticky Memo
+              Open Ownlyst
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -422,7 +422,7 @@ export default function LandingPage() {
             </h3>
             <p className='text-gray-700 dark:text-gray-300 mb-8 text-lg max-w-2xl mx-auto'>
               Building ethical, privacy-respecting software takes time and
-              coffee (lots of coffee). If Sticky Memo makes your life easier,
+              coffee (lots of coffee). If Ownlyst makes your life easier,
               consider buying us a cup! Every bit helps keep this project
               independent and ad-free. 💚
             </p>
@@ -449,8 +449,8 @@ export default function LandingPage() {
               </motion.a>
             </div>
             <p className='mt-6 text-sm text-gray-600 dark:text-gray-400'>
-              ✨ Donations are optional and never required. Sticky Memo will
-              always be free and open source!
+              ✨ Donations are optional and never required. Ownlyst will always
+              be free and open source!
             </p>
           </motion.div>
         </div>
@@ -464,7 +464,7 @@ export default function LandingPage() {
               <div className='flex items-center mb-3'>
                 <Logo size={32} />
                 <h4 className='text-blue-400 text-xl font-bold ml-2'>
-                  Sticky Memo
+                  Ownlyst
                 </h4>
               </div>
               <p className='text-gray-400 text-sm max-w-xs'>
@@ -479,7 +479,7 @@ export default function LandingPage() {
           </div>
           <div className='border-t border-gray-700 pt-6'>
             <p className='text-gray-400 text-xs text-center'>
-              © 2026 Sticky Memo. Made with 💚 by people who care about your
+              © 2026 Ownlyst. Made with 💚 by people who care about your
               privacy.
             </p>
           </div>

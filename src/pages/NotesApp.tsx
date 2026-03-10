@@ -91,7 +91,7 @@ export default memo(function NotesApp() {
               <Logo size={28} className='sm:w-8' />
               <h1
                 className={`text-lg sm:text-xl font-bold ${HEADER_CLASSES.title}`}>
-                Sticky Memo
+                Ownlyst
               </h1>
             </div>
           </div>

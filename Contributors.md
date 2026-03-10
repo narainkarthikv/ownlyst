@@ -1,6 +1,6 @@
 # Contributors
 
-- [Narain Karthik](https://github.com/narainkarthikv) **Creator of Sticky-Memo**
+- [Narain Karthik](https://github.com/narainkarthikv) **Creator of Ownlyst**
 
 ## Open Source Contributors
 

@@ -61,7 +61,7 @@ export class ImportExportService {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `sticky-memo-backup-${this.getTimestamp()}.json`;
+      link.download = `ownlyst-backup-${this.getTimestamp()}.json`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -148,7 +148,7 @@ export class ImportExportService {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `sticky-memo-backup-${this.getTimestamp()}.csv`;
+      link.download = `ownlyst-backup-${this.getTimestamp()}.csv`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

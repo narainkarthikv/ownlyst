@@ -15,9 +15,7 @@ import {
 import { Note } from '../../types/Note';
 import NoteModal from '../../components/NoteModal';
 import EmptyState from '../../components/shared/EmptyState';
-import FilterBar, {
-  type FilterState,
-} from '../../components/shared/FilterBar';
+import FilterBar, { type FilterState } from '../../components/shared/FilterBar';
 import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 
 interface RoadmapViewProps {

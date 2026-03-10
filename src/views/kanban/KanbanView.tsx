@@ -18,9 +18,7 @@ import {
 import { Note } from '../../types/Note';
 import NoteModal from '../../components/NoteModal';
 import EmptyState from '../../components/shared/EmptyState';
-import FilterBar, {
-  type FilterState,
-} from '../../components/shared/FilterBar';
+import FilterBar, { type FilterState } from '../../components/shared/FilterBar';
 import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 import {
   PRIORITY_CARD_CLASSES,
@@ -122,14 +120,10 @@ const KanbanCard = memo(
 
             {/* Content */}
             <div className='space-y-3 pr-6 pl-5'>
-              <motion.h4
-                className='font-bold text-base leading-tight'
-                layout>
+              <motion.h4 className='font-bold text-base leading-tight' layout>
                 {note.title}
               </motion.h4>
-              <motion.p
-                className='text-sm opacity-80 line-clamp-4'
-                layout>
+              <motion.p className='text-sm opacity-80 line-clamp-4' layout>
                 {note.content}
               </motion.p>
 
