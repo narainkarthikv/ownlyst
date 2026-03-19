@@ -42,6 +42,11 @@ interface GanttTask {
   isPinned: boolean;
 }
 
+interface TimelinePeriod {
+  start: Date;
+  end: Date;
+}
+
 type GroupingOption = 'none' | 'status' | 'priority';
 
 export default memo(function RoadmapView({
@@ -107,14 +112,14 @@ export default memo(function RoadmapView({
   }, [filteredNotes, groupBy, groupTasks]);
 
   // Generate time periods for the timeline
-  const timelineData = useMemo(() => {
-    const periods = [];
-    const startDate = new Date(
+  const timelinePeriods = useMemo<TimelinePeriod[]>(() => {
+    const periods: TimelinePeriod[] = [];
+    const rangeStart = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth(),
       1
     );
-    const endDate = new Date(
+    const rangeEnd = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth() + (viewMode === 'quarter' ? 3 : 1),
       0
@@ -122,16 +127,29 @@ export default memo(function RoadmapView({
 
     if (viewMode === 'month') {
       for (
-        let d = new Date(startDate);
-        d <= endDate;
+        let d = new Date(rangeStart);
+        d <= rangeEnd;
         d.setDate(d.getDate() + 1)
       ) {
-        periods.push(new Date(d));
+        const start = new Date(d);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(d);
+        end.setHours(23, 59, 59, 999);
+        periods.push({ start, end });
       }
     } else {
-      const current = new Date(startDate);
-      while (current <= endDate) {
-        periods.push(new Date(current));
+      const current = new Date(rangeStart);
+      while (current <= rangeEnd) {
+        const start = new Date(current);
+        start.setHours(0, 0, 0, 0);
+        const end = new Date(current);
+        end.setDate(end.getDate() + 6);
+        end.setHours(23, 59, 59, 999);
+        if (end > rangeEnd) {
+          end.setTime(rangeEnd.getTime());
+          end.setHours(23, 59, 59, 999);
+        }
+        periods.push({ start, end });
         current.setDate(current.getDate() + 7);
       }
     }
@@ -164,23 +182,41 @@ export default memo(function RoadmapView({
     }
   };
 
-  const getTaskPosition = (task: GanttTask) => {
-    const totalDays = timelineData.length;
-    const startIndex = timelineData.findIndex(
-      (date) => date.toDateString() === task.startDate.toDateString()
-    );
-    const endIndex = timelineData.findIndex(
-      (date) => date.toDateString() === task.endDate.toDateString()
-    );
+  const getTaskPosition = useCallback((task: GanttTask) => {
+    if (timelinePeriods.length === 0) {
+      return null;
+    }
 
-    const left = startIndex >= 0 ? (startIndex / totalDays) * 100 : 0;
-    const width =
-      endIndex >= 0 && startIndex >= 0
-        ? ((endIndex - startIndex + 1) / totalDays) * 100
-        : 10;
+    const normalizedStart = new Date(task.startDate);
+    normalizedStart.setHours(0, 0, 0, 0);
+    const normalizedEnd = new Date(task.endDate);
+    normalizedEnd.setHours(23, 59, 59, 999);
 
-    return { left: `${left}%`, width: `${Math.max(width, 5)}%` };
-  };
+    const startIndex = timelinePeriods.findIndex(
+      (period) => normalizedStart <= period.end && normalizedEnd >= period.start
+    );
+    const endIndex =
+      timelinePeriods.findLastIndex?.(
+        (period) => normalizedStart <= period.end && normalizedEnd >= period.start
+      ) ??
+      (() => {
+        for (let i = timelinePeriods.length - 1; i >= 0; i -= 1) {
+          const period = timelinePeriods[i];
+          if (normalizedStart <= period.end && normalizedEnd >= period.start) {
+            return i;
+          }
+        }
+        return -1;
+      })();
+
+    if (startIndex === -1 || endIndex === -1) {
+      return null;
+    }
+
+    return {
+      gridColumn: `${startIndex + 1} / ${endIndex + 2}`,
+    };
+  }, [timelinePeriods]);
 
   const isToday = (date: Date) => {
     const today = new Date();
@@ -417,24 +453,31 @@ export default memo(function RoadmapView({
                 <div
                   className='grid border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50'
                   style={{
-                    gridTemplateColumns: `repeat(${timelineData.length}, ${zoomLevel}px)`,
-                    width: `max(100%, ${timelineData.length * zoomLevel}px)`,
+                    gridTemplateColumns: `repeat(${timelinePeriods.length}, ${zoomLevel}px)`,
+                    width: `max(100%, ${timelinePeriods.length * zoomLevel}px)`,
                   }}>
-                  {timelineData.map((date) => (
+                  {timelinePeriods.map((period) => (
                     <div
-                      key={date.toISOString()}
+                      key={period.start.toISOString()}
                       className={`p-2 sm:p-4 text-center border-r border-gray-200 dark:border-slate-700 last:border-r-0 ${
-                        isToday(date) ? 'bg-blue-50 dark:bg-blue-900/30' : ''
+                        isToday(period.start) ? 'bg-blue-50 dark:bg-blue-900/30' : ''
                       }`}>
                       <div className='text-[10px] sm:text-xs md:text-sm font-semibold text-gray-900 dark:text-white'>
                         {viewMode === 'month'
-                          ? date.getDate()
-                          : `W${Math.ceil(date.getDate() / 7)}`}
+                          ? period.start.getDate()
+                          : `W${Math.ceil(period.start.getDate() / 7)}`}
                       </div>
-                      {viewMode === 'month' && (
+                      {viewMode === 'month' ? (
                         <div className='text-[10px] sm:text-xs font-medium uppercase text-gray-500 dark:text-gray-400 mt-0.5 sm:mt-1'>
-                          {date.toLocaleDateString('en-US', {
+                          {period.start.toLocaleDateString('en-US', {
                             weekday: 'short',
+                          })}
+                        </div>
+                      ) : (
+                        <div className='text-[10px] sm:text-xs font-medium text-gray-500 dark:text-gray-400 mt-0.5 sm:mt-1'>
+                          {period.start.toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
                           })}
                         </div>
                       )}
@@ -527,8 +570,8 @@ export default memo(function RoadmapView({
                       <div
                         className='grid bg-white dark:bg-slate-800'
                         style={{
-                          gridTemplateColumns: `repeat(${timelineData.length}, ${zoomLevel}px)`,
-                          width: `max(100%, ${timelineData.length * zoomLevel}px)`,
+                          gridTemplateColumns: `repeat(${timelinePeriods.length}, ${zoomLevel}px)`,
+                          width: `max(100%, ${timelinePeriods.length * zoomLevel}px)`,
                         }}>
                         {Object.entries(ganttTasks).map(
                           ([groupName, tasks]) => (
@@ -537,105 +580,123 @@ export default memo(function RoadmapView({
                                 <div
                                   className='h-10 border-b border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-700/50'
                                   style={{
-                                    gridColumn: `1 / span ${timelineData.length}`,
+                                    gridColumn: `1 / span ${timelinePeriods.length}`,
                                   }}
                                 />
                               )}
-                              {tasks.map((task) => (
-                                <div
-                                  key={task.id}
-                                  className='relative border-b border-gray-200 dark:border-slate-700 min-h-[3rem] sm:min-h-[4rem] group'
-                                  style={getTaskPosition(task)}>
-                                  <motion.div
-                                    initial={{ opacity: 0, scaleX: 0 }}
-                                    animate={{ opacity: 1, scaleX: 1 }}
-                                    transition={{ duration: 0.3 }}
-                                    className={`absolute top-1/2 -translate-y-1/2 mx-1.5 sm:mx-2 h-6 sm:h-8 rounded-md shadow-sm ${
-                                      task.status === 'done'
-                                        ? 'bg-emerald-100'
-                                        : task.status === 'in-progress'
-                                          ? 'bg-blue-100'
-                                          : 'bg-gray-100'
-                                    }`}>
-                                    <div
-                                      className={`h-full rounded-md transition-all duration-500 ${
-                                        task.status === 'done'
-                                          ? 'bg-emerald-200 w-full'
-                                          : task.status === 'in-progress'
-                                            ? 'bg-blue-200 w-1/2'
-                                            : 'bg-gray-200 w-0'
-                                      }`}
-                                    />
-                                    <AnimatePresence>
+                              {tasks.map((task) => {
+                                const taskPosition = getTaskPosition(task);
+
+                                return (
+                                  <div
+                                    key={task.id}
+                                    className='grid relative border-b border-gray-200 dark:border-slate-700 min-h-[3rem] sm:min-h-[4rem] group'
+                                    style={{
+                                      gridTemplateColumns: `repeat(${timelinePeriods.length}, ${zoomLevel}px)`,
+                                      gridColumn: `1 / span ${timelinePeriods.length}`,
+                                    }}>
+                                    {timelinePeriods.map((period) => (
+                                      <div
+                                        key={`${task.id}-${period.start.toISOString()}`}
+                                        className={`border-r border-gray-200 dark:border-slate-700 last:border-r-0 ${
+                                          isToday(period.start)
+                                            ? 'bg-blue-50/60 dark:bg-blue-900/10'
+                                            : ''
+                                        }`}
+                                      />
+                                    ))}
+
+                                    {taskPosition && (
                                       <motion.div
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: 10 }}
-                                        className='absolute hidden md:group-hover:block active:block z-20 bg-white dark:bg-slate-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-slate-700 w-64 -translate-x-1/2 left-1/2 top-full mt-2'>
-                                        <div className='text-sm space-y-2'>
-                                          <div className='font-semibold text-gray-900 dark:text-white'>
-                                            {task.title}
-                                          </div>
-                                          <div className='flex items-center text-xs space-x-2'>
-                                            {React.createElement(
-                                              statusIcons[task.status],
-                                              {
-                                                size: 14,
-                                                className: `p-0.5 rounded-full shrink-0 ${
-                                                  task.status === 'todo'
-                                                    ? 'text-blue-600 dark:text-blue-400'
-                                                    : task.status ===
-                                                        'in-progress'
-                                                      ? 'text-amber-600 dark:text-amber-400'
-                                                      : 'text-green-600 dark:text-green-400'
-                                                }`,
-                                              }
-                                            )}
-                                            <span className='capitalize text-gray-900 dark:text-gray-200'>
-                                              {task.status}
-                                            </span>
-                                          </div>
-                                          <div className='text-xs text-gray-600 dark:text-gray-400'>
-                                            <div className='flex justify-between'>
-                                              <span>Start:</span>
-                                              <span className='font-medium'>
-                                                {task.startDate.toLocaleDateString()}
-                                              </span>
+                                        initial={{ opacity: 0, scaleX: 0 }}
+                                        animate={{ opacity: 1, scaleX: 1 }}
+                                        transition={{ duration: 0.3 }}
+                                        style={{ ...taskPosition, gridRow: 1 }}
+                                        className={`relative z-10 self-center h-6 sm:h-8 mx-1.5 sm:mx-2 rounded-md shadow-sm overflow-visible origin-left ${
+                                          task.status === 'done'
+                                            ? 'bg-emerald-100 dark:bg-emerald-900/40'
+                                            : task.status === 'in-progress'
+                                              ? 'bg-blue-100 dark:bg-blue-900/40'
+                                              : 'bg-gray-100 dark:bg-slate-600/60'
+                                        }`}>
+                                        <div
+                                          className={`h-full rounded-md transition-all duration-500 ${
+                                            task.status === 'done'
+                                              ? 'bg-emerald-200 dark:bg-emerald-500/40 w-full'
+                                              : task.status === 'in-progress'
+                                                ? 'bg-blue-200 dark:bg-blue-500/40 w-1/2'
+                                                : 'bg-gray-200 dark:bg-slate-500/40 w-0'
+                                          }`}
+                                        />
+
+                                        <AnimatePresence>
+                                          <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 10 }}
+                                            className='absolute hidden md:group-hover:block active:block z-20 bg-white dark:bg-slate-800 p-3 rounded-lg shadow-lg border border-gray-200 dark:border-slate-700 w-64 -translate-x-1/2 left-1/2 top-full mt-2'>
+                                            <div className='text-sm space-y-2'>
+                                              <div className='font-semibold text-gray-900 dark:text-white'>
+                                                {task.title}
+                                              </div>
+                                              <div className='flex items-center text-xs space-x-2'>
+                                                {React.createElement(
+                                                  statusIcons[task.status],
+                                                  {
+                                                    size: 14,
+                                                    className: `p-0.5 rounded-full shrink-0 ${
+                                                      task.status === 'todo'
+                                                        ? 'text-blue-600 dark:text-blue-400'
+                                                        : task.status ===
+                                                            'in-progress'
+                                                          ? 'text-amber-600 dark:text-amber-400'
+                                                          : 'text-green-600 dark:text-green-400'
+                                                    }`,
+                                                  }
+                                                )}
+                                                <span className='capitalize text-gray-900 dark:text-gray-200'>
+                                                  {task.status}
+                                                </span>
+                                              </div>
+                                              <div className='text-xs text-gray-600 dark:text-gray-400'>
+                                                <div className='flex justify-between'>
+                                                  <span>Start:</span>
+                                                  <span className='font-medium'>
+                                                    {task.startDate.toLocaleDateString()}
+                                                  </span>
+                                                </div>
+                                                <div className='flex justify-between mt-1'>
+                                                  <span>Due:</span>
+                                                  <span className='font-medium'>
+                                                    {task.endDate.toLocaleDateString()}
+                                                  </span>
+                                                </div>
+                                              </div>
+                                              <div className='mt-2 pt-2 border-t border-gray-100 dark:border-slate-700'>
+                                                <div className='relative h-2 bg-gray-100 dark:bg-slate-700 rounded-full overflow-hidden'>
+                                                  <div
+                                                    className={`absolute left-0 top-0 h-full rounded-full transition-all duration-300 ${
+                                                      task.status === 'done'
+                                                        ? 'bg-emerald-500 w-full'
+                                                        : task.status ===
+                                                            'in-progress'
+                                                          ? 'bg-blue-500 w-1/2'
+                                                          : 'bg-gray-300 dark:bg-slate-500 w-0'
+                                                    }`}
+                                                  />
+                                                </div>
+                                                <div className='text-[10px] text-gray-500 mt-1 text-center'>
+                                                  {task.progress}%
+                                                </div>
+                                              </div>
                                             </div>
-                                            <div className='flex justify-between mt-1'>
-                                              <span>Due:</span>
-                                              <span className='font-medium'>
-                                                {task.endDate.toLocaleDateString()}
-                                              </span>
-                                            </div>
-                                          </div>
-                                          <div className='mt-2 pt-2 border-t border-gray-100'>
-                                            <div className='relative h-2 bg-gray-100 rounded-full overflow-hidden'>
-                                              <div
-                                                className={`absolute left-0 top-0 h-full rounded-full transition-all duration-300 ${
-                                                  task.status === 'done'
-                                                    ? 'bg-emerald-500 w-full'
-                                                    : task.status ===
-                                                        'in-progress'
-                                                      ? 'bg-blue-500 w-1/2'
-                                                      : 'bg-gray-300 w-0'
-                                                }`}
-                                              />
-                                            </div>
-                                            <div className='text-[10px] text-gray-500 mt-1 text-center'>
-                                              {task.status === 'done'
-                                                ? '100%'
-                                                : task.status === 'in-progress'
-                                                  ? '50%'
-                                                  : '0%'}
-                                            </div>
-                                          </div>
-                                        </div>
+                                          </motion.div>
+                                        </AnimatePresence>
                                       </motion.div>
-                                    </AnimatePresence>
-                                  </motion.div>
-                                </div>
-                              ))}
+                                    )}
+                                  </div>
+                                );
+                              })}
                             </React.Fragment>
                           )
                         )}
