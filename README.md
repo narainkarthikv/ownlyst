@@ -61,6 +61,16 @@ npm run build
 npm run preview
 ```
 
+### Docker
+
+```bash
+# Build the production image
+docker build -t ownlyst .
+
+# Run the app on http://localhost:3000
+docker run --rm -p 3000:3000 ownlyst
+```
+
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -99,7 +109,7 @@ ownlyst/
 
 ## 🔑 Environment Variables
 
-Ownlyst does not require any environment variables for local development.
+Ownlyst does not require any environment variables for local development. When running in Docker, you can optionally provide runtime configuration through `OWNYLST_APP_ENV` and `OWNYLST_API_BASE_URL`, which are exposed to the browser via `window.__OWNLYST_CONFIG__`.
 
 ## 🧪 Development
 
