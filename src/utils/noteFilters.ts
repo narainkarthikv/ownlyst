@@ -55,50 +55,49 @@ export function filterPinnedOnly(
 export function sortNotes(notes: Note[], sortOption: SortOption): Note[] {
   const sorted = [...notes];
 
-  switch (sortOption) {
-    case 'date-desc':
-      return sorted.sort(
-        (a, b) =>
+  return sorted.sort((a, b) => {
+    // Always keep pinned notes first so pin/unpin behaves like a real toggle
+    // across all views regardless of the active secondary sort option.
+    if (a.isPinned !== b.isPinned) {
+      return a.isPinned ? -1 : 1;
+    }
+
+    switch (sortOption) {
+      case 'date-desc':
+        return (
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
+        );
 
-    case 'date-asc':
-      return sorted.sort(
-        (a, b) =>
+      case 'date-asc':
+        return (
           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-      );
+        );
 
-    case 'title-asc':
-      return sorted.sort((a, b) => a.title.localeCompare(b.title));
+      case 'title-asc':
+        return a.title.localeCompare(b.title);
 
-    case 'title-desc':
-      return sorted.sort((a, b) => b.title.localeCompare(a.title));
+      case 'title-desc':
+        return b.title.localeCompare(a.title);
 
-    case 'priority-high': {
-      const priorityOrder = { high: 0, medium: 1, low: 2 };
-      return sorted.sort(
-        (a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]
-      );
+      case 'priority-high': {
+        const priorityOrder = { high: 0, medium: 1, low: 2 };
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
+      }
+
+      case 'priority-low': {
+        const priorityOrderReverse = { low: 0, medium: 1, high: 2 };
+        return priorityOrderReverse[a.priority] - priorityOrderReverse[b.priority];
+      }
+
+      case 'status': {
+        const statusOrder = { todo: 0, 'in-progress': 1, done: 2 };
+        return statusOrder[a.status] - statusOrder[b.status];
+      }
+
+      default:
+        return 0;
     }
-
-    case 'priority-low': {
-      const priorityOrderReverse = { low: 0, medium: 1, high: 2 };
-      return sorted.sort(
-        (a, b) =>
-          priorityOrderReverse[a.priority] - priorityOrderReverse[b.priority]
-      );
-    }
-
-    case 'status': {
-      const statusOrder = { todo: 0, 'in-progress': 1, done: 2 };
-      return sorted.sort(
-        (a, b) => statusOrder[a.status] - statusOrder[b.status]
-      );
-    }
-
-    default:
-      return sorted;
-  }
+  });
 }
 
 /**

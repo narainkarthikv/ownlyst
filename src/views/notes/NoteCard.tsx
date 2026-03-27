@@ -173,7 +173,7 @@ const NoteCard = memo(
         </div>
 
         {/* Action buttons section */}
-        <div className='absolute top-2 right-2 flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
+        <div className='absolute top-2 right-2 flex space-x-1 gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
           {/* Pin button */}
           <motion.button
             type='button'
@@ -186,7 +186,7 @@ const NoteCard = memo(
                 ? 'text-blue-600 dark:text-blue-400'
                 : 'text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
             }`}>
-            <Pin size={10} aria-hidden='true' />
+            <Pin size={14} aria-hidden='true' />
           </motion.button>
 
           {/* Edit button */}
@@ -197,7 +197,7 @@ const NoteCard = memo(
             onClick={handleEdit}
             aria-label='Edit note'
             className='p-1 rounded-md bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none'>
-            <Edit3 size={10} aria-hidden='true' />
+            <Edit3 size={14} aria-hidden='true' />
           </motion.button>
 
           {/* Delete button */}
@@ -208,7 +208,7 @@ const NoteCard = memo(
             onClick={handleDelete}
             aria-label='Delete note'
             className='p-1 rounded-md bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none'>
-            <Trash2 size={10} />
+            <Trash2 size={14} />
           </motion.button>
         </div>
       </motion.div>
