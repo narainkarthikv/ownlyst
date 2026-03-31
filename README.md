@@ -1,8 +1,8 @@
-![License](https://img.shields.io/github/license/narainkarthikv/ownlyst)
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
-![Last Commit](https://img.shields.io/github/last-commit/narainkarthikv/ownlyst)
-[![GitHub issues](https://img.shields.io/github/issues/narainkarthikv/ownlyst)](https://github.com/narainkarthikv/ownlyst/issues)
-[![GitHub stars](https://img.shields.io/github/stars/narainkarthikv/ownlyst)](https://github.com/narainkarthikv/ownlyst/stargazers)
+License
+Version
+Last Commit
+[GitHub issues](https://github.com/narainkarthikv/ownlyst/issues)
+[GitHub stars](https://github.com/narainkarthikv/ownlyst/stargazers)
 
 # Ownlyst
 
@@ -49,10 +49,10 @@ cd ownlyst
 npm install
 
 # Start development server
-npm run dev
+https://github.com/Saiyaswanthpasupuleti/ownlyst.git
 ```
 
-Visit **http://localhost:5173** to see the app.
+Visit **[http://localhost:5173](http://localhost:5173)** to see the app.
 
 ### Production Build
 
@@ -83,9 +83,7 @@ docker run --rm -p 3000:3000 ownlyst
 - **@hello-pangea/dnd** - Drag and drop
 - **Lucide React** - Icons
 
-<p align="center">
-	<img src="https://skillicons.dev/icons?i=react,vite,ts,tailwind" alt="Tech Stack" />
-</p>
+
 
 ## 📁 Project Structure
 
