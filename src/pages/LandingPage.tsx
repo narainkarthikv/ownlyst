@@ -10,6 +10,7 @@ import {
   Coffee,
 } from 'lucide-react';
 import Logo from '../components/Logo';
+import Footer from '../components/Footer';
 
 const features = [
   {
@@ -456,35 +457,7 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <div className='bg-gray-900 dark:bg-black text-white py-10 px-4 md:px-6'>
-        <div className='max-w-7xl mx-auto'>
-          <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-8'>
-            <div>
-              <div className='flex items-center mb-3'>
-                <Logo size={32} />
-                <h4 className='text-blue-400 text-xl font-bold ml-2'>
-                  Ownlyst
-                </h4>
-              </div>
-              <p className='text-gray-400 text-sm max-w-xs'>
-                Privacy-first notes that actually respect you. 💚
-              </p>
-            </div>
-            <div className='text-gray-400 text-sm space-y-1'>
-              <p>✓ No accounts, ever</p>
-              <p>✓ No tracking, never</p>
-              <p>✓ No data mining, not even a little</p>
-            </div>
-          </div>
-          <div className='border-t border-gray-700 pt-6'>
-            <p className='text-gray-400 text-xs text-center'>
-              © 2026 Ownlyst. Made with 💚 by people who care about your
-              privacy.
-            </p>
-          </div>
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }
