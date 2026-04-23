@@ -31,7 +31,7 @@ import { useNotesContext } from '../../controllers/NotesProvider';
 
 // Types
 interface KanbanViewProps {
-  notes?: Note[]; // Optional - can use context instead
+  notes?: Note[];
   onAddNote?: (note: Omit<Note, 'id' | 'createdAt'>) => void;
   onUpdateNote?: (id: string, updates: Partial<Note>) => void;
   onDeleteNote?: (id: string) => void;
@@ -86,21 +86,23 @@ const KanbanCard = memo(
             {...provided.draggableProps}
             style={provided.draggableProps.style}
             className={`
-            relative p-4 rounded-lg cursor-pointer group
-            ${PRIORITY_CARD_CLASSES[note.priority]}
-            transition-all duration-200 transform
-            ${
-              snapshot.isDragging
-                ? 'shadow-lg scale-[1.02] z-50 cursor-grabbing ring-2 ring-blue-500 dark:ring-blue-400 opacity-90'
-                : 'shadow hover:shadow-md hover:scale-[1.01] z-10 cursor-grab'
-            }
-          `}
-            onClick={() => onEdit(note)}>
+              relative p-4 rounded-lg cursor-pointer group
+              ${PRIORITY_CARD_CLASSES[note.priority]}
+              transition-all duration-200 transform
+              ${
+                snapshot.isDragging
+                  ? 'shadow-lg scale-[1.02] z-50 cursor-grabbing ring-2 ring-blue-500 dark:ring-blue-400 opacity-90'
+                  : 'shadow hover:shadow-md hover:scale-[1.01] z-10 cursor-grab'
+              }
+            `}
+            onClick={() => onEdit(note)}
+          >
             {/* Drag Handle */}
             <div
               {...provided.dragHandleProps}
               className='absolute top-2 left-2 p-1 rounded-md opacity-0 group-hover:opacity-100
-              transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5 cursor-grab active:cursor-grabbing'>
+              transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5 cursor-grab active:cursor-grabbing'
+            >
               <GripVertical
                 size={10}
                 className='text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300'
@@ -140,11 +142,13 @@ const KanbanCard = memo(
                 </div>
                 <div className='flex items-center gap-2'>
                   <span
-                    className={`font-bold uppercase text-xs ${STATUS_TEXT_COLORS[note.status]}`}>
+                    className={`font-bold uppercase text-xs ${STATUS_TEXT_COLORS[note.status]}`}
+                  >
                     {note.status.replace('-', ' ')}
                   </span>
                   <span
-                    className={`font-bold uppercase text-xs ${PRIORITY_TEXT_COLORS[note.priority]}`}>
+                    className={`font-bold uppercase text-xs ${PRIORITY_TEXT_COLORS[note.priority]}`}
+                  >
                     {note.priority}
                   </span>
                 </div>
@@ -163,7 +167,8 @@ const KanbanCard = memo(
                   note.isPinned
                     ? 'text-blue-600 dark:text-blue-400'
                     : 'text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
-                }`}>
+                }`}
+              >
                 <Pin size={14} aria-hidden='true' />
               </motion.button>
               <motion.button
@@ -172,7 +177,8 @@ const KanbanCard = memo(
                 whileTap={{ scale: 0.9 }}
                 onClick={handleEdit}
                 aria-label='Edit note'
-                className='p-1 rounded-md bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none'>
+                className='p-1 rounded-md bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none'
+              >
                 <Edit3 size={14} aria-hidden='true' />
               </motion.button>
               <motion.button
@@ -181,7 +187,8 @@ const KanbanCard = memo(
                 whileTap={{ scale: 0.9 }}
                 onClick={handleDelete}
                 aria-label='Delete note'
-                className='p-1 rounded-md bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none'>
+                className='p-1 rounded-md bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none'
+              >
                 <Trash2 size={14} aria-hidden='true' />
               </motion.button>
             </div>
@@ -190,7 +197,8 @@ const KanbanCard = memo(
       </Draggable>
     );
   }
-); // KanbanColumn Component
+);
+
 interface KanbanColumnProps {
   column: (typeof KANBAN_COLUMNS)[number];
   notes: Note[];
@@ -211,8 +219,9 @@ const KanbanColumn = memo(
   }: KanbanColumnProps) => {
     return (
       <div
-        className={`flex flex-col h-[calc(100vh-12rem)] rounded-xl bg-gradient-to-br ${column.color} 
-      border shadow-sm p-4 transition-all duration-300`}>
+        className={`flex flex-col self-start rounded-xl bg-gradient-to-br ${column.color} 
+      border shadow-sm p-4 transition-all duration-300`}
+      >
         {/* Column Header */}
         <div className='flex items-center justify-between pb-4'>
           <div className='flex items-center gap-3'>
@@ -223,7 +232,8 @@ const KanbanColumn = memo(
               </h3>
               <span
                 className='inline-flex items-center justify-center h-6 min-w-[1.5rem] px-2 
-              bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm'>
+              bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-full text-sm font-medium text-gray-700 dark:text-gray-300 shadow-sm'
+              >
                 {notes.length}
               </span>
             </div>
@@ -232,7 +242,8 @@ const KanbanColumn = memo(
             onClick={onAddNote}
             className='p-2 rounded-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm
             transition-all duration-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 text-gray-600 dark:text-gray-400
-            hover:scale-105 active:scale-95'>
+            hover:scale-105 active:scale-95'
+          >
             <Plus size={18} />
           </button>
         </div>
@@ -244,14 +255,15 @@ const KanbanColumn = memo(
               {...provided.droppableProps}
               ref={provided.innerRef}
               className={`
-              flex-1 overflow-y-auto space-y-4 p-4 rounded-lg border-2 border-dashed
-              transition-all duration-200 backdrop-blur-sm
+              relative space-y-4 p-4 rounded-lg border-2 border-dashed
+              transition-all duration-200 backdrop-blur-sm min-h-[60px]
               ${
                 snapshot.isDraggingOver
                   ? 'border-blue-400 bg-blue-50/50 shadow-md'
                   : 'border-slate-200 bg-white/20'
               }
-            `}>
+            `}
+            >
               <div className='space-y-4'>
                 {notes.map((note, index) => (
                   <KanbanCard
@@ -299,14 +311,12 @@ export default function KanbanView({
   onUpdateNote: propsOnUpdateNote,
   onDeleteNote: propsOnDeleteNote,
 }: KanbanViewProps) {
-  // Use context-based state by default, fallback to props for backward compatibility
   const contextNotes = useNotesContext();
   const notes = propsNotes || contextNotes.notes;
   const onAddNote = propsOnAddNote || contextNotes.createNote;
   const onUpdateNote = propsOnUpdateNote || contextNotes.updateNote;
   const onDeleteNote = propsOnDeleteNote || contextNotes.deleteNote;
 
-  // Helper to update note status (maps droppable ID to status)
   const updateNoteStatus = useCallback(
     (noteId: string, newStatus: string) => {
       onUpdateNote(noteId, { status: newStatus as Note['status'] });
@@ -328,43 +338,29 @@ export default function KanbanView({
     setIsModalOpen(true);
   }, []);
 
-  // Apply filters to notes
   const filteredNotes = useMemo(() => {
     return applyFilters(notes, filters);
   }, [notes, filters]);
 
-  /**
-   * Handle drag and drop with immediate status synchronization
-   */
   const handleDragEnd = useCallback(
     (result: DropResult) => {
       const { destination, source, draggableId } = result;
 
-      // No valid destination - dropped outside droppable area
       if (!destination) return;
 
-      // Item dropped in same position - no change needed
       if (
         destination.droppableId === source.droppableId &&
         destination.index === source.index
-      )
+      ) {
         return;
+      }
 
-      // Map destination droppable ID to note status
       const newStatus = destination.droppableId as ColumnId;
-
-      // Update the note's status in the data model
-      // This triggers re-renders in all views that use the context
       updateNoteStatus(draggableId, newStatus);
     },
     [updateNoteStatus]
   );
 
-  /**
-   * Organize notes into columns based on their status
-   * Only updates when filtered notes change
-   * This ensures the UI always reflects the current data model state
-   */
   const columnState = useMemo(() => {
     const columns: Record<ColumnId, Note[]> = {
       todo: [],
@@ -399,7 +395,8 @@ export default function KanbanView({
               whileTap={{ scale: 0.98 }}
               onClick={handleAddNote}
               aria-label='Create a new note'
-              className='inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none shadow-sm whitespace-nowrap'>
+              className='inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none shadow-sm whitespace-nowrap'
+            >
               <Plus className='h-5 w-5' aria-hidden='true' />
               <span>New Note</span>
             </motion.button>
