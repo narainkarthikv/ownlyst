@@ -4,6 +4,7 @@
  * Provides utilities for lazy loading images and optimizing image performance
  */
 
+/* eslint-disable react-refresh/only-export-components */
 import { useRef, useState, useEffect } from 'react';
 
 /**
@@ -15,6 +16,8 @@ export function useImageLazyLoad() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    const imgEl = imageRef.current;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -27,13 +30,13 @@ export function useImageLazyLoad() {
       { threshold: 0.1 }
     );
 
-    if (imageRef.current) {
-      observer.observe(imageRef.current);
+    if (imgEl) {
+      observer.observe(imgEl);
     }
 
     return () => {
-      if (imageRef.current) {
-        observer.unobserve(imageRef.current);
+      if (imgEl) {
+        observer.unobserve(imgEl);
       }
     };
   }, []);

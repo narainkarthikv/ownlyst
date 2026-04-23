@@ -131,8 +131,16 @@ export class ImportExportService {
         note.status || '',
         note.priority || '',
         note.isPinned ? 'true' : 'false',
-        note.createdAt ? new Date(note.createdAt).toISOString() : '',
-        note.dueDate ? new Date(note.dueDate).toISOString() : '',
+        note.createdAt
+          ? note.createdAt instanceof Date
+            ? note.createdAt.toISOString()
+            : String(note.createdAt)
+          : '',
+        note.dueDate
+          ? note.dueDate instanceof Date
+            ? note.dueDate.toISOString()
+            : String(note.dueDate)
+          : '',
         note.tags ? note.tags.join(';') : '',
       ]);
 

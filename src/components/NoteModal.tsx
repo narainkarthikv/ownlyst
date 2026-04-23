@@ -11,7 +11,7 @@
  * All note operations (create, update) are delegated to parent via callbacks.
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Pin, Check, Flag, ListTodo, Tag } from 'lucide-react';
 import type { Note } from '../types/Note';
@@ -105,6 +105,29 @@ export default function NoteModal({
   const isFormValid = formData.title.trim().length > 0;
 
   /**
+   * Validate form data
+   * Checks title length and content constraints
+   * Declared as a function (hoisted) so it can be referenced
+   * from effects defined earlier without causing TDZ errors.
+   */
+  function validateForm(): boolean {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.title.trim()) {
+      newErrors.title = 'Title is required';
+    } else if (formData.title.trim().length > 200) {
+      newErrors.title = 'Title must be less than 200 characters';
+    }
+
+    if (formData.content.trim().length > 5000) {
+      newErrors.content = 'Content must be less than 5000 characters';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
+
+  /**
    * Setup keyboard shortcuts
    * Escape: close modal
    * Ctrl+Enter: save note
@@ -129,28 +152,9 @@ export default function NoteModal({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, onClose, formData, isFormValid, onSave]);
+  }, [isOpen, onClose, formData, isFormValid, onSave, validateForm]);
 
-  /**
-   * Validate form data
-   * Checks title length and content constraints
-   */
-  const validateForm = (): boolean => {
-    const newErrors: Record<string, string> = {};
-
-    if (!formData.title.trim()) {
-      newErrors.title = 'Title is required';
-    } else if (formData.title.trim().length > 200) {
-      newErrors.title = 'Title must be less than 200 characters';
-    }
-
-    if (formData.content.trim().length > 5000) {
-      newErrors.content = 'Content must be less than 5000 characters';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  
 
   /**
    * Handle date field change

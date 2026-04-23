@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 /**
  * NotesContext - Centralized state management for notes across all views
  *
@@ -51,14 +52,17 @@ export function NotesProvider({ children }: { children: React.ReactNode }) {
     if (notes.length > 0 || notesLoaded) return;
 
     // Load sample data and convert date strings to Date objects
-    const sampleNotes: Note[] = sampleNotesData.notes.map((note) => ({
-      ...note,
-      color: note.color as Note['color'],
-      status: note.status as Note['status'],
-      priority: note.priority as Note['priority'],
-      createdAt: new Date(note.createdAt),
-      dueDate: note.dueDate ? new Date(note.dueDate) : undefined,
-    }));
+    const sampleNotes: Note[] = sampleNotesData.notes.map((note) => {
+      const raw = note as Record<string, unknown>;
+      return {
+        ...raw,
+        color: raw['color'] as Note['color'],
+        status: raw['status'] as Note['status'],
+        priority: raw['priority'] as Note['priority'],
+        createdAt: new Date(String(raw['createdAt'])),
+        dueDate: raw['dueDate'] ? new Date(String(raw['dueDate'])) : undefined,
+      } as Note;
+    });
 
     setNotes(sampleNotes);
     setNotesLoaded(true);
