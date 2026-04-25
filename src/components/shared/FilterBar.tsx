@@ -93,7 +93,7 @@ export default function FilterBar({
     if (debouncedSearch !== filters.search) {
       onFilterChange({ ...filters, search: debouncedSearch });
     }
-  }, [debouncedSearch]);
+  }, [debouncedSearch, filters, onFilterChange]);
 
   const handleSearchChange = useCallback((value: string) => {
     setLocalSearch(value);

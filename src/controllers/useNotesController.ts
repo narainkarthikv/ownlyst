@@ -155,11 +155,14 @@ export function useNotesController() {
 
       // If no notes exist, load sample data
       if (notes.length === 0) {
-        notes = sampleNotesData.notes.map((note: Record<string, unknown>) => ({
-          ...note,
-          createdAt: new Date(note.createdAt),
-          dueDate: note.dueDate ? new Date(note.dueDate) : undefined,
-        }));
+        notes = sampleNotesData.notes.map((note: Record<string, unknown>) => {
+          const raw = note as Record<string, unknown>;
+          return {
+            ...raw,
+            createdAt: new Date(String(raw['createdAt'])),
+            dueDate: raw['dueDate'] ? new Date(String(raw['dueDate'])) : undefined,
+          } as Note;
+        });
         // Immediately save sample notes to storage
         storageService.writeNotes(notes);
         storageService.flush();
