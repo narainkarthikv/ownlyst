@@ -234,20 +234,23 @@ export default function LandingPage() {
       </div>
 
       {/* Data Portability Section */}
-      <div className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6'>
-        <div className='bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-8 md:p-10'>
-          <div className='flex flex-col md:flex-row items-start gap-8'>
-            <div className='flex-1'>
-              <h3 className='text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white'>
+      <div className='max-w-6xl mx-auto py-16 md:py-20 px-4 md:px-6'>
+        <div className='bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-[2rem] p-8 md:p-12'>
+          <div className='grid grid-cols-1 md:grid-cols-[1.15fr_0.85fr] items-center gap-10 md:gap-16'>
+            <div>
+              <p className='text-xs md:text-sm font-semibold tracking-[0.35em] uppercase text-blue-600 dark:text-blue-300 mb-5'>
+                No Lock-In
+              </p>
+              <h3 className='text-3xl md:text-4xl font-bold mb-5 text-gray-900 dark:text-white leading-tight max-w-xl'>
                 No Data Hostage Situations 🔓
               </h3>
-              <p className='text-gray-700 dark:text-gray-300 mb-4 text-base leading-relaxed'>
+              <p className='text-gray-700 dark:text-gray-300 mb-7 text-base md:text-lg leading-relaxed max-w-2xl'>
                 Tired of apps that make it impossible to leave? We're different.
                 Your data walks out with you, any time you want. No "export
                 premium" upgrade required.
               </p>
-              <ul className='space-y-3 mb-6'>
-                <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
+              <ul className='space-y-4'>
+                <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
                   <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
                     ✓
                   </span>
@@ -255,7 +258,7 @@ export default function LandingPage() {
                     <strong>Export backup as JSON</strong> (notes + profile)
                   </span>
                 </li>
-                <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
+                <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
                   <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
                     ✓
                   </span>
@@ -264,7 +267,7 @@ export default function LandingPage() {
                     archives
                   </span>
                 </li>
-                <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
+                <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
                   <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
                     ✓
                   </span>
@@ -272,7 +275,7 @@ export default function LandingPage() {
                     <strong>Import backups</strong> with preferences intact
                   </span>
                 </li>
-                <li className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
+                <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
                   <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
                     ✓
                   </span>
@@ -282,13 +285,16 @@ export default function LandingPage() {
                 </li>
               </ul>
             </div>
-            <div className='flex-1 flex items-center justify-center'>
+            <div className='w-full'>
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className='text-6xl'>
-                📦
+                className='min-h-[180px] md:min-h-[186px] flex flex-col items-center justify-center rounded-3xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/20 px-6 py-10 text-center'>
+                <span className='text-6xl mb-5'>📦</span>
+                <p className='text-gray-700 dark:text-gray-300 text-base md:text-lg font-medium'>
+                  Complete backups that leave with you.
+                </p>
               </motion.div>
             </div>
           </div>
@@ -439,14 +445,14 @@ export default function LandingPage() {
                 Buy Us a Coffee on Ko-fi
               </motion.a>
               <motion.a
-                href='https://patreon.com/user?u=72747187'
+                href='https://buymeacoffee.com/narainkarthikv'
                 target='_blank'
                 rel='noopener noreferrer'
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
                 className='inline-flex items-center gap-2 font-bold text-base px-8 py-3 rounded-lg bg-gradient-to-r from-pink-500 to-orange-500 text-white hover:from-pink-600 hover:to-orange-600 transition-colors duration-200 shadow-lg'>
                 <Heart className='w-5 h-5' />
-                Support on Patreon
+                Support on Buy Me a Coffee
               </motion.a>
             </div>
             <p className='mt-6 text-sm text-gray-600 dark:text-gray-400'>
