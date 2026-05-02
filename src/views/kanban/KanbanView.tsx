@@ -123,8 +123,12 @@ const KanbanCard = memo(
 
             {/* Content */}
             <div className='space-y-3 pr-6 pl-5'>
+              <h4 className='font-bold text-base leading-tight' layout>
                 {note.title}
+              </h4>
+              <p className='text-sm opacity-80 line-clamp-4' layout>
                 {note.content}
+              </p>
 
               {/* Metadata */}
               <div className='flex items-center justify-between text-xs'>
