@@ -84,6 +84,7 @@ const KanbanCard = memo(
           <div
             ref={provided.innerRef}
             {...provided.draggableProps}
+            {...provided.dragHandleProps}
             style={provided.draggableProps.style}
             className={`
               relative p-4 rounded-lg cursor-pointer group
@@ -96,13 +97,13 @@ const KanbanCard = memo(
               }
             `}
             onClick={() => onEdit(note)}
-          >
+            >
             {/* Drag Handle */}
             <div
               {...provided.dragHandleProps}
               className='absolute top-2 left-2 p-1 rounded-md opacity-0 group-hover:opacity-100
               transition-all duration-200 hover:bg-black/5 dark:hover:bg-white/5 cursor-grab active:cursor-grabbing'
-            >
+              >
               <GripVertical
                 size={10}
                 className='text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-300'
@@ -122,12 +123,8 @@ const KanbanCard = memo(
 
             {/* Content */}
             <div className='space-y-3 pr-6 pl-5'>
-              <motion.h4 className='font-bold text-base leading-tight' layout>
                 {note.title}
-              </motion.h4>
-              <motion.p className='text-sm opacity-80 line-clamp-4' layout>
                 {note.content}
-              </motion.p>
 
               {/* Metadata */}
               <div className='flex items-center justify-between text-xs'>
@@ -143,12 +140,12 @@ const KanbanCard = memo(
                 <div className='flex items-center gap-2'>
                   <span
                     className={`font-bold uppercase text-xs ${STATUS_TEXT_COLORS[note.status]}`}
-                  >
+                    >
                     {note.status.replace('-', ' ')}
                   </span>
                   <span
                     className={`font-bold uppercase text-xs ${PRIORITY_TEXT_COLORS[note.priority]}`}
-                  >
+                    >
                     {note.priority}
                   </span>
                 </div>
@@ -168,7 +165,7 @@ const KanbanCard = memo(
                     ? 'text-blue-600 dark:text-blue-400'
                     : 'text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
                 }`}
-              >
+                >
                 <Pin size={14} aria-hidden='true' />
               </motion.button>
               <motion.button
@@ -178,7 +175,7 @@ const KanbanCard = memo(
                 onClick={handleEdit}
                 aria-label='Edit note'
                 className='p-1 rounded-md bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none'
-              >
+                >
                 <Edit3 size={14} aria-hidden='true' />
               </motion.button>
               <motion.button
@@ -188,7 +185,7 @@ const KanbanCard = memo(
                 onClick={handleDelete}
                 aria-label='Delete note'
                 className='p-1 rounded-md bg-white dark:bg-slate-700 shadow-sm hover:shadow-md transition-all text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400 text-xs focus:ring-2 focus:ring-red-500 focus:outline-none'
-              >
+                >
                 <Trash2 size={14} aria-hidden='true' />
               </motion.button>
             </div>
@@ -243,7 +240,7 @@ const KanbanColumn = memo(
             className='p-2 rounded-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-sm
             transition-all duration-200 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400 text-gray-600 dark:text-gray-400
             hover:scale-105 active:scale-95'
-          >
+            >
             <Plus size={18} />
           </button>
         </div>
@@ -255,8 +252,8 @@ const KanbanColumn = memo(
               {...provided.droppableProps}
               ref={provided.innerRef}
               className={`
-              relative space-y-4 p-4 rounded-lg border-2 border-dashed
-              transition-all duration-200 backdrop-blur-sm min-h-[60px]
+              relative p-4 rounded-lg border-2 border-dashed
+              transition-all duration-200 min-h-[60px]
               ${
                 snapshot.isDraggingOver
                   ? 'border-blue-400 bg-blue-50/50 shadow-md'
@@ -396,7 +393,7 @@ export default function KanbanView({
               onClick={handleAddNote}
               aria-label='Create a new note'
               className='inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium gap-2 transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none shadow-sm whitespace-nowrap'
-            >
+              >
               <Plus className='h-5 w-5' aria-hidden='true' />
               <span>New Note</span>
             </motion.button>
