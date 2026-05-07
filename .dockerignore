@@ -3,3 +3,17 @@ dist
 .git
 .gitignore
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env*
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Dockerfile*
+docker-compose*.yml
+.github
+*.md
+README.md
