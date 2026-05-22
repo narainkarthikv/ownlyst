@@ -110,7 +110,7 @@ export default function NoteModal({
    * Declared as a function (hoisted) so it can be referenced
    * from effects defined earlier without causing TDZ errors.
    */
-  function validateForm(): boolean {
+  const validateForm = useCallback((): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.title.trim()) {
@@ -125,7 +125,7 @@ export default function NoteModal({
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }
+  }, [formData.title, formData.content]);
 
   /**
    * Setup keyboard shortcuts
@@ -153,8 +153,6 @@ export default function NoteModal({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose, formData, isFormValid, onSave, validateForm]);
-
-  
 
   /**
    * Handle date field change

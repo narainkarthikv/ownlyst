@@ -1,19 +1,9 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import compression from 'vite-plugin-compression';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    compression({
-      verbose: true,
-      disable: false,
-      threshold: 10240,
-      algorithm: 'brotli',
-      ext: '.br',
-    }),
-  ],
+  plugins: [react()],
   server: {
     headers: {
       'Access-Control-Allow-Origin': '*',
@@ -29,13 +19,16 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        // Code splitting configuration for core dependencies
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          animation: ['framer-motion'],
-          dnd: ['@hello-pangea/dnd'],
-          icons: ['lucide-react'],
-          virtualization: ['react-window'],
+        // Keep stable chunks for large dependencies
+        manualChunks(id) {
+          if (id.includes('node_modules/react') || id.includes('react-router-dom')) {
+            return 'react-vendor';
+          }
+          if (id.includes('framer-motion')) return 'animation';
+          if (id.includes('@hello-pangea/dnd')) return 'dnd';
+          if (id.includes('lucide-react')) return 'icons';
+          if (id.includes('react-window')) return 'virtualization';
+          return undefined;
         },
       },
     },
