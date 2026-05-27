@@ -28,3 +28,10 @@ All notable changes to this project will be documented in this file.
 
 ### Version
 - Bumped project version from `1.0.0` to `1.0.1`.
+
+## [1.0.2] - 2026-05-27
+
+### Added
+- Floating assistant FAB with quick actions (Quick note, Create task, Voice placeholder). See `src/components/FloatingAssistant.tsx`.
+- Premium-styled FAB using the app `Logo` and the app blue design palette for a cohesive look.
+

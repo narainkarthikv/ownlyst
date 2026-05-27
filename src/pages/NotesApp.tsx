@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { NotesView, KanbanView, TableView, RoadmapView } from '../views';
 import ImportExport from '../components/ImportExport';
+import FloatingAssistant from '../components/FloatingAssistant';
 import { useNotesContext } from '../controllers/NotesProvider';
 import Logo from '../components/Logo';
 import UserPreferencesMenu from '../components/UserPreferencesMenu';
@@ -148,6 +149,8 @@ export default memo(function NotesApp() {
           </motion.div>
         </AnimatePresence>
       </main>
+        {/* Floating assistant FAB */}
+        <FloatingAssistant onCreateNote={createNote} />
     </div>
   );
 });
