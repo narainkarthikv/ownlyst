@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2026-06-02
+
+### Changed
+- Refactored debug logging: extracted `debugLog` utility and replaced inline `console.log` calls in `useNotesSync` to centralize debug output. See `src/utils/logger.ts`.
+
+### Related
+- Fixes [#137](https://github.com/narainkarthikv/ownlyst/issues/137)
+
+### Version
+- Bumped project version from `1.0.2` to `1.0.3`.
+
 ## [1.0.1] - 2026-05-22
 
 ### Fixed

@@ -8,6 +8,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Note } from '../types/Note';
 import { getChangedNoteIds } from '../utils/stateSync';
+import { debugLog } from '../utils/logger';
 
 interface UseSyncOptions {
   // Callback fired when any note is updated
@@ -44,9 +45,7 @@ export function useNotesSync(
     const changedIds = getChangedNoteIds(prevNotesRef.current, notes);
 
     if (changedIds.length > 0) {
-      if (debug) {
-        console.log('[useNotesSync] Notes changed:', changedIds);
-      }
+      debugLog(debug, '[useNotesSync] Notes changed:', changedIds);
 
       // Fire onNotesChange callback
       if (onNotesChange) {
@@ -107,14 +106,13 @@ export function useSingleNoteSync(
     const prevNote = prevNoteRef.current;
 
     if (prevNote && prevNote.status !== note.status) {
-      if (debug) {
-        console.log(
-          `[useSingleNoteSync] Note ${noteId} status changed:`,
-          prevNote.status,
-          '->',
-          note.status
-        );
-      }
+      debugLog(
+        debug,
+        `[useSingleNoteSync] Note ${noteId} status changed:`,
+        prevNote.status,
+        '->',
+        note.status
+      );
 
       if (onStatusChange) {
         onStatusChange(note.status, prevNote.status);
