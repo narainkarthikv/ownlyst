@@ -11,7 +11,7 @@
  * and emitting user interactions as events.
  */
 
-import React, { memo, useCallback, forwardRef } from 'react';
+import { memo, useCallback, forwardRef, type MouseEvent } from 'react';
 import { motion } from 'framer-motion';
 import { Pin, Edit3, Trash2, Calendar } from 'lucide-react';
 import type { Note } from '../../models/note.model';
@@ -70,7 +70,7 @@ const NoteCard = memo(
      * Handle toggle pin - emits update event to parent
      */
     const handleTogglePin = useCallback(
-      (e: React.MouseEvent) => {
+      (e: MouseEvent) => {
         e.stopPropagation();
         onUpdate(note.id, { isPinned: !note.isPinned });
       },
@@ -81,7 +81,7 @@ const NoteCard = memo(
      * Handle edit - emits edit event to parent
      */
     const handleEdit = useCallback(
-      (e: React.MouseEvent) => {
+      (e: MouseEvent) => {
         e.stopPropagation();
         onEdit?.(note);
       },
@@ -92,7 +92,7 @@ const NoteCard = memo(
      * Handle delete - emits delete event to parent
      */
     const handleDelete = useCallback(
-      (e: React.MouseEvent) => {
+      (e: MouseEvent) => {
         e.stopPropagation();
         onDelete(note.id);
       },

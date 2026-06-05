@@ -5,7 +5,7 @@
  * when notes state changes across any view
  */
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Note } from '../types/Note';
 import { getChangedNoteIds } from '../utils/stateSync';
 import { debugLog } from '../utils/logger';
@@ -133,9 +133,9 @@ export function useSingleNoteSync(
  */
 export function useNotesChanged(notes: Note[]): boolean {
   const prevNotesRef = useRef<Note[]>(notes);
-  const [changed, setChanged] = React.useState(false);
+  const [changed, setChanged] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (prevNotesRef.current !== notes) {
       setChanged(true);
       prevNotesRef.current = notes;

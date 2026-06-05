@@ -11,7 +11,7 @@
  * All note operations (create, update) are delegated to parent via callbacks.
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Pin, Check, Flag, ListTodo, Tag } from 'lucide-react';
 import type { Note } from '../types/Note';
@@ -169,7 +169,7 @@ export default function NoteModal({
    * Submit form
    * Validates and calls onSave callback
    */
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 

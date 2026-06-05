@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2026-06-05
+
+### Changed
+- Code quality: removed unnecessary default `React` imports and switched to named/type imports across several modules (`src/hooks/useNotesSync.ts`, `src/context/NotesContext.tsx`, `src/controllers/NotesProvider.tsx`, `src/components/NoteModal.tsx`, `src/views/notes/NoteCard.tsx`, `src/utils/highlighting.tsx`) to align with the `react-jsx` runtime and reduce unused-import warnings.
+
+### Related
+- Addresses [#137](https://github.com/narainkarthikv/ownlyst/issues/137) — general code quality and maintenance improvements.
+
+### Version
+- Bumped project version from `1.0.3` to `1.0.4`.
+
 ## [1.0.3] - 2026-06-02
 
 ### Changed
