@@ -269,6 +269,8 @@ export default function NoteModal({
               <div>
                 <input
                   type='text'
+                  name='title'
+                  aria-label='Note title'
                   value={formData.title}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, title: e.target.value }))
@@ -302,6 +304,8 @@ export default function NoteModal({
               {/* Content Field */}
               <div>
                 <textarea
+                  name='content'
+                  aria-label='Note content'
                   value={formData.content}
                   onChange={(e) =>
                     setFormData((prev) => ({
