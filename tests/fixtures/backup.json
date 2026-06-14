@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-07T00:00:00.000Z",
+  "preferences": {
+    "themePreference": "light",
+    "defaultView": "notes",
+    "avatar": "🙂",
+    "username": "Importer"
+  },
+  "notes": [
+    {
+      "id": "import-note-1",
+      "title": "Imported Note",
+      "content": "This note was imported from JSON backup",
+      "status": "todo",
+      "priority": "medium",
+      "isPinned": false,
+      "createdAt": "2026-06-07T00:00:00.000Z",
+      "tags": ["import"]
+    }
+  ]
+}

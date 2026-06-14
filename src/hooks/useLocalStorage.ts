@@ -9,7 +9,7 @@ export function useLocalStorage<T>(
   initialValue: T,
   options: UseLocalStorageOptions = {}
 ) {
-  const { debounceDelay = 500 } = options;
+  const { debounceDelay = 0 } = options;
 
   // Get from local storage then parse stored json or return initialValue
   const [storedValue, setStoredValue] = useState<T>(() => {
@@ -53,12 +53,17 @@ export function useLocalStorage<T>(
           clearTimeout(timeoutRef.current);
         }
 
-        // Debounce the localStorage write
-        timeoutRef.current = setTimeout(() => {
-          if (pendingValueRef.current !== null) {
-            writeToStorage(pendingValueRef.current);
-          }
-        }, debounceDelay);
+        // Debounce the localStorage write (or write immediately when debounceDelay is 0)
+        if (debounceDelay > 0) {
+          timeoutRef.current = setTimeout(() => {
+            if (pendingValueRef.current !== null) {
+              writeToStorage(pendingValueRef.current);
+            }
+          }, debounceDelay);
+        } else {
+          // immediate write for deterministic behavior in tests
+          writeToStorage(valueToStore);
+        }
       } catch (error) {
         console.error(
           `Error in useLocalStorage setter for key "${key}":`,

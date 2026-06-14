@@ -11,7 +11,7 @@
  * All note operations (create, update) are delegated to parent via callbacks.
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Pin, Check, Flag, ListTodo, Tag } from 'lucide-react';
 import type { Note } from '../types/Note';
@@ -110,7 +110,7 @@ export default function NoteModal({
    * Declared as a function (hoisted) so it can be referenced
    * from effects defined earlier without causing TDZ errors.
    */
-  function validateForm(): boolean {
+  const validateForm = useCallback((): boolean => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.title.trim()) {
@@ -125,7 +125,7 @@ export default function NoteModal({
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }
+  }, [formData.title, formData.content]);
 
   /**
    * Setup keyboard shortcuts
@@ -154,8 +154,6 @@ export default function NoteModal({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose, formData, isFormValid, onSave, validateForm]);
 
-  
-
   /**
    * Handle date field change
    * Converts string to Date object
@@ -171,7 +169,7 @@ export default function NoteModal({
    * Submit form
    * Validates and calls onSave callback
    */
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
 
@@ -271,6 +269,8 @@ export default function NoteModal({
               <div>
                 <input
                   type='text'
+                  name='title'
+                  aria-label='Note title'
                   value={formData.title}
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, title: e.target.value }))
@@ -304,6 +304,8 @@ export default function NoteModal({
               {/* Content Field */}
               <div>
                 <textarea
+                  name='content'
+                  aria-label='Note content'
                   value={formData.content}
                   onChange={(e) =>
                     setFormData((prev) => ({

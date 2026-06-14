@@ -5,9 +5,10 @@
  * when notes state changes across any view
  */
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Note } from '../types/Note';
 import { getChangedNoteIds } from '../utils/stateSync';
+import { debugLog } from '../utils/logger';
 
 interface UseSyncOptions {
   // Callback fired when any note is updated
@@ -44,9 +45,7 @@ export function useNotesSync(
     const changedIds = getChangedNoteIds(prevNotesRef.current, notes);
 
     if (changedIds.length > 0) {
-      if (debug) {
-        console.log('[useNotesSync] Notes changed:', changedIds);
-      }
+      debugLog(debug, '[useNotesSync] Notes changed:', changedIds);
 
       // Fire onNotesChange callback
       if (onNotesChange) {
@@ -107,14 +106,13 @@ export function useSingleNoteSync(
     const prevNote = prevNoteRef.current;
 
     if (prevNote && prevNote.status !== note.status) {
-      if (debug) {
-        console.log(
-          `[useSingleNoteSync] Note ${noteId} status changed:`,
-          prevNote.status,
-          '->',
-          note.status
-        );
-      }
+      debugLog(
+        debug,
+        `[useSingleNoteSync] Note ${noteId} status changed:`,
+        prevNote.status,
+        '->',
+        note.status
+      );
 
       if (onStatusChange) {
         onStatusChange(note.status, prevNote.status);
@@ -135,9 +133,9 @@ export function useSingleNoteSync(
  */
 export function useNotesChanged(notes: Note[]): boolean {
   const prevNotesRef = useRef<Note[]>(notes);
-  const [changed, setChanged] = React.useState(false);
+  const [changed, setChanged] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (prevNotesRef.current !== notes) {
       setChanged(true);
       prevNotesRef.current = notes;

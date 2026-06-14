@@ -9,7 +9,8 @@
  */
 
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext } from 'react';
+import { createContext, useContext } from 'react';
+import type { ReactNode } from 'react';
 import {
   useNotesController,
   type NotesControllerAPI,
@@ -33,7 +34,7 @@ const NotesContext = createContext<NotesControllerAPI | undefined>(undefined);
  * </NotesProvider>
  * ```
  */
-export function NotesProvider({ children }: { children: React.ReactNode }) {
+export function NotesProvider({ children }: { children: ReactNode }) {
   const notesController = useNotesController();
 
   return (

@@ -9,12 +9,14 @@
  * - Optimized re-renders using React Context
  */
 
-import React, {
+import {
   createContext,
   useContext,
   useCallback,
   useEffect,
+  useState,
 } from 'react';
+import type { ReactNode } from 'react';
 import { Note } from '../types/Note';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import sampleNotesData from '../data/sampleNotes.json';
@@ -43,9 +45,9 @@ const NotesContext = createContext<NotesContextType | undefined>(undefined);
  * - Provides synchronized update methods
  * - All components can subscribe to global note changes
  */
-export function NotesProvider({ children }: { children: React.ReactNode }) {
+export function NotesProvider({ children }: { children: ReactNode }) {
   const [notes, setNotes] = useLocalStorage<Note[]>('sticky-notes', []);
-  const [notesLoaded, setNotesLoaded] = React.useState(false);
+  const [notesLoaded, setNotesLoaded] = useState(false);
 
   // Initialize with sample data on first load
   useEffect(() => {

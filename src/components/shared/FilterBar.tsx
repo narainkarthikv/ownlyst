@@ -114,6 +114,7 @@ export default function FilterBar({
   const handleStatusChange = useCallback(
     (status: FilterStatus) => {
       onFilterChange({ ...filters, status });
+      setShowFilters(false);
     },
     [filters, onFilterChange]
   );
@@ -121,6 +122,7 @@ export default function FilterBar({
   const handlePriorityChange = useCallback(
     (priority: FilterPriority) => {
       onFilterChange({ ...filters, priority });
+      setShowFilters(false);
     },
     [filters, onFilterChange]
   );

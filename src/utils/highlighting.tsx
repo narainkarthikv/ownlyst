@@ -2,7 +2,7 @@
  * Search highlighting utilities for note content
  */
 
-import React from 'react';
+import type { ReactNode } from 'react';
 
 /**
  * Highlights matching search terms in text
@@ -38,7 +38,7 @@ export function highlightSearchTerm(
   text: string,
   searchTerm: string,
   highlightClass: string = 'bg-yellow-200 dark:bg-yellow-900/50 font-semibold'
-): React.ReactNode {
+): ReactNode {
   if (!searchTerm.trim()) {
     return text;
   }
