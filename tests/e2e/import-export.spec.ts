@@ -1,5 +1,3 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { expect, test } from '@playwright/test';
 
 test.describe('Import / Export', () => {
@@ -28,8 +26,7 @@ test.describe('Import / Export', () => {
 
     // Import JSON backup
     // Resolve fixture path in ESM environment
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    const filePath = path.resolve(__dirname, '../fixtures/backup.json');
+    const filePath = new URL('../fixtures/backup.json', import.meta.url).pathname;
     await page.locator('button[title="Data import/export"]').click();
     const input = page.locator('input[type="file"][accept=".json"]');
     await input.setInputFiles(filePath);
