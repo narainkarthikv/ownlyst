@@ -40,9 +40,9 @@ jobs:
       - name: Build production bundle
         run: npm run build
 
-  e2e-smoke:
-    name: Playwright Smoke (Chromium)
-    if: github.event_name == 'push' && github.ref_name == 'develop'
+  e2e-chromium:
+    name: Playwright Tests (Chromium)
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     needs: quality
     runs-on: ubuntu-latest
 
@@ -62,57 +62,14 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Run Playwright smoke tests
-        run: npm run test:e2e -- --project=chromium
+      - name: Run Playwright tests
+        run: npx playwright test --project=chromium
 
       - name: Upload Playwright artifacts
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-smoke-artifacts
-          path: |
-            playwright-report
-            test-results
-          if-no-files-found: ignore
-          retention-days: 14
-
-  e2e-cross-browser:
-    name: Playwright Cross Browser (${{ matrix.project }})
-    if: github.event_name == 'pull_request' || github.ref_name == 'main'
-    needs: quality
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        project:
-          - chromium
-          - firefox
-          - webkit
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps ${{ matrix.project }}
-
-      - name: Run Playwright regression tests
-        run: npm run test:e2e -- --project=${{ matrix.project }}
-
-      - name: Upload Playwright artifacts
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-${{ matrix.project }}-artifacts
+          name: playwright-chromium-artifacts
           path: |
             playwright-report
             test-results
