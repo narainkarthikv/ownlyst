@@ -78,8 +78,9 @@ test.describe('Search and Filters', () => {
     await expect(page.getByText('Alpha Note')).toHaveCount(0);
     await expect(page.getByText('Beta Note')).toHaveCount(0);
 
-    // Open filters and toggle Pinned Only
+    // Open filters, clear status, and toggle Pinned Only
     await page.getByRole('button', { name: /^Filter(?:\s*\d+)?$/i }).click();
+    await page.getByRole('button', { name: /^All Status$/i }).click();
     await page.getByRole('button', { name: /Pinned Only/i }).click();
     // Only Beta Note (pinned) should be visible
     await expect(page.getByText('Beta Note')).toBeVisible();
