@@ -71,7 +71,7 @@ test.describe('Search and Filters', () => {
     await page.getByPlaceholder(/search notes by title, content, or tags/i).fill('');
 
     // Open filters and filter by status: Done
-    await page.getByRole('button', { name: /filter/i }).click();
+    await page.getByRole('button', { name: /^Filter$/i }).click();
     await page.getByRole('button', { name: /^Done$/i }).click();
     // Only Gamma Note (done) should be visible
     await expect(page.getByText('Gamma Note')).toBeVisible();
@@ -79,7 +79,7 @@ test.describe('Search and Filters', () => {
     await expect(page.getByText('Beta Note')).toHaveCount(0);
 
     // Open filters and toggle Pinned Only
-    await page.getByRole('button', { name: /filter/i }).click();
+    await page.getByRole('button', { name: /^Filter$/i }).click();
     await page.getByRole('button', { name: /Pinned Only/i }).click();
     // Only Beta Note (pinned) should be visible
     await expect(page.getByText('Beta Note')).toBeVisible();

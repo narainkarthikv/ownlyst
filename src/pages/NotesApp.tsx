@@ -14,6 +14,7 @@ import FloatingAssistant from '../components/FloatingAssistant';
 import { useNotesContext } from '../controllers/NotesProvider';
 import Logo from '../components/Logo';
 import UserPreferencesMenu from '../components/UserPreferencesMenu';
+import { ThemeToggle } from '../theme';
 import { HEADER_CLASSES, BG_CLASSES } from '../constants/ui-colors';
 import { useUserPreferences } from '../context/UserPreferencesContext';
 import type { DefaultView } from '../models/user-preferences.model';
@@ -122,6 +123,7 @@ export default memo(function NotesApp() {
             </div>
             {/* Theme Toggle and Import/Export */}
             <div className='flex items-center gap-2'>
+              <ThemeToggle />
               <ImportExport
                 notes={notes}
                 onImportNotes={importNotes}
