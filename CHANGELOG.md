@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-07-15
+
+### Added
+- **Command Palette**: New spotlight-style quick actions interface accessible via `Ctrl/Cmd+K`
+  - Fuzzy search with real-time filtering
+  - Quick note creation with templates (Quick note, Task, High priority)
+  - Instant view switching (Notes, Kanban, Table, Roadmap)
+  - Status and priority filters
+  - Keyboard navigation (arrow keys, Enter to execute, ESC to close)
+  - Visual action categories and keyboard shortcuts guide
+  - See `src/components/CommandPalette.tsx`
+
+### Changed
+- Replaced `FloatingAssistant` component with `CommandPalette` for enhanced productivity
+- Refactored `NotesApp` to support dynamic filtering via Command Palette
+- Added filter state management for status and priority filters
+
+### Removed
+- Removed legacy `FloatingAssistant.tsx` FAB component
+
+### Version
+- Bumped project version from `1.0.4` to `1.1.0` (minor feature release)
+
 ## [1.0.4] - 2026-06-05
 
 ### Changed
