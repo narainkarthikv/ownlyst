@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { NotesView, KanbanView, TableView, RoadmapView } from '../views';
 import ImportExport from '../components/ImportExport';
-import FloatingAssistant from '../components/FloatingAssistant';
+import CommandPalette from '../components/CommandPalette';
 import { useNotesContext } from '../controllers/NotesProvider';
 import Logo from '../components/Logo';
 import UserPreferencesMenu from '../components/UserPreferencesMenu';
@@ -18,6 +18,7 @@ import { ThemeToggle } from '../theme';
 import { HEADER_CLASSES, BG_CLASSES } from '../constants/ui-colors';
 import { useUserPreferences } from '../context/UserPreferencesContext';
 import type { DefaultView } from '../models/user-preferences.model';
+import type { NoteStatus, NotePriority } from '../models/note.model';
 
 const views: {
   id: DefaultView;
@@ -40,6 +41,8 @@ export default memo(function NotesApp() {
   const [activeView, setActiveView] = useState<DefaultView>(
     preferences.defaultView
   );
+  const [statusFilter, setStatusFilter] = useState<NoteStatus | null>(null);
+  const [priorityFilter, setPriorityFilter] = useState<NotePriority | null>(null);
 
   useEffect(() => {
     setActiveView(preferences.defaultView);
@@ -49,9 +52,24 @@ export default memo(function NotesApp() {
   const { notes, createNote, updateNote, deleteNote, importNotes } =
     useNotesContext();
 
+  // Apply filters to notes
+  const filteredNotes = useMemo(() => {
+    let filtered = notes;
+    
+    if (statusFilter) {
+      filtered = filtered.filter(note => note.status === statusFilter);
+    }
+    
+    if (priorityFilter) {
+      filtered = filtered.filter(note => note.priority === priorityFilter);
+    }
+    
+    return filtered;
+  }, [notes, statusFilter, priorityFilter]);
+
   const renderView = () => {
     const props = {
-      notes,
+      notes: filteredNotes,
       onAddNote: createNote,
       onUpdateNote: updateNote,
       onDeleteNote: deleteNote,
@@ -151,8 +169,13 @@ export default memo(function NotesApp() {
           </motion.div>
         </AnimatePresence>
       </main>
-        {/* Floating assistant FAB */}
-        <FloatingAssistant onCreateNote={createNote} />
+        {/* Command Palette */}
+        <CommandPalette 
+          onCreateNote={createNote}
+          onChangeView={setActiveView}
+          onFilterByStatus={setStatusFilter}
+          onFilterByPriority={setPriorityFilter}
+        />
     </div>
   );
 });
