@@ -1,3 +1,5 @@
+import { Helmet } from 'react-helmet-async';
+import { SEO } from '../constants/seo';
 import { useEffect, useState, memo, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -90,6 +92,18 @@ export default memo(function NotesApp() {
   };
 
   return (
+  <>
+<Helmet>
+  <title>{SEO.app.title}</title>
+  <meta name="description" content={SEO.app.description} />
+  <meta name="keywords" content={SEO.app.keywords} />
+  <meta name="robots" content={SEO.app.robots} />
+  <link rel="canonical" href={SEO.app.canonicalUrl} />
+  <meta property="og:title" content={SEO.app.ogTitle} />
+  <meta property="og:description" content={SEO.app.ogDescription} />
+  <meta property="og:url" content={SEO.app.canonicalUrl} />
+</Helmet>
+
     <div className={`min-h-screen flex flex-col ${BG_CLASSES.page}`}>
       {/* Header */}
       <motion.header
@@ -177,5 +191,6 @@ export default memo(function NotesApp() {
           onFilterByPriority={setPriorityFilter}
         />
     </div>
+  </>
   );
 });

@@ -1,3 +1,5 @@
+import { Helmet } from 'react-helmet-async';
+import { SEO } from '../constants/seo';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -92,6 +94,18 @@ export default function LandingPage() {
   };
 
   return (
+    <>
+<Helmet>
+  <title>{SEO.landing.title}</title>
+  <meta name="description" content={SEO.landing.description} />
+  <meta name="keywords" content={SEO.landing.keywords} />
+  <meta name="robots" content={SEO.landing.robots} />
+  <link rel="canonical" href={SEO.landing.canonicalUrl} />
+
+  <meta property="og:title" content={SEO.landing.ogTitle} />
+  <meta property="og:description" content={SEO.landing.ogDescription} />
+  <meta property="og:url" content={SEO.landing.canonicalUrl} />
+</Helmet>
     <div className='bg-white dark:bg-slate-900 text-gray-900 dark:text-white min-h-screen w-full overflow-x-hidden'>
       {/* Hero Section */}
       <div className='w-full min-h-[500px] px-0 py-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-700 relative'>
@@ -464,6 +478,7 @@ export default function LandingPage() {
       </div>
 
       <Footer />
-    </div>
+      </div>
+  </>
   );
 }
