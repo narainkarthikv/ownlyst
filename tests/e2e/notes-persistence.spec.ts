@@ -50,7 +50,9 @@ test.describe('notes e2e', () => {
     await page.getByLabel('Note content').fill(content);
     await page.getByRole('button', { name: /^create note$/i }).click();
 
-    await page.getByPlaceholder(/search notes by title, content, or tags/i).fill(title);
+    await page
+      .getByPlaceholder(/search notes by title, content, or tags/i)
+      .fill(title);
     await expect(page.getByText(title)).toBeVisible();
 
     await expect
@@ -75,7 +77,9 @@ test.describe('notes e2e', () => {
       .toBe(true);
 
     await page.reload();
-    await page.getByPlaceholder(/search notes by title, content, or tags/i).fill(title);
+    await page
+      .getByPlaceholder(/search notes by title, content, or tags/i)
+      .fill(title);
     await expect(page.getByText(title)).toBeVisible();
     await expect(page.getByText(content)).toBeVisible();
   });

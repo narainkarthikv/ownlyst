@@ -21,7 +21,10 @@ export default defineConfig({
       output: {
         // Keep stable chunks for large dependencies
         manualChunks(id) {
-          if (id.includes('node_modules/react') || id.includes('react-router-dom')) {
+          if (
+            id.includes('node_modules/react') ||
+            id.includes('react-router-dom')
+          ) {
             return 'react-vendor';
           }
           if (id.includes('framer-motion')) return 'animation';

@@ -8,7 +8,10 @@ export class MarkdownUtil {
    * Generates a single note Markdown string with YAML frontmatter.
    */
   static generateSingleNote(note: Note): string {
-    const createdDate = note.createdAt instanceof Date ? note.createdAt.toISOString().split('T')[0] : String(note.createdAt);
+    const createdDate =
+      note.createdAt instanceof Date
+        ? note.createdAt.toISOString().split('T')[0]
+        : String(note.createdAt);
     const updatedDate = createdDate;
 
     let frontmatter = `---\ntitle: ${note.title}\nstatus: ${note.status}\npriority: ${note.priority}\ncreated: ${createdDate}\nupdated: ${updatedDate}\n`;
@@ -100,13 +103,17 @@ export class MarkdownUtil {
 
           if (key === 'title') note.title = value;
           else if (key === 'status') note.status = value as Note['status'];
-          else if (key === 'priority') note.priority = value as Note['priority'];
+          else if (key === 'priority')
+            note.priority = value as Note['priority'];
           else if (key === 'created') note.createdAt = new Date(value);
           else if (key === 'tags') {
             if (value.startsWith('[') && value.endsWith(']')) {
               value = value.slice(1, -1);
             }
-            note.tags = value.split(',').map((t) => t.trim()).filter(Boolean);
+            note.tags = value
+              .split(',')
+              .map((t) => t.trim())
+              .filter(Boolean);
           }
         }
       }

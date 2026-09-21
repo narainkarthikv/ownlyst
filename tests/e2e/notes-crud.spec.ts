@@ -21,15 +21,17 @@ test.describe('Notes CRUD', () => {
     await page.getByRole('button', { name: /^create note$/i }).click();
 
     // Ensure note appears
-    await page.getByPlaceholder(/search notes by title, content, or tags/i).fill(
-      title
-    );
+    await page
+      .getByPlaceholder(/search notes by title, content, or tags/i)
+      .fill(title);
     await expect(page.getByText(title)).toBeVisible();
 
     // Edit the note by opening the card (opens edit modal)
     const card = page.locator('.group', { hasText: title }).first();
     await card.click();
-    await expect(page.getByRole('dialog', { name: /edit note/i })).toBeVisible();
+    await expect(
+      page.getByRole('dialog', { name: /edit note/i })
+    ).toBeVisible();
     const newTitle = `${title} (edited)`;
     await page.getByLabel('Note title').fill(newTitle);
     await page.getByRole('button', { name: /update note/i }).click();

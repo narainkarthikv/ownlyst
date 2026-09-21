@@ -68,7 +68,9 @@ test.describe('Search and Filters', () => {
     await expect(page.getByText('Gamma Note')).toHaveCount(0);
 
     // Clear search
-    await page.getByPlaceholder(/search notes by title, content, or tags/i).fill('');
+    await page
+      .getByPlaceholder(/search notes by title, content, or tags/i)
+      .fill('');
 
     // Open filters and filter by status: Done
     await page.getByRole('button', { name: /^Filter(?:\s*\d+)?$/i }).click();

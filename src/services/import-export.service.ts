@@ -185,7 +185,9 @@ export class ImportExportService {
       if (notes.length === 1) {
         const note = notes[0];
         const mdContent = MarkdownUtil.generateSingleNote(note);
-        const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8;' });
+        const blob = new Blob([mdContent], {
+          type: 'text/markdown;charset=utf-8;',
+        });
         const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
@@ -195,12 +197,17 @@ export class ImportExportService {
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
-        return { success: true, message: `Exported ${note.title} as Markdown`, fileName: link.download };
+        return {
+          success: true,
+          message: `Exported ${note.title} as Markdown`,
+          fileName: link.download,
+        };
       }
       const zip = new JSZip();
       notes.forEach((note) => {
         const mdContent = MarkdownUtil.generateSingleNote(note);
-        const safeTitle = note.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') || note.id;
+        const safeTitle =
+          note.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') || note.id;
         zip.file(`notes/${safeTitle}.md`, mdContent);
       });
       const indexContent = MarkdownUtil.generateBulkExport(notes);
@@ -214,7 +221,11 @@ export class ImportExportService {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
-      return { success: true, message: `Exported ${notes.length} note(s) as Markdown ZIP`, fileName: link.download };
+      return {
+        success: true,
+        message: `Exported ${notes.length} note(s) as Markdown ZIP`,
+        fileName: link.download,
+      };
     } catch (error) {
       console.error(error);
       return { success: false, message: 'Failed to export as Markdown' };
@@ -224,7 +235,10 @@ export class ImportExportService {
   static exportAsPDF(notes: Note[]): ExportResult {
     try {
       PDFUtil.generatePDF(notes);
-      return { success: true, message: `Exported ${notes.length} note(s) as PDF` };
+      return {
+        success: true,
+        message: `Exported ${notes.length} note(s) as PDF`,
+      };
     } catch (error) {
       console.error(error);
       return { success: false, message: 'Failed to export as PDF' };
@@ -526,10 +540,21 @@ export class ImportExportService {
         };
       }
 
-      return { success: true, message: `Successfully imported ${validatedNotes.length} note(s)`, notes: validatedNotes };
+      return {
+        success: true,
+        message: `Successfully imported ${validatedNotes.length} note(s)`,
+        notes: validatedNotes,
+      };
     } catch (error) {
-      console.error('[ImportExportService] Error importing from Markdown:', error);
-      return { success: false, message: 'Failed to import file. Ensure it is valid.', errors: [(error as Error).message] };
+      console.error(
+        '[ImportExportService] Error importing from Markdown:',
+        error
+      );
+      return {
+        success: false,
+        message: 'Failed to import file. Ensure it is valid.',
+        errors: [(error as Error).message],
+      };
     }
   }
 

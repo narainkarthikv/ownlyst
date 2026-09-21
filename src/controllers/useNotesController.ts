@@ -160,7 +160,9 @@ export function useNotesController() {
           return {
             ...raw,
             createdAt: new Date(String(raw['createdAt'])),
-            dueDate: raw['dueDate'] ? new Date(String(raw['dueDate'])) : undefined,
+            dueDate: raw['dueDate']
+              ? new Date(String(raw['dueDate']))
+              : undefined,
           } as Note;
         });
         // Immediately save sample notes to storage

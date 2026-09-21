@@ -70,8 +70,8 @@ export default function ImportExport({
         format === 'json'
           ? await ImportExportService.importFromJSON(file)
           : format === 'csv'
-          ? await ImportExportService.importFromCSV(file)
-          : await ImportExportService.importFromMarkdown(file);
+            ? await ImportExportService.importFromCSV(file)
+            : await ImportExportService.importFromMarkdown(file);
 
       if (result.success && result.notes) {
         onImportNotes(result.notes);
@@ -209,7 +209,9 @@ export default function ImportExport({
                       whileHover={{ backgroundColor: 'rgba(0,0,0,0.05)' }}
                       className='w-full text-left px-3 py-2 rounded-md text-sm text-gray-700 dark:text-gray-300 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors'>
                       <Upload size={16} />
-                      <span>{isImporting ? 'Importing...' : 'Markdown/ZIP'}</span>
+                      <span>
+                        {isImporting ? 'Importing...' : 'Markdown/ZIP'}
+                      </span>
                     </motion.div>
                     <input
                       type='file'
