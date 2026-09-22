@@ -7,13 +7,18 @@ test.describe('Theme toggle', () => {
     await expect(page).toHaveURL(/\/app$/);
   });
 
-  test('cycles theme preference and persists to localStorage', async ({ page }) => {
+  test('cycles theme preference and persists to localStorage', async ({
+    page,
+  }) => {
     const PREF_KEY = 'sticky-user-preferences';
 
     // Read current preference
     const before = await page.evaluate((k) => {
       try {
-        return JSON.parse(window.localStorage.getItem(k) || '{}').themePreference || 'system';
+        return (
+          JSON.parse(window.localStorage.getItem(k) || '{}').themePreference ||
+          'system'
+        );
       } catch {
         return 'system';
       }
@@ -25,7 +30,8 @@ test.describe('Theme toggle', () => {
     // Read updated preference from localStorage
     const after = await page.evaluate((k) => {
       try {
-        return JSON.parse(window.localStorage.getItem(k) || '{}').themePreference;
+        return JSON.parse(window.localStorage.getItem(k) || '{}')
+          .themePreference;
       } catch {
         return null;
       }

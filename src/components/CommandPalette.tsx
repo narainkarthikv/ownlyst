@@ -12,7 +12,13 @@
  * - Visual action categories and keyboard shortcuts
  */
 
-import { useState, useEffect, useCallback, useMemo, type KeyboardEvent } from 'react';
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  type KeyboardEvent,
+} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search,
@@ -31,7 +37,11 @@ import {
   Hash,
   Command,
 } from 'lucide-react';
-import type { NoteFormData, NotePriority, NoteStatus } from '../models/note.model';
+import type {
+  NoteFormData,
+  NotePriority,
+  NoteStatus,
+} from '../models/note.model';
 import type { DefaultView } from '../models/user-preferences.model';
 
 // ============= Command Types =============
@@ -301,7 +311,9 @@ export default function CommandPalette({
         cmd.description || '',
         cmd.category,
         ...(cmd.keywords || []),
-      ].join(' ').toLowerCase();
+      ]
+        .join(' ')
+        .toLowerCase();
 
       return searchText.includes(query);
     });
@@ -392,7 +404,10 @@ export default function CommandPalette({
         onClick={() => setIsOpen(true)}
         className='fixed right-6 bottom-6 z-40 flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg hover:scale-105 transition-transform ring-1 ring-white/10 group'
         aria-label='Open command palette'>
-        <Command size={22} className='group-hover:rotate-12 transition-transform' />
+        <Command
+          size={22}
+          className='group-hover:rotate-12 transition-transform'
+        />
       </button>
 
       {/* Command Palette Modal */}
@@ -418,103 +433,112 @@ export default function CommandPalette({
                 <div className='bg-white dark:bg-slate-800 rounded-xl shadow-2xl border border-gray-200 dark:border-slate-700 overflow-hidden'>
                   {/* Search Input */}
                   <div className='flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-slate-700'>
-                  <Search size={20} className='text-gray-400 dark:text-slate-500' />
-                  <input
-                    type='text'
-                    placeholder='Type a command or search...'
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    autoFocus
-                    className='flex-1 bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 text-base'
-                  />
-                  <kbd className='hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs font-mono bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-400 rounded border border-gray-300 dark:border-slate-600'>
-                    ESC
-                  </kbd>
-                </div>
-
-                {/* Commands List */}
-                <div className='max-h-[60vh] overflow-y-auto'>
-                  {filteredCommands.length === 0 ? (
-                    <div className='px-4 py-8 text-center text-gray-500 dark:text-slate-400'>
-                      No commands found
-                    </div>
-                  ) : (
-                    <div className='py-2'>
-                      {Object.entries(groupedCommands).map(([category, cmds]) => (
-                        <div key={category} className='mb-2 last:mb-0'>
-                          <div className='px-4 py-1.5 text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider'>
-                            {categoryLabels[category as CommandCategory]}
-                          </div>
-                          {cmds?.map((command) => {
-                            const globalIndex = filteredCommands.indexOf(command);
-                            const isSelected = globalIndex === selectedIndex;
-                            const Icon = command.icon;
-
-                            return (
-                              <button
-                                key={command.id}
-                                onClick={() => handleCommandClick(command)}
-                                onMouseEnter={() => setSelectedIndex(globalIndex)}
-                                className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
-                                  isSelected
-                                    ? 'bg-blue-50 dark:bg-slate-700'
-                                    : 'hover:bg-gray-50 dark:hover:bg-slate-750'
-                                }`}>
-                                <div
-                                  className={`flex items-center justify-center w-8 h-8 rounded-lg ${
-                                    isSelected
-                                      ? 'bg-blue-500 text-white'
-                                      : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-400'
-                                  }`}>
-                                  <Icon size={16} />
-                                </div>
-                                <div className='flex-1 min-w-0'>
-                                  <div className='text-sm font-medium text-gray-900 dark:text-white'>
-                                    {command.label}
-                                  </div>
-                                  {command.description && (
-                                    <div className='text-xs text-gray-500 dark:text-slate-400 truncate'>
-                                      {command.description}
-                                    </div>
-                                  )}
-                                </div>
-                                {command.shortcut && (
-                                  <kbd className='hidden sm:inline-flex items-center justify-center min-w-[1.5rem] px-1.5 py-0.5 text-xs font-mono bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-400 rounded border border-gray-300 dark:border-slate-600'>
-                                    {command.shortcut}
-                                  </kbd>
-                                )}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Footer */}
-                <div className='px-4 py-2 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-750'>
-                  <div className='flex items-center justify-between text-xs text-gray-500 dark:text-slate-400'>
-                    <div className='flex items-center gap-4'>
-                      <span className='flex items-center gap-1'>
-                        <kbd className='px-1.5 py-0.5 bg-white dark:bg-slate-700 rounded border border-gray-300 dark:border-slate-600'>
-                          ↑↓
-                        </kbd>
-                        Navigate
-                      </span>
-                      <span className='flex items-center gap-1'>
-                        <kbd className='px-1.5 py-0.5 bg-white dark:bg-slate-700 rounded border border-gray-300 dark:border-slate-600'>
-                          ↵
-                        </kbd>
-                        Select
-                      </span>
-                    </div>
-                    <span className='hidden sm:block'>
-                      Ctrl/Cmd + K to toggle
-                    </span>
+                    <Search
+                      size={20}
+                      className='text-gray-400 dark:text-slate-500'
+                    />
+                    <input
+                      type='text'
+                      placeholder='Type a command or search...'
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      autoFocus
+                      className='flex-1 bg-transparent border-none outline-none text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 text-base'
+                    />
+                    <kbd className='hidden sm:inline-flex items-center gap-1 px-2 py-1 text-xs font-mono bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-400 rounded border border-gray-300 dark:border-slate-600'>
+                      ESC
+                    </kbd>
                   </div>
-                </div>
+
+                  {/* Commands List */}
+                  <div className='max-h-[60vh] overflow-y-auto'>
+                    {filteredCommands.length === 0 ? (
+                      <div className='px-4 py-8 text-center text-gray-500 dark:text-slate-400'>
+                        No commands found
+                      </div>
+                    ) : (
+                      <div className='py-2'>
+                        {Object.entries(groupedCommands).map(
+                          ([category, cmds]) => (
+                            <div key={category} className='mb-2 last:mb-0'>
+                              <div className='px-4 py-1.5 text-xs font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider'>
+                                {categoryLabels[category as CommandCategory]}
+                              </div>
+                              {cmds?.map((command) => {
+                                const globalIndex =
+                                  filteredCommands.indexOf(command);
+                                const isSelected =
+                                  globalIndex === selectedIndex;
+                                const Icon = command.icon;
+
+                                return (
+                                  <button
+                                    key={command.id}
+                                    onClick={() => handleCommandClick(command)}
+                                    onMouseEnter={() =>
+                                      setSelectedIndex(globalIndex)
+                                    }
+                                    className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
+                                      isSelected
+                                        ? 'bg-blue-50 dark:bg-slate-700'
+                                        : 'hover:bg-gray-50 dark:hover:bg-slate-750'
+                                    }`}>
+                                    <div
+                                      className={`flex items-center justify-center w-8 h-8 rounded-lg ${
+                                        isSelected
+                                          ? 'bg-blue-500 text-white'
+                                          : 'bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-400'
+                                      }`}>
+                                      <Icon size={16} />
+                                    </div>
+                                    <div className='flex-1 min-w-0'>
+                                      <div className='text-sm font-medium text-gray-900 dark:text-white'>
+                                        {command.label}
+                                      </div>
+                                      {command.description && (
+                                        <div className='text-xs text-gray-500 dark:text-slate-400 truncate'>
+                                          {command.description}
+                                        </div>
+                                      )}
+                                    </div>
+                                    {command.shortcut && (
+                                      <kbd className='hidden sm:inline-flex items-center justify-center min-w-[1.5rem] px-1.5 py-0.5 text-xs font-mono bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-slate-400 rounded border border-gray-300 dark:border-slate-600'>
+                                        {command.shortcut}
+                                      </kbd>
+                                    )}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <div className='px-4 py-2 border-t border-gray-200 dark:border-slate-700 bg-gray-50 dark:bg-slate-750'>
+                    <div className='flex items-center justify-between text-xs text-gray-500 dark:text-slate-400'>
+                      <div className='flex items-center gap-4'>
+                        <span className='flex items-center gap-1'>
+                          <kbd className='px-1.5 py-0.5 bg-white dark:bg-slate-700 rounded border border-gray-300 dark:border-slate-600'>
+                            ↑↓
+                          </kbd>
+                          Navigate
+                        </span>
+                        <span className='flex items-center gap-1'>
+                          <kbd className='px-1.5 py-0.5 bg-white dark:bg-slate-700 rounded border border-gray-300 dark:border-slate-600'>
+                            ↵
+                          </kbd>
+                          Select
+                        </span>
+                      </div>
+                      <span className='hidden sm:block'>
+                        Ctrl/Cmd + K to toggle
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             </div>

@@ -26,7 +26,8 @@ test.describe('Import / Export', () => {
 
     // Import JSON backup
     // Resolve fixture path in ESM environment
-    const filePath = new URL('../fixtures/backup.json', import.meta.url).pathname;
+    const filePath = new URL('../fixtures/backup.json', import.meta.url)
+      .pathname;
     await page.locator('button[title="Data import/export"]').click();
     const input = page.locator('input[type="file"][accept=".json"]');
     await input.setInputFiles(filePath);

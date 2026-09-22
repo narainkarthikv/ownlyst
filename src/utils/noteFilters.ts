@@ -86,7 +86,9 @@ export function sortNotes(notes: Note[], sortOption: SortOption): Note[] {
 
       case 'priority-low': {
         const priorityOrderReverse = { low: 0, medium: 1, high: 2 };
-        return priorityOrderReverse[a.priority] - priorityOrderReverse[b.priority];
+        return (
+          priorityOrderReverse[a.priority] - priorityOrderReverse[b.priority]
+        );
       }
 
       case 'status': {

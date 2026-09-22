@@ -2,9 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-09-21
+
+### Added
+
+- Enhanced import and export experience for notes, including richer markdown/PDF handling and more resilient file-selection flows.
+- Expanded filtering, sorting, and view-state behavior across notes, Kanban, roadmap, and table workflows.
+- Improved local-first sync and persistence updates for a smoother multi-view experience.
+
+### Changed
+
+- Refined the main app experience in landing, notes, and board views for better responsiveness and interaction flow.
+- Updated state synchronization and UI logic to better support note creation, filtering, and cross-view navigation.
+- Expanded end-to-end test coverage for import/export, persistence, filtering, and theme behavior.
+
+### Fixed
+
+- Corrected markdown import edge cases and file selection handling.
+- Improved state consistency across note views and export utilities.
+
+### Version
+
+- Bumped project version from `1.1.0` to `1.2.0` (minor feature release).
+
 ## [1.1.0] - 2026-07-15
 
 ### Added
+
 - **Command Palette**: New spotlight-style quick actions interface accessible via `Ctrl/Cmd+K`
   - Fuzzy search with real-time filtering
   - Quick note creation with templates (Quick note, Task, High priority)
@@ -15,46 +39,57 @@ All notable changes to this project will be documented in this file.
   - See `src/components/CommandPalette.tsx`
 
 ### Changed
+
 - Replaced `FloatingAssistant` component with `CommandPalette` for enhanced productivity
 - Refactored `NotesApp` to support dynamic filtering via Command Palette
 - Added filter state management for status and priority filters
 
 ### Removed
+
 - Removed legacy `FloatingAssistant.tsx` FAB component
 
 ### Version
+
 - Bumped project version from `1.0.4` to `1.1.0` (minor feature release)
 
 ## [1.0.4] - 2026-06-05
 
 ### Changed
+
 - Code quality: removed unnecessary default `React` imports and switched to named/type imports across several modules (`src/hooks/useNotesSync.ts`, `src/context/NotesContext.tsx`, `src/controllers/NotesProvider.tsx`, `src/components/NoteModal.tsx`, `src/views/notes/NoteCard.tsx`, `src/utils/highlighting.tsx`) to align with the `react-jsx` runtime and reduce unused-import warnings.
 
 ### Related
+
 - Addresses [#137](https://github.com/narainkarthikv/ownlyst/issues/137) — general code quality and maintenance improvements.
 
 ### Version
+
 - Bumped project version from `1.0.3` to `1.0.4`.
 
 ## [1.0.3] - 2026-06-02
 
 ### Changed
+
 - Refactored debug logging: extracted `debugLog` utility and replaced inline `console.log` calls in `useNotesSync` to centralize debug output. See `src/utils/logger.ts`.
 
 ### Related
+
 - Fixes [#137](https://github.com/narainkarthikv/ownlyst/issues/137)
 
 ### Version
+
 - Bumped project version from `1.0.2` to `1.0.3`.
 
 ## [1.0.1] - 2026-05-22
 
 ### Fixed
+
 - Resolved lint failure in `NoteModal` by memoizing `validateForm` with `useCallback` and removing unstable hook dependencies.
 - Removed malformed compression output behavior from build pipeline by dropping `vite-plugin-compression` usage.
 - Updated Vite chunk-splitting config for Vite 8 by converting `manualChunks` from object form to function form.
 
 ### Security
+
 - Remediated npm audit findings from high/moderate advisory set to zero vulnerabilities.
 - Upgraded vulnerable runtime/development toolchain paths, including:
   - `vite` to `^8.0.14`
@@ -63,6 +98,7 @@ All notable changes to this project will be documented in this file.
   - `postcss` to `^8.5.15`
 
 ### Tooling
+
 - Updated lint/tooling dependencies for compatibility with patched stack:
   - `@vitejs/plugin-react` to `^6.0.2`
   - `eslint` and `@eslint/js` to `^9.39.4`
@@ -72,11 +108,12 @@ All notable changes to this project will be documented in this file.
 - Disabled `react-hooks/set-state-in-effect` in ESLint config to prevent forced large behavioral refactors in this patch release while retaining other recommended React Hooks rules.
 
 ### Version
+
 - Bumped project version from `1.0.0` to `1.0.1`.
 
 ## [1.0.2] - 2026-05-27
 
 ### Added
+
 - Floating assistant FAB with quick actions (Quick note, Create task, Voice placeholder). See `src/components/FloatingAssistant.tsx`.
 - Premium-styled FAB using the app `Logo` and the app blue design palette for a cohesive look.
-

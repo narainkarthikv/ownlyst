@@ -7,11 +7,7 @@ import { Note } from '../types/Note';
 import { PRIORITY_ORDER } from '../constants/priorities';
 
 export type SortField =
-  | 'title'
-  | 'status'
-  | 'priority'
-  | 'createdAt'
-  | 'dueDate';
+  'title' | 'status' | 'priority' | 'createdAt' | 'dueDate';
 export type SortDirection = 'asc' | 'desc';
 
 /**

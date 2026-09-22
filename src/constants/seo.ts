@@ -12,7 +12,8 @@ const SITE_URL = 'https://ownlyst.netlify.app';
 
 export const SEO = {
   landing: {
-    title: 'Ownlyst - Privacy-First Notes App | Local Storage, No Cloud, No Tracking',
+    title:
+      'Ownlyst - Privacy-First Notes App | Local Storage, No Cloud, No Tracking',
     description:
       'Truly private sticky notes app. Your notes stay on YOUR device - no cloud uploads, no tracking, no surveillance. Features Kanban Boards, Table View, Roadmap Timeline, and offline support.',
     keywords:

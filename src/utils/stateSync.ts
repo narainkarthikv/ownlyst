@@ -180,12 +180,7 @@ export function groupNotesByPriority(
 export function sortNotes(
   notes: Note[],
   sortBy:
-    | 'createdAt'
-    | 'dueDate'
-    | 'priority'
-    | 'title'
-    | 'status'
-    | 'isPinned',
+    'createdAt' | 'dueDate' | 'priority' | 'title' | 'status' | 'isPinned',
   direction: 'asc' | 'desc' = 'desc'
 ): Note[] {
   const sorted = [...notes];

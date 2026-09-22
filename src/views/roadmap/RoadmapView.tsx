@@ -182,41 +182,49 @@ export default memo(function RoadmapView({
     }
   };
 
-  const getTaskPosition = useCallback((task: GanttTask) => {
-    if (timelinePeriods.length === 0) {
-      return null;
-    }
+  const getTaskPosition = useCallback(
+    (task: GanttTask) => {
+      if (timelinePeriods.length === 0) {
+        return null;
+      }
 
-    const normalizedStart = new Date(task.startDate);
-    normalizedStart.setHours(0, 0, 0, 0);
-    const normalizedEnd = new Date(task.endDate);
-    normalizedEnd.setHours(23, 59, 59, 999);
+      const normalizedStart = new Date(task.startDate);
+      normalizedStart.setHours(0, 0, 0, 0);
+      const normalizedEnd = new Date(task.endDate);
+      normalizedEnd.setHours(23, 59, 59, 999);
 
-    const startIndex = timelinePeriods.findIndex(
-      (period) => normalizedStart <= period.end && normalizedEnd >= period.start
-    );
-    const endIndex =
-      timelinePeriods.findLastIndex?.(
-        (period) => normalizedStart <= period.end && normalizedEnd >= period.start
-      ) ??
-      (() => {
-        for (let i = timelinePeriods.length - 1; i >= 0; i -= 1) {
-          const period = timelinePeriods[i];
-          if (normalizedStart <= period.end && normalizedEnd >= period.start) {
-            return i;
+      const startIndex = timelinePeriods.findIndex(
+        (period) =>
+          normalizedStart <= period.end && normalizedEnd >= period.start
+      );
+      const endIndex =
+        timelinePeriods.findLastIndex?.(
+          (period) =>
+            normalizedStart <= period.end && normalizedEnd >= period.start
+        ) ??
+        (() => {
+          for (let i = timelinePeriods.length - 1; i >= 0; i -= 1) {
+            const period = timelinePeriods[i];
+            if (
+              normalizedStart <= period.end &&
+              normalizedEnd >= period.start
+            ) {
+              return i;
+            }
           }
-        }
-        return -1;
-      })();
+          return -1;
+        })();
 
-    if (startIndex === -1 || endIndex === -1) {
-      return null;
-    }
+      if (startIndex === -1 || endIndex === -1) {
+        return null;
+      }
 
-    return {
-      gridColumn: `${startIndex + 1} / ${endIndex + 2}`,
-    };
-  }, [timelinePeriods]);
+      return {
+        gridColumn: `${startIndex + 1} / ${endIndex + 2}`,
+      };
+    },
+    [timelinePeriods]
+  );
 
   const isToday = (date: Date) => {
     const today = new Date();
@@ -460,7 +468,9 @@ export default memo(function RoadmapView({
                     <div
                       key={period.start.toISOString()}
                       className={`p-2 sm:p-4 text-center border-r border-gray-200 dark:border-slate-700 last:border-r-0 ${
-                        isToday(period.start) ? 'bg-blue-50 dark:bg-blue-900/30' : ''
+                        isToday(period.start)
+                          ? 'bg-blue-50 dark:bg-blue-900/30'
+                          : ''
                       }`}>
                       <div className='text-[10px] sm:text-xs md:text-sm font-semibold text-gray-900 dark:text-white'>
                         {viewMode === 'month'

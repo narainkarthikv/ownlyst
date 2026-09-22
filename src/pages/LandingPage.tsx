@@ -95,390 +95,397 @@ export default function LandingPage() {
 
   return (
     <>
-<Helmet>
-  <title>{SEO.landing.title}</title>
-  <meta name="description" content={SEO.landing.description} />
-  <meta name="keywords" content={SEO.landing.keywords} />
-  <meta name="robots" content={SEO.landing.robots} />
-  <link rel="canonical" href={SEO.landing.canonicalUrl} />
+      <Helmet>
+        <title>{SEO.landing.title}</title>
+        <meta name='description' content={SEO.landing.description} />
+        <meta name='keywords' content={SEO.landing.keywords} />
+        <meta name='robots' content={SEO.landing.robots} />
+        <link rel='canonical' href={SEO.landing.canonicalUrl} />
 
-  <meta property="og:title" content={SEO.landing.ogTitle} />
-  <meta property="og:description" content={SEO.landing.ogDescription} />
-  <meta property="og:url" content={SEO.landing.canonicalUrl} />
-</Helmet>
-    <div className='bg-white dark:bg-slate-900 text-gray-900 dark:text-white min-h-screen w-full overflow-x-hidden'>
-      {/* Hero Section */}
-      <div className='w-full min-h-[500px] px-0 py-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-700 relative'>
-        <motion.div className='max-w-7xl mx-auto pt-10 pb-6 px-4 md:px-6 min-h-[500px] flex flex-col items-center justify-center overflow-visible'>
-          {/* Logo and Brand Name */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className='flex items-center mb-6 cursor-pointer hover:scale-105 transition-transform duration-200'
-            onClick={() => navigate('/')}>
-            <Logo size={48} />
-            <h1 className='ml-3 text-3xl md:text-4xl font-bold text-gray-900 dark:text-white'>
-              Ownlyst
-            </h1>
+        <meta property='og:title' content={SEO.landing.ogTitle} />
+        <meta property='og:description' content={SEO.landing.ogDescription} />
+        <meta property='og:url' content={SEO.landing.canonicalUrl} />
+      </Helmet>
+      <div className='bg-white dark:bg-slate-900 text-gray-900 dark:text-white min-h-screen w-full overflow-x-hidden'>
+        {/* Hero Section */}
+        <div className='w-full min-h-[500px] px-0 py-0 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-700 relative'>
+          <motion.div className='max-w-7xl mx-auto pt-10 pb-6 px-4 md:px-6 min-h-[500px] flex flex-col items-center justify-center overflow-visible'>
+            {/* Logo and Brand Name */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className='flex items-center mb-6 cursor-pointer hover:scale-105 transition-transform duration-200'
+              onClick={() => navigate('/')}>
+              <Logo size={48} />
+              <h1 className='ml-3 text-3xl md:text-4xl font-bold text-gray-900 dark:text-white'>
+                Ownlyst
+              </h1>
+            </motion.div>
+
+            <div className='w-full flex flex-col items-center justify-center text-center'>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className='text-4xl md:text-5xl font-bold leading-tight mb-4 text-gray-900 dark:text-white'>
+                Notes That Stay
+                <br />
+                <span className='text-blue-600 dark:text-blue-400'>
+                  Truly Private
+                </span>
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className='mb-6 text-gray-600 dark:text-gray-300 font-normal text-lg md:text-xl max-w-[560px]'>
+                Write freely, knowing your thoughts are yours alone.{' '}
+                <span className='font-semibold'>No cloud. No tracking.</span>{' '}
+                Just honest, local-first note-taking. 🌱
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                className='flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 justify-center'>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className='font-bold text-base px-8 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-all duration-200 shadow-md'
+                  onClick={() => navigate('/app')}>
+                  Start Taking Notes
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className='font-bold text-base px-8 py-3 rounded-lg border-2 border-gray-800 dark:border-white text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200'
+                  onClick={() => scrollToSection('privacy')}>
+                  How It Works
+                </motion.button>
+              </motion.div>
+
+              {/* Trust Badge */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1 }}
+                className='inline-flex items-center gap-2 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-full px-4 py-2 text-green-700 dark:text-green-300 text-sm font-medium'>
+                <Shield className='w-4 h-4' />
+                <span>Built by privacy lovers, for privacy lovers 💚</span>
+              </motion.div>
+            </div>
           </motion.div>
+        </div>
 
-          <div className='w-full flex flex-col items-center justify-center text-center'>
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className='text-4xl md:text-5xl font-bold leading-tight mb-4 text-gray-900 dark:text-white'>
-              Notes That Stay
-              <br />
-              <span className='text-blue-600 dark:text-blue-400'>
-                Truly Private
-              </span>
-            </motion.h2>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className='mb-6 text-gray-600 dark:text-gray-300 font-normal text-lg md:text-xl max-w-[560px]'>
-              Write freely, knowing your thoughts are yours alone.{' '}
-              <span className='font-semibold'>No cloud. No tracking.</span> Just
-              honest, local-first note-taking. 🌱
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className='flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6 justify-center'>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className='font-bold text-base px-8 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition-all duration-200 shadow-md'
-                onClick={() => navigate('/app')}>
-                Start Taking Notes
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className='font-bold text-base px-8 py-3 rounded-lg border-2 border-gray-800 dark:border-white text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200'
-                onClick={() => scrollToSection('privacy')}>
-                How It Works
-              </motion.button>
-            </motion.div>
-
-            {/* Trust Badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1 }}
-              className='inline-flex items-center gap-2 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-full px-4 py-2 text-green-700 dark:text-green-300 text-sm font-medium'>
-              <Shield className='w-4 h-4' />
-              <span>Built by privacy lovers, for privacy lovers 💚</span>
-            </motion.div>
+        {/* Privacy Guarantee Section */}
+        <div
+          id='privacy'
+          className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6'>
+          <div className='text-center mb-12'>
+            <h3 className='text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white'>
+              Why Your Privacy is Actually Safe Here 🛡️
+            </h3>
+            <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
+              Unlike most apps that promise privacy but store everything on
+              their servers, we literally CAN'T see your notes. Here's the real
+              deal:
+            </p>
           </div>
-        </motion.div>
-      </div>
 
-      {/* Privacy Guarantee Section */}
-      <div
-        id='privacy'
-        className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6'>
-        <div className='text-center mb-12'>
-          <h3 className='text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white'>
-            Why Your Privacy is Actually Safe Here 🛡️
-          </h3>
-          <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
-            Unlike most apps that promise privacy but store everything on their
-            servers, we literally CAN'T see your notes. Here's the real deal:
-          </p>
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
+            {privacyGuarantees.map((guarantee, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className='bg-gray-50 dark:bg-slate-800 rounded-lg p-6 border border-gray-200 dark:border-slate-700 hover:shadow-md dark:hover:shadow-slate-900/50 transition-shadow'>
+                <div className='text-4xl mb-3'>{guarantee.icon}</div>
+                <h4 className='text-lg font-bold mb-2 text-gray-900 dark:text-white'>
+                  {guarantee.title}
+                </h4>
+                <p className='text-gray-600 dark:text-gray-400 text-sm'>
+                  {guarantee.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
-          {privacyGuarantees.map((guarantee, idx) => (
+        {/* Features Section */}
+        <div className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6 bg-gray-50 dark:bg-slate-800/50 rounded-lg'>
+          <div className='text-center mb-12'>
+            <h3 className='text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white'>
+              Everything You Need, Nothing You Don't ✨
+            </h3>
+            <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
+              No bloat. No nonsense. No data mining disguised as "features."
+              Just pure, honest note-taking.
+            </p>
+          </div>
+
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
+            {features.map((feature, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{ y: -4 }}
+                className='bg-white dark:bg-slate-700 rounded-lg p-6 border border-gray-200 dark:border-slate-600'>
+                <div className='mb-4'>{feature.icon}</div>
+                <h4 className='text-lg font-bold mb-2 text-gray-900 dark:text-white'>
+                  {feature.title}
+                </h4>
+                <p className='text-gray-600 dark:text-gray-300 text-sm'>
+                  {feature.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Data Portability Section */}
+        <div className='max-w-6xl mx-auto py-16 md:py-20 px-4 md:px-6'>
+          <div className='bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-[2rem] p-8 md:p-12'>
+            <div className='grid grid-cols-1 md:grid-cols-[1.15fr_0.85fr] items-center gap-10 md:gap-16'>
+              <div>
+                <p className='text-xs md:text-sm font-semibold tracking-[0.35em] uppercase text-blue-600 dark:text-blue-300 mb-5'>
+                  No Lock-In
+                </p>
+                <h3 className='text-3xl md:text-4xl font-bold mb-5 text-gray-900 dark:text-white leading-tight max-w-xl'>
+                  No Data Hostage Situations 🔓
+                </h3>
+                <p className='text-gray-700 dark:text-gray-300 mb-7 text-base md:text-lg leading-relaxed max-w-2xl'>
+                  Tired of apps that make it impossible to leave? We're
+                  different. Your data walks out with you, any time you want. No
+                  "export premium" upgrade required.
+                </p>
+                <ul className='space-y-4'>
+                  <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
+                    <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
+                      ✓
+                    </span>
+                    <span>
+                      <strong>Export backup as JSON</strong> (notes + profile)
+                    </span>
+                  </li>
+                  <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
+                    <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
+                      ✓
+                    </span>
+                    <span>
+                      <strong>Export backup as CSV</strong> for spreadsheets or
+                      archives
+                    </span>
+                  </li>
+                  <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
+                    <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
+                      ✓
+                    </span>
+                    <span>
+                      <strong>Import backups</strong> with preferences intact
+                    </span>
+                  </li>
+                  <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
+                    <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
+                      ✓
+                    </span>
+                    <span>
+                      <strong>Delete anytime</strong> with no questions asked
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              <div className='w-full'>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  className='min-h-[180px] md:min-h-[186px] flex flex-col items-center justify-center rounded-3xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/20 px-6 py-10 text-center'>
+                  <span className='text-6xl mb-5'>📦</span>
+                  <p className='text-gray-700 dark:text-gray-300 text-base md:text-lg font-medium'>
+                    Complete backups that leave with you.
+                  </p>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Technical Transparency Section */}
+        <div className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6 bg-gray-50 dark:bg-slate-800/50 rounded-lg'>
+          <div className='text-center mb-12'>
+            <h3 className='text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white'>
+              The Nerdy Details (For Those Who Care) 🤓
+            </h3>
+            <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
+              Want to know EXACTLY how we keep your data private? Here's the
+              honest technical breakdown:
+            </p>
+          </div>
+
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto'>
             <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className='bg-gray-50 dark:bg-slate-800 rounded-lg p-6 border border-gray-200 dark:border-slate-700 hover:shadow-md dark:hover:shadow-slate-900/50 transition-shadow'>
-              <div className='text-4xl mb-3'>{guarantee.icon}</div>
-              <h4 className='text-lg font-bold mb-2 text-gray-900 dark:text-white'>
-                {guarantee.title}
-              </h4>
-              <p className='text-gray-600 dark:text-gray-400 text-sm'>
-                {guarantee.desc}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* Features Section */}
-      <div className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6 bg-gray-50 dark:bg-slate-800/50 rounded-lg'>
-        <div className='text-center mb-12'>
-          <h3 className='text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white'>
-            Everything You Need, Nothing You Don't ✨
-          </h3>
-          <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
-            No bloat. No nonsense. No data mining disguised as "features." Just
-            pure, honest note-taking.
-          </p>
-        </div>
-
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
-          {features.map((feature, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              whileHover={{ y: -4 }}
               className='bg-white dark:bg-slate-700 rounded-lg p-6 border border-gray-200 dark:border-slate-600'>
-              <div className='mb-4'>{feature.icon}</div>
-              <h4 className='text-lg font-bold mb-2 text-gray-900 dark:text-white'>
-                {feature.title}
+              <h4 className='text-xl font-bold mb-4 text-gray-900 dark:text-white'>
+                Where Your Notes Actually Live 🏠
               </h4>
-              <p className='text-gray-600 dark:text-gray-300 text-sm'>
-                {feature.desc}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* Data Portability Section */}
-      <div className='max-w-6xl mx-auto py-16 md:py-20 px-4 md:px-6'>
-        <div className='bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-[2rem] p-8 md:p-12'>
-          <div className='grid grid-cols-1 md:grid-cols-[1.15fr_0.85fr] items-center gap-10 md:gap-16'>
-            <div>
-              <p className='text-xs md:text-sm font-semibold tracking-[0.35em] uppercase text-blue-600 dark:text-blue-300 mb-5'>
-                No Lock-In
-              </p>
-              <h3 className='text-3xl md:text-4xl font-bold mb-5 text-gray-900 dark:text-white leading-tight max-w-xl'>
-                No Data Hostage Situations 🔓
-              </h3>
-              <p className='text-gray-700 dark:text-gray-300 mb-7 text-base md:text-lg leading-relaxed max-w-2xl'>
-                Tired of apps that make it impossible to leave? We're different.
-                Your data walks out with you, any time you want. No "export
-                premium" upgrade required.
-              </p>
-              <ul className='space-y-4'>
-                <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
-                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
-                    ✓
+              <ul className='space-y-3 text-gray-700 dark:text-gray-300'>
+                <li className='flex items-start gap-2'>
+                  <span className='text-blue-600 dark:text-blue-400 mt-1'>
+                    →
                   </span>
                   <span>
-                    <strong>Export backup as JSON</strong> (notes + profile)
+                    <strong>In Your Browser's Vault:</strong> Built-in storage
+                    that only YOU can access
                   </span>
                 </li>
-                <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
-                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
-                    ✓
+                <li className='flex items-start gap-2'>
+                  <span className='text-blue-600 dark:text-blue-400 mt-1'>
+                    →
                   </span>
                   <span>
-                    <strong>Export backup as CSV</strong> for spreadsheets or
-                    archives
+                    <strong>On Your Device:</strong> Whether it's your laptop,
+                    phone, or tablet
                   </span>
                 </li>
-                <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
-                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
-                    ✓
+                <li className='flex items-start gap-2'>
+                  <span className='text-blue-600 dark:text-blue-400 mt-1'>
+                    →
                   </span>
                   <span>
-                    <strong>Import backups</strong> with preferences intact
-                  </span>
-                </li>
-                <li className='flex items-start gap-4 text-gray-700 dark:text-gray-300'>
-                  <span className='text-blue-600 dark:text-blue-400 font-bold text-lg mt-0'>
-                    ✓
-                  </span>
-                  <span>
-                    <strong>Delete anytime</strong> with no questions asked
+                    <strong>NOT on Our Servers:</strong> Seriously, we have no
+                    database. Nothing to hack! 🎉
                   </span>
                 </li>
               </ul>
-            </div>
-            <div className='w-full'>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                className='min-h-[180px] md:min-h-[186px] flex flex-col items-center justify-center rounded-3xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/20 px-6 py-10 text-center'>
-                <span className='text-6xl mb-5'>📦</span>
-                <p className='text-gray-700 dark:text-gray-300 text-base md:text-lg font-medium'>
-                  Complete backups that leave with you.
-                </p>
-              </motion.div>
-            </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className='bg-white dark:bg-slate-700 rounded-lg p-6 border border-gray-200 dark:border-slate-600'>
+              <h4 className='text-xl font-bold mb-4 text-gray-900 dark:text-white'>
+                What We Don't Do (Promise!) 🙅
+              </h4>
+              <ul className='space-y-3 text-gray-700 dark:text-gray-300'>
+                <li className='flex items-start gap-2'>
+                  <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
+                  <span>
+                    <strong>Zero Tracking:</strong> No sneaky pixels watching
+                    your every move
+                  </span>
+                </li>
+                <li className='flex items-start gap-2'>
+                  <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
+                  <span>
+                    <strong>Zero Analytics:</strong> We don't care what you
+                    write or when you write it
+                  </span>
+                </li>
+                <li className='flex items-start gap-2'>
+                  <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
+                  <span>
+                    <strong>Zero Ads:</strong> No selling your attention to the
+                    highest bidder
+                  </span>
+                </li>
+              </ul>
+            </motion.div>
           </div>
         </div>
-      </div>
 
-      {/* Technical Transparency Section */}
-      <div className='max-w-7xl mx-auto py-16 md:py-20 px-4 md:px-6 bg-gray-50 dark:bg-slate-800/50 rounded-lg'>
-        <div className='text-center mb-12'>
-          <h3 className='text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-white'>
-            The Nerdy Details (For Those Who Care) 🤓
-          </h3>
-          <p className='text-gray-600 dark:text-gray-300 text-lg max-w-[600px] mx-auto'>
-            Want to know EXACTLY how we keep your data private? Here's the
-            honest technical breakdown:
-          </p>
-        </div>
-
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto'>
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className='bg-white dark:bg-slate-700 rounded-lg p-6 border border-gray-200 dark:border-slate-600'>
-            <h4 className='text-xl font-bold mb-4 text-gray-900 dark:text-white'>
-              Where Your Notes Actually Live 🏠
-            </h4>
-            <ul className='space-y-3 text-gray-700 dark:text-gray-300'>
-              <li className='flex items-start gap-2'>
-                <span className='text-blue-600 dark:text-blue-400 mt-1'>→</span>
-                <span>
-                  <strong>In Your Browser's Vault:</strong> Built-in storage
-                  that only YOU can access
-                </span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-blue-600 dark:text-blue-400 mt-1'>→</span>
-                <span>
-                  <strong>On Your Device:</strong> Whether it's your laptop,
-                  phone, or tablet
-                </span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-blue-600 dark:text-blue-400 mt-1'>→</span>
-                <span>
-                  <strong>NOT on Our Servers:</strong> Seriously, we have no
-                  database. Nothing to hack! 🎉
-                </span>
-              </li>
-            </ul>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className='bg-white dark:bg-slate-700 rounded-lg p-6 border border-gray-200 dark:border-slate-600'>
-            <h4 className='text-xl font-bold mb-4 text-gray-900 dark:text-white'>
-              What We Don't Do (Promise!) 🙅
-            </h4>
-            <ul className='space-y-3 text-gray-700 dark:text-gray-300'>
-              <li className='flex items-start gap-2'>
-                <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
-                <span>
-                  <strong>Zero Tracking:</strong> No sneaky pixels watching your
-                  every move
-                </span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
-                <span>
-                  <strong>Zero Analytics:</strong> We don't care what you write
-                  or when you write it
-                </span>
-              </li>
-              <li className='flex items-start gap-2'>
-                <span className='text-red-600 dark:text-red-400 mt-1'>✗</span>
-                <span>
-                  <strong>Zero Ads:</strong> No selling your attention to the
-                  highest bidder
-                </span>
-              </li>
-            </ul>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* CTA Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.7 }}
-        className='py-16 md:py-20 px-4 md:px-6 bg-gradient-to-br from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 text-white'>
-        <div className='max-w-4xl mx-auto text-center'>
-          <h3 className='text-3xl md:text-4xl font-bold mb-4'>
-            Ready to Write Without Worries? 📝
-          </h3>
-          <p className='mb-8 text-white/90 text-lg'>
-            Join thousands who have switched to truly private note-taking. No
-            signup. No surveillance. No surprises.
-          </p>
-          <div className='flex flex-col sm:flex-row gap-4 justify-center'>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-              className='font-bold text-base px-8 py-3 rounded-lg bg-white text-blue-600 hover:bg-gray-50 transition-colors duration-200 shadow-lg'
-              onClick={() => navigate('/app')}>
-              Open Ownlyst
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.98 }}
-              className='font-bold text-base px-8 py-3 rounded-lg border-2 border-white text-white hover:bg-white/10 transition-colors duration-200'
-              onClick={() => scrollToSection('privacy')}>
-              Learn More
-            </motion.button>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Support Section */}
-      <div className='bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 py-16 md:py-20 px-4 md:px-6'>
-        <div className='max-w-4xl mx-auto text-center'>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}>
-            <Coffee className='w-12 h-12 mx-auto mb-4 text-purple-600 dark:text-purple-400' />
-            <h3 className='text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white'>
-              Love Privacy-First Software? ☕
+        {/* CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className='py-16 md:py-20 px-4 md:px-6 bg-gradient-to-br from-blue-600 to-indigo-600 dark:from-blue-700 dark:to-indigo-700 text-white'>
+          <div className='max-w-4xl mx-auto text-center'>
+            <h3 className='text-3xl md:text-4xl font-bold mb-4'>
+              Ready to Write Without Worries? 📝
             </h3>
-            <p className='text-gray-700 dark:text-gray-300 mb-8 text-lg max-w-2xl mx-auto'>
-              Building ethical, privacy-respecting software takes time and
-              coffee (lots of coffee). If Ownlyst makes your life easier,
-              consider buying us a cup! Every bit helps keep this project
-              independent and ad-free. 💚
+            <p className='mb-8 text-white/90 text-lg'>
+              Join thousands who have switched to truly private note-taking. No
+              signup. No surveillance. No surprises.
             </p>
-            <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
-              <motion.a
-                href='https://ko-fi.com/wisdomfox'
-                target='_blank'
-                rel='noopener noreferrer'
+            <div className='flex flex-col sm:flex-row gap-4 justify-center'>
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                className='inline-flex items-center gap-2 font-bold text-base px-8 py-3 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200 shadow-lg'>
-                <Coffee className='w-5 h-5' />
-                Buy Us a Coffee on Ko-fi
-              </motion.a>
-              <motion.a
-                href='https://buymeacoffee.com/narainkarthikv'
-                target='_blank'
-                rel='noopener noreferrer'
+                className='font-bold text-base px-8 py-3 rounded-lg bg-white text-blue-600 hover:bg-gray-50 transition-colors duration-200 shadow-lg'
+                onClick={() => navigate('/app')}>
+                Open Ownlyst
+              </motion.button>
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
-                className='inline-flex items-center gap-2 font-bold text-base px-8 py-3 rounded-lg bg-gradient-to-r from-pink-500 to-orange-500 text-white hover:from-pink-600 hover:to-orange-600 transition-colors duration-200 shadow-lg'>
-                <Heart className='w-5 h-5' />
-                Support on Buy Me a Coffee
-              </motion.a>
+                className='font-bold text-base px-8 py-3 rounded-lg border-2 border-white text-white hover:bg-white/10 transition-colors duration-200'
+                onClick={() => scrollToSection('privacy')}>
+                Learn More
+              </motion.button>
             </div>
-            <p className='mt-6 text-sm text-gray-600 dark:text-gray-400'>
-              ✨ Donations are optional and never required. Ownlyst will always
-              be free and open source!
-            </p>
-          </motion.div>
-        </div>
-      </div>
+          </div>
+        </motion.div>
 
-      <Footer />
+        {/* Support Section */}
+        <div className='bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 py-16 md:py-20 px-4 md:px-6'>
+          <div className='max-w-4xl mx-auto text-center'>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}>
+              <Coffee className='w-12 h-12 mx-auto mb-4 text-purple-600 dark:text-purple-400' />
+              <h3 className='text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white'>
+                Love Privacy-First Software? ☕
+              </h3>
+              <p className='text-gray-700 dark:text-gray-300 mb-8 text-lg max-w-2xl mx-auto'>
+                Building ethical, privacy-respecting software takes time and
+                coffee (lots of coffee). If Ownlyst makes your life easier,
+                consider buying us a cup! Every bit helps keep this project
+                independent and ad-free. 💚
+              </p>
+              <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
+                <motion.a
+                  href='https://ko-fi.com/wisdomfox'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className='inline-flex items-center gap-2 font-bold text-base px-8 py-3 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors duration-200 shadow-lg'>
+                  <Coffee className='w-5 h-5' />
+                  Buy Us a Coffee on Ko-fi
+                </motion.a>
+                <motion.a
+                  href='https://buymeacoffee.com/narainkarthikv'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.98 }}
+                  className='inline-flex items-center gap-2 font-bold text-base px-8 py-3 rounded-lg bg-gradient-to-r from-pink-500 to-orange-500 text-white hover:from-pink-600 hover:to-orange-600 transition-colors duration-200 shadow-lg'>
+                  <Heart className='w-5 h-5' />
+                  Support on Buy Me a Coffee
+                </motion.a>
+              </div>
+              <p className='mt-6 text-sm text-gray-600 dark:text-gray-400'>
+                ✨ Donations are optional and never required. Ownlyst will
+                always be free and open source!
+              </p>
+            </motion.div>
+          </div>
+        </div>
+
+        <Footer />
       </div>
-  </>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 {
   "name": "ownlyst",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,6 +15,8 @@
     "@hello-pangea/dnd": "^18.0.1",
     "@types/uuid": "^10.0.0",
     "framer-motion": "^12.23.12",
+    "jspdf": "^4.2.1",
+    "jszip": "^3.10.2",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
