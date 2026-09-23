@@ -103,13 +103,38 @@ export default memo(function RoadmapView({
         isPinned: note.isPinned,
       }))
       .sort((a, b) => {
-        if (a.isPinned && !b.isPinned) return -1;
-        if (!a.isPinned && b.isPinned) return 1;
-        return a.startDate.getTime() - b.startDate.getTime();
+        if (a.isPinned !== b.isPinned) {
+          return a.isPinned ? -1 : 1;
+        }
+
+        switch (filters.sort) {
+          case 'date-desc':
+            return b.endDate.getTime() - a.endDate.getTime();
+          case 'date-asc':
+            return a.endDate.getTime() - b.endDate.getTime();
+          case 'title-asc':
+            return a.title.localeCompare(b.title);
+          case 'title-desc':
+            return b.title.localeCompare(a.title);
+          case 'priority-high': {
+            const priorityOrder = { high: 0, medium: 1, low: 2 };
+            return priorityOrder[a.priority] - priorityOrder[b.priority];
+          }
+          case 'priority-low': {
+            const priorityOrder = { low: 0, medium: 1, high: 2 };
+            return priorityOrder[a.priority] - priorityOrder[b.priority];
+          }
+          case 'status': {
+            const statusOrder = { todo: 0, 'in-progress': 1, done: 2 };
+            return statusOrder[a.status] - statusOrder[b.status];
+          }
+          default:
+            return b.endDate.getTime() - a.endDate.getTime();
+        }
       });
 
     return groupTasks(tasks, groupBy);
-  }, [filteredNotes, groupBy, groupTasks]);
+  }, [filteredNotes, groupBy, groupTasks, filters.sort]);
 
   // Generate time periods for the timeline
   const timelinePeriods = useMemo<TimelinePeriod[]>(() => {
@@ -565,8 +590,10 @@ export default memo(function RoadmapView({
                                   )}
                                 </div>
                                 <div className='text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400 mt-0.5'>
-                                  {task.startDate.toLocaleDateString()} -{' '}
-                                  {task.endDate.toLocaleDateString()}
+                                  Created: {task.startDate.toLocaleDateString()}
+                                </div>
+                                <div className='text-[10px] sm:text-[11px] text-gray-500 dark:text-gray-400'>
+                                  Due: {task.endDate.toLocaleDateString()}
                                 </div>
                               </div>
                             </div>

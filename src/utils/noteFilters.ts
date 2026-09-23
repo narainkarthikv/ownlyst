@@ -63,15 +63,39 @@ export function sortNotes(notes: Note[], sortOption: SortOption): Note[] {
     }
 
     switch (sortOption) {
-      case 'date-desc':
-        return (
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+      case 'date-desc': {
+        const aDate = a.dueDate
+          ? new Date(a.dueDate).getTime()
+          : Number.NEGATIVE_INFINITY;
+        const bDate = b.dueDate
+          ? new Date(b.dueDate).getTime()
+          : Number.NEGATIVE_INFINITY;
 
-      case 'date-asc':
-        return (
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
+        if (aDate === bDate) {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        }
+
+        return bDate - aDate;
+      }
+
+      case 'date-asc': {
+        const aDate = a.dueDate
+          ? new Date(a.dueDate).getTime()
+          : Number.POSITIVE_INFINITY;
+        const bDate = b.dueDate
+          ? new Date(b.dueDate).getTime()
+          : Number.POSITIVE_INFINITY;
+
+        if (aDate === bDate) {
+          return (
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+        }
+
+        return aDate - bDate;
+      }
 
       case 'title-asc':
         return a.title.localeCompare(b.title);

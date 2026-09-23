@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.2] - 2026-09-23
+
+### Fixed
+
+- Corrected the Table view FilterBar layout so the search field uses the available width consistently with the other views.
+- Prevented the hidden bulk-delete action from reserving space when no table rows are selected.
+
+### Version
+
+- Bumped project version from `1.2.1` to `1.2.2` (patch bugfix release).
+
+## [1.2.1] - 2026-09-23
+
+### Fixed
+
+- Corrected the Roadmap sort behavior so `Newest First` and `Oldest First` no longer produce the same ordering.
+- Ensured the selected sort option is respected when rendering roadmap tasks.
+
+### Related
+
+- Fixes [#147](https://github.com/narainkarthikv/ownlyst/issues/147)
+
+### Version
+
+- Bumped project version from `1.2.0` to `1.2.1` (patch bugfix release).
+
 ## [1.2.0] - 2026-09-21
 
 ### Added

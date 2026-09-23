@@ -89,17 +89,17 @@ export default memo(function TableView({
         filteredCount={filteredNotes.length}
         actions={
           <>
-            <motion.button
-              whileHover={selectedRows.size > 0 ? { scale: 1.02 } : {}}
-              whileTap={selectedRows.size > 0 ? { scale: 0.98 } : {}}
-              onClick={handleBulkDelete}
-              aria-label={`Delete ${selectedRows.size} selected notes`}
-              className={`inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium gap-2 transition-all duration-200 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none shadow-sm whitespace-nowrap ${
-                selectedRows.size > 0 ? '' : 'invisible pointer-events-none'
-              }`}>
-              <Trash2 className='h-5 w-5' aria-hidden='true' />
-              <span>Delete ({selectedRows.size})</span>
-            </motion.button>
+            {selectedRows.size > 0 && (
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleBulkDelete}
+                aria-label={`Delete ${selectedRows.size} selected notes`}
+                className='inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-medium gap-2 transition-all duration-200 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 outline-none shadow-sm whitespace-nowrap'>
+                <Trash2 className='h-5 w-5' aria-hidden='true' />
+                <span>Delete ({selectedRows.size})</span>
+              </motion.button>
+            )}
             <motion.button
               type='button'
               whileHover={{ scale: 1.02 }}
