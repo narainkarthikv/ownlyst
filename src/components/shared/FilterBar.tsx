@@ -149,9 +149,9 @@ export default function FilterBar({
   return (
     <div className='space-y-3'>
       {/* Main Search and Controls Bar */}
-      <div className='flex flex-col sm:flex-row gap-3'>
+      <div className='flex flex-col sm:flex-row gap-3 w-full'>
         {/* Search Input */}
-        <div className='relative flex-1'>
+        <div className='relative flex-1 min-w-0'>
           <Search
             className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500'
             size={20}
@@ -178,7 +178,7 @@ export default function FilterBar({
         </div>
 
         {/* Control Buttons */}
-        <div className='flex gap-2'>
+        <div className='flex gap-2 ml-auto shrink-0'>
           {/* Sort Button */}
           <div className='relative'>
             <motion.button
