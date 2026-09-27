@@ -247,4 +247,22 @@ test.describe('Calendar View', () => {
     // Selected date details panel visible
     await expect(page.getByRole('button', { name: /add note for this day/i })).toBeVisible();
   });
+
+  test('command palette shortcut 5 switches to calendar view', async ({ page }) => {
+    // Open Command Palette
+    await page.getByRole('button', { name: /open command palette/i }).click();
+    const searchInput = page.getByPlaceholder(/type a command or search/i);
+    await expect(searchInput).toBeVisible();
+
+    // Press shortcut '5' directly while palette is open
+    await searchInput.press('5');
+
+    // Command palette closes and calendar view becomes active
+    await expect(searchInput).not.toBeVisible();
+    await expect(page.getByRole('grid')).toBeVisible();
+    await expect(page.getByRole('button', { name: /calendar view/i })).toHaveAttribute(
+      'aria-pressed',
+      'true'
+    );
+  });
 });
