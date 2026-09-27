@@ -8,9 +8,16 @@ import {
   Table,
   LayoutDashboard,
   Baseline as Timeline,
+  Calendar,
   ArrowLeft,
 } from 'lucide-react';
-import { NotesView, KanbanView, TableView, RoadmapView } from '../views';
+import {
+  NotesView,
+  KanbanView,
+  TableView,
+  RoadmapView,
+  CalendarView,
+} from '../views';
 import ImportExport from '../components/ImportExport';
 import CommandPalette from '../components/CommandPalette';
 import { useNotesContext } from '../controllers/NotesProvider';
@@ -35,6 +42,7 @@ const views: {
   },
   { id: 'table', name: 'Table', icon: Table },
   { id: 'roadmap', name: 'Roadmap', icon: Timeline },
+  { id: 'calendar', name: 'Calendar', icon: Calendar },
 ];
 
 export default memo(function NotesApp() {
@@ -88,6 +96,8 @@ export default memo(function NotesApp() {
         return <TableView {...props} />;
       case 'roadmap':
         return <RoadmapView {...props} />;
+      case 'calendar':
+        return <CalendarView {...props} />;
       default:
         return <NotesView {...props} />;
     }
@@ -135,21 +145,25 @@ export default memo(function NotesApp() {
             <div className='flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-4 w-full sm:w-auto'>
               {/* View Switcher */}
               <div
+                aria-label='View switcher'
                 className={`flex rounded-lg p-1 w-full sm:w-auto justify-between sm:justify-start ${HEADER_CLASSES.tabContainer}`}>
                 {views.map((view) => {
                   const Icon = view.icon;
                   return (
                     <motion.button
                       key={view.id}
+                      type='button'
+                      aria-pressed={activeView === view.id}
+                      aria-label={`${view.name} view`}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => setActiveView(view.id)}
-                      className={`flex items-center justify-center sm:justify-start space-x-0 sm:space-x-2 px-3 py-2 rounded-md transition-all flex-1 sm:flex-initial font-medium text-sm ${
+                      className={`flex items-center justify-center sm:justify-start space-x-0 sm:space-x-2 px-3 py-2 rounded-md transition-all flex-1 sm:flex-initial font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                         activeView === view.id
                           ? 'bg-white dark:bg-slate-600 shadow-sm text-gray-900 dark:text-white'
                           : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                       }`}>
-                      <Icon size={16} />
+                      <Icon size={16} aria-hidden='true' />
                       <span className='hidden sm:inline'>{view.name}</span>
                     </motion.button>
                   );

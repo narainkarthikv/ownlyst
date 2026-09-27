@@ -27,6 +27,7 @@ import {
   Table,
   LayoutDashboard,
   Baseline as Timeline,
+  Calendar,
   CheckSquare,
   AlertCircle,
   Flag,
@@ -214,9 +215,22 @@ export default function CommandPalette({
         category: 'view',
         icon: Timeline,
         shortcut: '4',
-        keywords: ['view', 'roadmap', 'timeline', 'calendar'],
+        keywords: ['view', 'roadmap', 'timeline'],
         action: () => {
           onChangeView?.('roadmap');
+          closeAndResetFn();
+        },
+      },
+      {
+        id: 'view-calendar',
+        label: 'Calendar View',
+        description: 'Switch to monthly calendar view',
+        category: 'view',
+        icon: Calendar,
+        shortcut: '5',
+        keywords: ['view', 'calendar', 'month', 'date', 'schedule', 'events'],
+        action: () => {
+          onChangeView?.('calendar');
           closeAndResetFn();
         },
       },
