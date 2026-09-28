@@ -41,7 +41,8 @@ const isDefaultView = (value: string): value is DefaultView =>
   value === 'notes' ||
   value === 'kanban' ||
   value === 'table' ||
-  value === 'roadmap';
+  value === 'roadmap' ||
+  value === 'calendar';
 
 export function UserPreferencesProvider({ children }: { children: ReactNode }) {
   const [preferences, setPreferences] = useLocalStorage<UserPreferences>(

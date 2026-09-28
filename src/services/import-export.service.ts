@@ -648,7 +648,8 @@ export class ImportExportService {
       value === 'notes' ||
       value === 'kanban' ||
       value === 'table' ||
-      value === 'roadmap'
+      value === 'roadmap' ||
+      value === 'calendar'
     );
   }
 

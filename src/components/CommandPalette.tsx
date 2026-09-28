@@ -27,6 +27,7 @@ import {
   Table,
   LayoutDashboard,
   Baseline as Timeline,
+  Calendar,
   CheckSquare,
   AlertCircle,
   Flag,
@@ -214,9 +215,22 @@ export default function CommandPalette({
         category: 'view',
         icon: Timeline,
         shortcut: '4',
-        keywords: ['view', 'roadmap', 'timeline', 'calendar'],
+        keywords: ['view', 'roadmap', 'timeline'],
         action: () => {
           onChangeView?.('roadmap');
+          closeAndResetFn();
+        },
+      },
+      {
+        id: 'view-calendar',
+        label: 'Calendar View',
+        description: 'Switch to monthly calendar view',
+        category: 'view',
+        icon: Calendar,
+        shortcut: '5',
+        keywords: ['view', 'calendar', 'month', 'date', 'schedule', 'events'],
+        action: () => {
+          onChangeView?.('calendar');
           closeAndResetFn();
         },
       },
@@ -310,6 +324,7 @@ export default function CommandPalette({
         cmd.label,
         cmd.description || '',
         cmd.category,
+        cmd.shortcut || '',
         ...(cmd.keywords || []),
       ]
         .join(' ')
@@ -321,18 +336,47 @@ export default function CommandPalette({
 
   // ============= Keyboard Shortcuts =============
 
-  // Global Ctrl/Cmd+K to open palette
+  // Global shortcuts: Ctrl/Cmd+K to open palette, 1-5 to switch views
   useEffect(() => {
-    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    const handleGlobalKeyDown = (e: globalThis.KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setIsOpen((prev) => !prev);
+        return;
+      }
+
+      // Do not capture view numbers when typing in inputs or textareas
+      const target = e.target as HTMLElement | null;
+      const isInput =
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable);
+
+      if (isInput) return;
+
+      // Allow 1-5 to switch views directly when browsing the app
+      if (
+        !isOpen &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey &&
+        e.key >= '1' &&
+        e.key <= '5'
+      ) {
+        const matchingCmd = commands.find(
+          (cmd) => cmd.category === 'view' && cmd.shortcut === e.key
+        );
+        if (matchingCmd) {
+          e.preventDefault();
+          matchingCmd.action();
+        }
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [isOpen, commands]);
 
   // Reset selection when filtered commands change
   useEffect(() => {
@@ -365,9 +409,24 @@ export default function CommandPalette({
         if (selected) {
           selected.action();
         }
+      } else if (
+        searchQuery === '' &&
+        !e.ctrlKey &&
+        !e.metaKey &&
+        !e.altKey
+      ) {
+        // Direct shortcut execution when search input is empty in the open palette
+        const matchingCmd = commands.find(
+          (cmd) =>
+            cmd.shortcut && cmd.shortcut.toLowerCase() === e.key.toLowerCase()
+        );
+        if (matchingCmd) {
+          e.preventDefault();
+          matchingCmd.action();
+        }
       }
     },
-    [filteredCommands, selectedIndex, closeAndReset]
+    [filteredCommands, selectedIndex, closeAndReset, searchQuery, commands]
   );
 
   const handleCommandClick = useCallback((command: Command) => {
