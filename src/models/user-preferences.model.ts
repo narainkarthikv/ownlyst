@@ -2,7 +2,7 @@ import type { Note } from './note.model';
 
 export type ThemePreference = 'system' | 'light' | 'dark';
 
-export type DefaultView = 'notes' | 'kanban' | 'table' | 'roadmap';
+export type DefaultView = 'notes' | 'kanban' | 'table' | 'roadmap' | 'calendar';
 
 export interface UserPreferences {
   themePreference: ThemePreference;

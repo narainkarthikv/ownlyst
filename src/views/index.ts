@@ -9,3 +9,5 @@ export * from './notes/index';
 export * from './kanban/index';
 export * from './table/index';
 export * from './roadmap/index';
+export * from './calendar/index';
+

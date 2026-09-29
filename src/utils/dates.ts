@@ -37,11 +37,18 @@ export function formatDateFull(date: Date | string): string {
  */
 export function formatDateForInput(date: Date | string | undefined): string {
   if (!date) return '';
-  const dateObj = new Date(date);
+  // If already a YYYY-MM-DD date string, return directly to avoid timezone shift on parsing
+  if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return date;
+  }
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
   if (isNaN(dateObj.getTime())) {
     return '';
   }
-  return dateObj.toISOString().split('T')[0];
+  const year = dateObj.getFullYear();
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const day = String(dateObj.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 /**
@@ -122,3 +129,109 @@ export function parseDate(value: Date | string | undefined): Date | undefined {
   const parsed = new Date(value);
   return isNaN(parsed.getTime()) ? undefined : parsed;
 }
+
+/**
+ * Check if two dates represent the same calendar day
+ */
+export function isSameDay(
+  date1: Date | string | undefined,
+  date2: Date | string | undefined
+): boolean {
+  if (!date1 || !date2) return false;
+  const d1 = new Date(date1);
+  const d2 = new Date(date2);
+  if (isNaN(d1.getTime()) || isNaN(d2.getTime())) return false;
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
+  );
+}
+
+/**
+ * Get total number of days in a given month of a year
+ */
+export function getDaysInMonth(year: number, month: number): number {
+  return new Date(year, month + 1, 0).getDate();
+}
+
+/**
+ * Get the day of the week for the 1st of a given month (0 = Sunday, 6 = Saturday)
+ */
+export function getFirstDayOfWeek(year: number, month: number): number {
+  return new Date(year, month, 1).getDay();
+}
+
+/**
+ * Calendar day cell representation for monthly grid
+ */
+export interface CalendarDay {
+  date: Date;
+  dayOfMonth: number;
+  isCurrentMonth: boolean;
+  isToday: boolean;
+  dateString: string;
+}
+
+/**
+ * Generate full grid of calendar days for a given month and year,
+ * including trailing days from previous month and leading days for next month.
+ */
+export function getCalendarGridDays(
+  year: number,
+  month: number
+): CalendarDay[] {
+  const days: CalendarDay[] = [];
+  const startDayOfWeek = new Date(year, month, 1).getDay();
+  const daysInCurrentMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+  // Previous month's trailing days
+  for (let i = startDayOfWeek - 1; i >= 0; i--) {
+    const d = daysInPrevMonth - i;
+    const date = new Date(year, month - 1, d);
+    days.push({
+      date,
+      dayOfMonth: d,
+      isCurrentMonth: false,
+      isToday: isToday(date),
+      dateString: formatDateForInput(date),
+    });
+  }
+
+  // Current month's days
+  for (let d = 1; d <= daysInCurrentMonth; d++) {
+    const date = new Date(year, month, d);
+    days.push({
+      date,
+      dayOfMonth: d,
+      isCurrentMonth: true,
+      isToday: isToday(date),
+      dateString: formatDateForInput(date),
+    });
+  }
+
+  // Next month's leading days (pad to complete week rows: multiple of 7)
+  const totalCells = Math.ceil(days.length / 7) * 7;
+  const remaining = totalCells - days.length;
+  for (let d = 1; d <= remaining; d++) {
+    const date = new Date(year, month + 1, d);
+    days.push({
+      date,
+      dayOfMonth: d,
+      isCurrentMonth: false,
+      isToday: isToday(date),
+      dateString: formatDateForInput(date),
+    });
+  }
+
+  return days;
+}
+
+/**
+ * Navigate months by adding or subtracting an offset
+ */
+export function addMonths(date: Date, months: number): Date {
+  return new Date(date.getFullYear(), date.getMonth() + months, 1);
+}
+
