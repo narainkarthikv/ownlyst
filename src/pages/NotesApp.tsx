@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { SEO } from '../constants/seo';
-import { useEffect, useState, memo, useMemo } from 'react';
+import { useState, memo, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -47,18 +47,14 @@ const views: {
 
 export default memo(function NotesApp() {
   const navigate = useNavigate();
-  const { preferences, setPreferences } = useUserPreferences();
-  const [activeView, setActiveView] = useState<DefaultView>(
-    preferences.defaultView
-  );
+  const { preferences, setPreferences, setDefaultView } = useUserPreferences();
   const [statusFilter, setStatusFilter] = useState<NoteStatus | null>(null);
   const [priorityFilter, setPriorityFilter] = useState<NotePriority | null>(
     null
   );
 
-  useEffect(() => {
-    setActiveView(preferences.defaultView);
-  }, [preferences.defaultView]);
+  // Use the persisted preference as the single source of truth for the active view
+  const activeView = preferences.defaultView;
 
   // Get notes from controller
   const { notes, createNote, updateNote, deleteNote, importNotes } =
@@ -157,7 +153,9 @@ export default memo(function NotesApp() {
                       aria-label={`${view.name} view`}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => setActiveView(view.id)}
+                      onClick={() => {
+                        setDefaultView(view.id);
+                      }}
                       className={`flex items-center justify-center sm:justify-start space-x-0 sm:space-x-2 px-3 py-2 rounded-md transition-all flex-1 sm:flex-initial font-medium text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                         activeView === view.id
                           ? 'bg-white dark:bg-slate-600 shadow-sm text-gray-900 dark:text-white'
@@ -202,7 +200,6 @@ export default memo(function NotesApp() {
         {/* Command Palette */}
         <CommandPalette
           onCreateNote={createNote}
-          onChangeView={setActiveView}
           onFilterByStatus={setStatusFilter}
           onFilterByPriority={setPriorityFilter}
         />
