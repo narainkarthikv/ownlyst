@@ -270,8 +270,12 @@ const KanbanColumn = memo(
 
               {/* Empty State */}
               {notes.length === 0 && !snapshot.isDraggingOver && (
-                <div className='absolute inset-0 flex items-center justify-center'>
-                  <p className='text-sm text-gray-500 dark:text-gray-400 text-center px-6'>
+                <div className='absolute inset-0 flex items-center justify-center
+                  text-gray-500 dark:text-gray-400 
+                  hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-600 dark:hover:text-blue-400
+                  hover:scale-105 active:scale-95 hover:cursor-pointer'
+                  onClick={onAddNote}>
+                  <p className='text-sm text-center px-6'>
                     Drop items here or click + to add a new note
                   </p>
                 </div>
