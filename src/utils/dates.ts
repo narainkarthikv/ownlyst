@@ -234,4 +234,3 @@ export function getCalendarGridDays(
 export function addMonths(date: Date, months: number): Date {
   return new Date(date.getFullYear(), date.getMonth() + months, 1);
 }
-

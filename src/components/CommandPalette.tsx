@@ -409,12 +409,7 @@ export default function CommandPalette({
         if (selected) {
           selected.action();
         }
-      } else if (
-        searchQuery === '' &&
-        !e.ctrlKey &&
-        !e.metaKey &&
-        !e.altKey
-      ) {
+      } else if (searchQuery === '' && !e.ctrlKey && !e.metaKey && !e.altKey) {
         // Direct shortcut execution when search input is empty in the open palette
         const matchingCmd = commands.find(
           (cmd) =>

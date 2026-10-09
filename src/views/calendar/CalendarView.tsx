@@ -12,7 +12,15 @@
  * - Zero duplicated modals or state management; fully integrated with existing NoteModal and NotesProvider
  */
 
-import { useState, useMemo, useCallback, useRef, useEffect, memo, type KeyboardEvent } from 'react';
+import {
+  useState,
+  useMemo,
+  useCallback,
+  useRef,
+  useEffect,
+  memo,
+  type KeyboardEvent,
+} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar as CalendarIcon,
@@ -96,14 +104,18 @@ export default memo(function CalendarView({
   const [focusedDateString, setFocusedDateString] = useState<string>(() =>
     formatDateForInput(new Date())
   );
-  const [dateMode, setDateMode] = useState<'all' | 'dueDate' | 'createdAt'>('all');
+  const [dateMode, setDateMode] = useState<'all' | 'dueDate' | 'createdAt'>(
+    'all'
+  );
   const [showUndatedDrawer, setShowUndatedDrawer] = useState<boolean>(false);
   const [filters, setFilters] = useState<FilterState>(getDefaultFilters());
 
   // Note Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
-  const [modalDefaultDueDate, setModalDefaultDueDate] = useState<Date | undefined>(undefined);
+  const [modalDefaultDueDate, setModalDefaultDueDate] = useState<
+    Date | undefined
+  >(undefined);
 
   // References
   const gridRef = useRef<HTMLDivElement>(null);
@@ -164,7 +176,10 @@ export default memo(function CalendarView({
 
   // Calendar days grid calculation
   const calendarDays = useMemo(() => {
-    return getCalendarGridDays(currentDate.getFullYear(), currentDate.getMonth());
+    return getCalendarGridDays(
+      currentDate.getFullYear(),
+      currentDate.getMonth()
+    );
   }, [currentDate]);
 
   // Group calendar days into week rows (7 days per row) for valid ARIA grid hierarchy
@@ -242,7 +257,10 @@ export default memo(function CalendarView({
   }, [currentDate]);
 
   // Selected date notes
-  const selectedDateKey = useMemo(() => formatDateForInput(selectedDate), [selectedDate]);
+  const selectedDateKey = useMemo(
+    () => formatDateForInput(selectedDate),
+    [selectedDate]
+  );
   const notesOnSelectedDate = useMemo(
     () => notesByDate[selectedDateKey] || [],
     [notesByDate, selectedDateKey]
@@ -257,19 +275,35 @@ export default memo(function CalendarView({
       switch (e.key) {
         case 'ArrowLeft':
           e.preventDefault();
-          nextDate = new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() - 1);
+          nextDate = new Date(
+            cur.getFullYear(),
+            cur.getMonth(),
+            cur.getDate() - 1
+          );
           break;
         case 'ArrowRight':
           e.preventDefault();
-          nextDate = new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() + 1);
+          nextDate = new Date(
+            cur.getFullYear(),
+            cur.getMonth(),
+            cur.getDate() + 1
+          );
           break;
         case 'ArrowUp':
           e.preventDefault();
-          nextDate = new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() - 7);
+          nextDate = new Date(
+            cur.getFullYear(),
+            cur.getMonth(),
+            cur.getDate() - 7
+          );
           break;
         case 'ArrowDown':
           e.preventDefault();
-          nextDate = new Date(cur.getFullYear(), cur.getMonth(), cur.getDate() + 7);
+          nextDate = new Date(
+            cur.getFullYear(),
+            cur.getMonth(),
+            cur.getDate() + 7
+          );
           break;
         case 'PageUp':
           e.preventDefault();
@@ -299,7 +333,9 @@ export default memo(function CalendarView({
 
       if (nextDate) {
         if (nextDate.getMonth() !== currentDate.getMonth()) {
-          setCurrentDate(new Date(nextDate.getFullYear(), nextDate.getMonth(), 1));
+          setCurrentDate(
+            new Date(nextDate.getFullYear(), nextDate.getMonth(), 1)
+          );
         }
         setSelectedDate(nextDate);
         setFocusedDateString(formatDateForInput(nextDate));
@@ -307,7 +343,9 @@ export default memo(function CalendarView({
         // Focus element after render
         setTimeout(() => {
           const nextKey = formatDateForInput(nextDate);
-          const cell = gridRef.current?.querySelector<HTMLElement>(`[data-date="${nextKey}"]`);
+          const cell = gridRef.current?.querySelector<HTMLElement>(
+            `[data-date="${nextKey}"]`
+          );
           cell?.focus();
         }, 0);
       }
@@ -478,7 +516,10 @@ export default memo(function CalendarView({
                 className='overflow-hidden bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/50 rounded-xl p-4'>
                 <div className='flex items-center justify-between mb-3'>
                   <div className='flex items-center gap-2'>
-                    <CalendarOff className='text-amber-600 dark:text-amber-400' size={18} />
+                    <CalendarOff
+                      className='text-amber-600 dark:text-amber-400'
+                      size={18}
+                    />
                     <h3 className='text-sm font-semibold text-amber-900 dark:text-amber-200'>
                       Notes without Due Dates ({undatedNotes.length})
                     </h3>
@@ -492,7 +533,8 @@ export default memo(function CalendarView({
                   </button>
                 </div>
                 <p className='text-xs text-amber-700 dark:text-amber-400 mb-3'>
-                  These notes don't have a deadline yet. Click any note to set a due date or view details.
+                  These notes don't have a deadline yet. Click any note to set a
+                  due date or view details.
                 </p>
                 <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5'>
                   {undatedNotes.map((note) => (
@@ -705,7 +747,10 @@ export default memo(function CalendarView({
             <div className='flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-gray-200 dark:border-slate-700 gap-3'>
               <div>
                 <div className='flex items-center gap-2'>
-                  <CalendarIcon className='text-blue-600 dark:text-blue-400' size={20} />
+                  <CalendarIcon
+                    className='text-blue-600 dark:text-blue-400'
+                    size={20}
+                  />
                   <h3 className='text-base sm:text-lg font-bold text-gray-900 dark:text-white'>
                     {formatDateFull(selectedDate)}
                   </h3>
@@ -736,8 +781,14 @@ export default memo(function CalendarView({
             <div className='mt-4'>
               {notesOnSelectedDate.length === 0 ? (
                 <div className='py-8 text-center text-gray-500 dark:text-gray-400'>
-                  <CalendarIcon size={32} className='mx-auto mb-2 opacity-40' aria-hidden='true' />
-                  <p className='text-sm font-medium'>No notes scheduled for this date</p>
+                  <CalendarIcon
+                    size={32}
+                    className='mx-auto mb-2 opacity-40'
+                    aria-hidden='true'
+                  />
+                  <p className='text-sm font-medium'>
+                    No notes scheduled for this date
+                  </p>
                   <p className='text-xs text-gray-400 dark:text-gray-500 mt-1'>
                     Click "Add Note for this Day" to create one
                   </p>
@@ -778,8 +829,12 @@ export default memo(function CalendarView({
                               <button
                                 type='button'
                                 onClick={(e) => handleTogglePin(e, note)}
-                                aria-label={note.isPinned ? 'Unpin note' : 'Pin note'}
-                                title={note.isPinned ? 'Unpin note' : 'Pin note'}
+                                aria-label={
+                                  note.isPinned ? 'Unpin note' : 'Pin note'
+                                }
+                                title={
+                                  note.isPinned ? 'Unpin note' : 'Pin note'
+                                }
                                 className={`p-1.5 rounded-lg border transition-colors shadow-xs focus:outline-none focus:ring-2 focus:ring-blue-500 focus:opacity-100 ${
                                   note.isPinned
                                     ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-700'
@@ -820,7 +875,10 @@ export default memo(function CalendarView({
                         {/* Badges Footer */}
                         <div className='flex items-center justify-between pt-2.5 border-t border-gray-200/80 dark:border-slate-700/80 text-xs mt-2'>
                           <div className='flex items-center gap-2'>
-                            <StatusIcon size={13} className='text-gray-600 dark:text-gray-300' />
+                            <StatusIcon
+                              size={13}
+                              className='text-gray-600 dark:text-gray-300'
+                            />
                             <span
                               className={`px-2 py-0.5 rounded font-semibold text-[10px] uppercase tracking-wide ${STATUS_BADGE_COLORS[note.status]}`}>
                               {note.status.replace('-', ' ')}
@@ -836,7 +894,10 @@ export default memo(function CalendarView({
                           <div className='flex items-center gap-2'>
                             {note.tags && note.tags.length > 0 && (
                               <span className='inline-flex items-center gap-1 text-[11px] font-medium text-gray-700 dark:text-gray-300'>
-                                <Tag size={11} className='text-gray-500 dark:text-gray-400' />
+                                <Tag
+                                  size={11}
+                                  className='text-gray-500 dark:text-gray-400'
+                                />
                                 {note.tags.length}
                               </span>
                             )}

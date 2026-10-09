@@ -200,6 +200,7 @@ export default memo(function NotesApp() {
         {/* Command Palette */}
         <CommandPalette
           onCreateNote={createNote}
+          onChangeView={setDefaultView}
           onFilterByStatus={setStatusFilter}
           onFilterByPriority={setPriorityFilter}
         />
