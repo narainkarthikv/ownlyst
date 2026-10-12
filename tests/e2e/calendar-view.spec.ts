@@ -7,7 +7,9 @@ test.describe('Calendar View', () => {
     await expect(page).toHaveURL(/\/app$/);
   });
 
-  test('switches to calendar view and displays accessible grid with valid ARIA hierarchy', async ({ page }) => {
+  test('switches to calendar view and displays accessible grid with valid ARIA hierarchy', async ({
+    page,
+  }) => {
     // Switch to Calendar view using semantic button with aria-pressed
     const calendarButton = page.getByRole('button', { name: /calendar view/i });
     await calendarButton.click();
@@ -19,7 +21,9 @@ test.describe('Calendar View', () => {
 
     // Verify weekday header row contains 7 columnheaders
     const sundayHeader = grid.getByRole('columnheader', { name: /^sunday$/i });
-    const saturdayHeader = grid.getByRole('columnheader', { name: /^saturday$/i });
+    const saturdayHeader = grid.getByRole('columnheader', {
+      name: /^saturday$/i,
+    });
     await expect(sundayHeader).toBeVisible();
     await expect(saturdayHeader).toBeVisible();
 
@@ -31,36 +35,57 @@ test.describe('Calendar View', () => {
 
     // Verify month/year heading is announced politely
     const now = new Date();
-    const currentMonthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(now);
+    const currentMonthName = new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+    }).format(now);
     await expect(
-      page.getByRole('heading', { level: 2, name: new RegExp(currentMonthName, 'i') })
+      page.getByRole('heading', {
+        level: 2,
+        name: new RegExp(currentMonthName, 'i'),
+      })
     ).toBeVisible();
   });
 
-  test('navigates previous, next month, and today button returns to current month', async ({ page }) => {
+  test('navigates previous, next month, and today button returns to current month', async ({
+    page,
+  }) => {
     await page.getByRole('button', { name: /calendar view/i }).click();
 
     const now = new Date();
-    const currentMonth = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(now);
+    const currentMonth = new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      year: 'numeric',
+    }).format(now);
     const nextMonthDate = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-    const nextMonth = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(nextMonthDate);
+    const nextMonth = new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      year: 'numeric',
+    }).format(nextMonthDate);
 
     // Verify current month is displayed
-    await expect(page.getByRole('heading', { level: 2, name: currentMonth })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: currentMonth })
+    ).toBeVisible();
 
     // Click Next month
     await page.getByRole('button', { name: /next month/i }).click();
-    await expect(page.getByRole('heading', { level: 2, name: nextMonth })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: nextMonth })
+    ).toBeVisible();
 
     // Click Previous month
     await page.getByRole('button', { name: /previous month/i }).click();
-    await expect(page.getByRole('heading', { level: 2, name: currentMonth })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: currentMonth })
+    ).toBeVisible();
 
     // Navigate 2 months ahead then click Today to return
     await page.getByRole('button', { name: /next month/i }).click();
     await page.getByRole('button', { name: /next month/i }).click();
     await page.getByRole('button', { name: /go to current month/i }).click();
-    await expect(page.getByRole('heading', { level: 2, name: currentMonth })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: currentMonth })
+    ).toBeVisible();
   });
 
   test('a note dated September 15 appears specifically in the September 15 cell without timezone shift', async ({
@@ -83,17 +108,24 @@ test.describe('Calendar View', () => {
     await page.getByRole('button', { name: /^create note$/i }).click();
 
     // Target month heading: e.g. "September 2026"
-    const targetHeading = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' }).format(
-      new Date(targetYear, 8, 1)
-    );
+    const targetHeading = new Intl.DateTimeFormat('en-US', {
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(targetYear, 8, 1));
 
-    // If not currently showing target month, navigate until September is reached
-    for (let i = 0; i < 24; i++) {
-      if (await page.getByRole('heading', { level: 2, name: targetHeading }).isVisible()) {
-        break;
-      }
-      await page.getByRole('button', { name: /next month/i }).click();
+    // Navigate in whichever direction reaches September from the current month.
+    const currentDate = new Date();
+    const monthOffset =
+      (targetYear - currentDate.getFullYear()) * 12 +
+      (8 - currentDate.getMonth());
+    const navigationButton =
+      monthOffset < 0 ? /previous month/i : /next month/i;
+    for (let i = 0; i < Math.abs(monthOffset); i++) {
+      await page.getByRole('button', { name: navigationButton }).click();
     }
+    await expect(
+      page.getByRole('heading', { level: 2, name: targetHeading })
+    ).toBeVisible();
 
     // Verify cell with data-date="targetYear-09-15" contains the note
     const sept15Cell = page.locator(`[data-date="${targetDateKey}"]`);
@@ -114,14 +146,18 @@ test.describe('Calendar View', () => {
     }
   });
 
-  test('displays notes on their scheduled dates and opens existing edit modal on click', async ({ page }) => {
+  test('displays notes on their scheduled dates and opens existing edit modal on click', async ({
+    page,
+  }) => {
     // Switch to Calendar View
     await page.getByRole('button', { name: /calendar view/i }).click();
 
     // Click "Add Note for this Day" to create a note scheduled for today
     const uniqueTitle = `Calendar Event ${Date.now()}`;
     await page.getByRole('button', { name: /add note for this day/i }).click();
-    await expect(page.getByRole('dialog', { name: /create new note/i })).toBeVisible();
+    await expect(
+      page.getByRole('dialog', { name: /create new note/i })
+    ).toBeVisible();
 
     await page.getByLabel('Note title').fill(uniqueTitle);
     await page.getByLabel('Note content').fill('Note scheduled for today');
@@ -131,11 +167,15 @@ test.describe('Calendar View', () => {
     await expect(page.getByText(uniqueTitle).first()).toBeVisible();
 
     // Click on the note inside the selected date list to open the existing edit modal
-    const noteCard = page.getByRole('article', { name: new RegExp(uniqueTitle, 'i') }).first();
+    const noteCard = page
+      .getByRole('article', { name: new RegExp(uniqueTitle, 'i') })
+      .first();
     await noteCard.click();
 
     // Verify existing NoteModal opens in Edit mode
-    await expect(page.getByRole('dialog', { name: /edit note/i })).toBeVisible();
+    await expect(
+      page.getByRole('dialog', { name: /edit note/i })
+    ).toBeVisible();
     await expect(page.getByLabel('Note title')).toHaveValue(uniqueTitle);
 
     // Edit the note title
@@ -147,14 +187,18 @@ test.describe('Calendar View', () => {
     await expect(page.getByText(updatedTitle).first()).toBeVisible();
   });
 
-  test('quick add button on date cell creates note with pre-filled date', async ({ page }) => {
+  test('quick add button on date cell creates note with pre-filled date', async ({
+    page,
+  }) => {
     await page.getByRole('button', { name: /calendar view/i }).click();
 
     // Click "Add Note for this Day" on the selected date panel
     await page.getByRole('button', { name: /add note for this day/i }).click();
 
     // Verify NoteModal opens
-    await expect(page.getByRole('dialog', { name: /create new note/i })).toBeVisible();
+    await expect(
+      page.getByRole('dialog', { name: /create new note/i })
+    ).toBeVisible();
 
     const title = `Scheduled Task ${Date.now()}`;
     await page.getByLabel('Note title').fill(title);
@@ -164,7 +208,9 @@ test.describe('Calendar View', () => {
     await expect(page.getByText(title).first()).toBeVisible();
   });
 
-  test('supports keyboard calendar navigation across cells', async ({ page }) => {
+  test('supports keyboard calendar navigation across cells', async ({
+    page,
+  }) => {
     await page.getByRole('button', { name: /calendar view/i }).click();
 
     const grid = page.getByRole('grid');
@@ -186,7 +232,10 @@ test.describe('Calendar View', () => {
 
     // Press Enter to select the date
     await page.keyboard.press('Enter');
-    await expect(grid.locator('[role="gridcell"]:focus')).toHaveAttribute('aria-selected', 'true');
+    await expect(grid.locator('[role="gridcell"]:focus')).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
   });
 
   test('filters calendar notes via FilterBar search', async ({ page }) => {
@@ -199,7 +248,9 @@ test.describe('Calendar View', () => {
     await page.getByRole('button', { name: /^create note$/i }).click();
 
     // Verify it appears
-    await expect(page.getByText(`Searchable Note ${uniqueToken}`).first()).toBeVisible();
+    await expect(
+      page.getByText(`Searchable Note ${uniqueToken}`).first()
+    ).toBeVisible();
 
     // Search for non-existent token
     const searchInput = page.getByPlaceholder(/search notes in calendar/i);
@@ -208,33 +259,49 @@ test.describe('Calendar View', () => {
 
     // Clear search
     await searchInput.fill(uniqueToken);
-    await expect(page.getByText(`Searchable Note ${uniqueToken}`).first()).toBeVisible();
+    await expect(
+      page.getByText(`Searchable Note ${uniqueToken}`).first()
+    ).toBeVisible();
   });
 
-  test('view switcher allows seamless transition between all 5 views using semantic buttons', async ({ page }) => {
+  test('view switcher allows seamless transition between all 5 views using semantic buttons', async ({
+    page,
+  }) => {
     // 1. Notes view (Grid)
     await page.getByRole('button', { name: /notes view/i }).click();
-    await expect(page.getByRole('button', { name: /notes view/i })).toHaveAttribute('aria-pressed', 'true');
+    await expect(
+      page.getByRole('button', { name: /notes view/i })
+    ).toHaveAttribute('aria-pressed', 'true');
 
     // 2. Boards (Kanban)
     await page.getByRole('button', { name: /boards view/i }).click();
-    await expect(page.getByRole('button', { name: /boards view/i })).toHaveAttribute('aria-pressed', 'true');
+    await expect(
+      page.getByRole('button', { name: /boards view/i })
+    ).toHaveAttribute('aria-pressed', 'true');
 
     // 3. Table view
     await page.getByRole('button', { name: /table view/i }).click();
-    await expect(page.getByRole('button', { name: /table view/i })).toHaveAttribute('aria-pressed', 'true');
+    await expect(
+      page.getByRole('button', { name: /table view/i })
+    ).toHaveAttribute('aria-pressed', 'true');
 
     // 4. Roadmap view
     await page.getByRole('button', { name: /roadmap view/i }).click();
-    await expect(page.getByRole('button', { name: /roadmap view/i })).toHaveAttribute('aria-pressed', 'true');
+    await expect(
+      page.getByRole('button', { name: /roadmap view/i })
+    ).toHaveAttribute('aria-pressed', 'true');
 
     // 5. Calendar view
     await page.getByRole('button', { name: /calendar view/i }).click();
-    await expect(page.getByRole('button', { name: /calendar view/i })).toHaveAttribute('aria-pressed', 'true');
+    await expect(
+      page.getByRole('button', { name: /calendar view/i })
+    ).toHaveAttribute('aria-pressed', 'true');
     await expect(page.getByRole('grid')).toBeVisible();
   });
 
-  test('mobile layout renders properly with compact indicators', async ({ page }) => {
+  test('mobile layout renders properly with compact indicators', async ({
+    page,
+  }) => {
     // Resize viewport to mobile screen
     await page.setViewportSize({ width: 375, height: 667 });
 
@@ -245,10 +312,14 @@ test.describe('Calendar View', () => {
     await expect(page.getByRole('heading', { level: 2 })).toBeVisible();
 
     // Selected date details panel visible
-    await expect(page.getByRole('button', { name: /add note for this day/i })).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /add note for this day/i })
+    ).toBeVisible();
   });
 
-  test('command palette shortcut 5 switches to calendar view', async ({ page }) => {
+  test('command palette shortcut 5 switches to calendar view', async ({
+    page,
+  }) => {
     // Open Command Palette
     await page.getByRole('button', { name: /open command palette/i }).click();
     const searchInput = page.getByPlaceholder(/type a command or search/i);
@@ -260,9 +331,8 @@ test.describe('Calendar View', () => {
     // Command palette closes and calendar view becomes active
     await expect(searchInput).not.toBeVisible();
     await expect(page.getByRole('grid')).toBeVisible();
-    await expect(page.getByRole('button', { name: /calendar view/i })).toHaveAttribute(
-      'aria-pressed',
-      'true'
-    );
+    await expect(
+      page.getByRole('button', { name: /calendar view/i })
+    ).toHaveAttribute('aria-pressed', 'true');
   });
 });

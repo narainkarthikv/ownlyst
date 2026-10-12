@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.3] - 2026-10-09
+
+### Fixed
+
+- Wired the command palette to the active view preference so view shortcuts change views as expected.
+- Corrected calendar E2E navigation to reach target months in either direction, and kept date-specific note checks reliable across the year.
+
+### Version
+
+- Bumped project version from `1.2.2` to `1.2.3` (patch bugfix release).
+
 ## [1.2.2] - 2026-09-23
 
 ### Fixed
