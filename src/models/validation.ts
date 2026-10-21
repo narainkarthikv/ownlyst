@@ -6,7 +6,7 @@
  */
 
 import type { Note } from './note.model';
-import { NOTE_COLORS, NOTE_PRIORITIES, NOTE_STATUSES } from './enums';
+import { NOTE_PRIORITIES, NOTE_STATUSES } from './enums';
 
 /**
  * Validation error result
@@ -22,6 +22,11 @@ export interface ValidationError {
 export interface ValidationResult {
   isValid: boolean;
   errors: ValidationError[];
+}
+
+function isValidDate(value: unknown): boolean {
+  if (value instanceof Date) return Number.isFinite(value.getTime());
+  return typeof value === 'string' && Number.isFinite(new Date(value).getTime());
 }
 
 /**
@@ -66,14 +71,6 @@ export function validateNote(note: unknown): ValidationResult {
     errors.push({ field: 'content', message: 'Content must be a string' });
   }
 
-  // Validate color
-  if (!NOTE_COLORS.includes(n.color as never)) {
-    errors.push({
-      field: 'color',
-      message: `Color must be one of: ${NOTE_COLORS.join(', ')}`,
-    });
-  }
-
   // Validate priority
   if (!NOTE_PRIORITIES.includes(n.priority as never)) {
     errors.push({
@@ -96,15 +93,14 @@ export function validateNote(note: unknown): ValidationResult {
   }
 
   // Validate createdAt
-  if (!(n.createdAt instanceof Date) && typeof n.createdAt !== 'string') {
+  if (!isValidDate(n.createdAt)) {
     errors.push({ field: 'createdAt', message: 'createdAt must be a Date' });
   }
 
   // Validate dueDate (optional)
   if (
     n.dueDate !== undefined &&
-    !(n.dueDate instanceof Date) &&
-    typeof n.dueDate !== 'string'
+    !isValidDate(n.dueDate)
   ) {
     errors.push({
       field: 'dueDate',
@@ -166,16 +162,11 @@ export function validateNoteFormData(data: unknown): ValidationResult {
     errors.push({ field: 'content', message: 'Content must be a string' });
   }
 
-  // Validate color if present
-  if (d.color && !NOTE_COLORS.includes(d.color as never)) {
-    errors.push({
-      field: 'color',
-      message: `Color must be one of: ${NOTE_COLORS.join(', ')}`,
-    });
-  }
-
   // Validate priority if present
-  if (d.priority && !NOTE_PRIORITIES.includes(d.priority as never)) {
+  if (
+    d.priority !== undefined &&
+    !NOTE_PRIORITIES.includes(d.priority as never)
+  ) {
     errors.push({
       field: 'priority',
       message: `Priority must be one of: ${NOTE_PRIORITIES.join(', ')}`,
@@ -183,7 +174,7 @@ export function validateNoteFormData(data: unknown): ValidationResult {
   }
 
   // Validate status if present
-  if (d.status && !NOTE_STATUSES.includes(d.status as never)) {
+  if (d.status !== undefined && !NOTE_STATUSES.includes(d.status as never)) {
     errors.push({
       field: 'status',
       message: `Status must be one of: ${NOTE_STATUSES.join(', ')}`,
@@ -203,17 +194,21 @@ export function validateNoteFormData(data: unknown): ValidationResult {
  * @param note - Note with potentially string dates
  * @returns Note with Date objects
  */
-export function normalizeDateFields(note: Record<string, unknown>): Note {
+export function normalizeDateFields(note: unknown): Note {
+  if (!note || typeof note !== 'object') {
+    throw new Error('Stored note must be an object');
+  }
+  const raw = note as Record<string, unknown>;
   return {
-    ...note,
+    ...raw,
     createdAt:
-      typeof note.createdAt === 'string'
-        ? new Date(note.createdAt)
-        : note.createdAt,
-    dueDate: note.dueDate
-      ? typeof note.dueDate === 'string'
-        ? new Date(note.dueDate)
-        : note.dueDate
+      typeof raw.createdAt === 'string'
+        ? new Date(raw.createdAt)
+        : raw.createdAt,
+    dueDate: raw.dueDate
+      ? typeof raw.dueDate === 'string'
+        ? new Date(raw.dueDate)
+        : raw.dueDate
       : undefined,
   } as Note;
 }

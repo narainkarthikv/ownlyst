@@ -138,17 +138,6 @@ export class NotesService {
   }
 
   /**
-   * Filters notes by color
-   *
-   * @param notes - Notes to filter
-   * @param color - Color to filter by
-   * @returns Notes with matching color
-   */
-  filterByColor(notes: Note[], color: Note['color']): Note[] {
-    return notes.filter((note) => note.color === color);
-  }
-
-  /**
    * Sorts notes by multiple criteria
    * Primary: pinned status
    * Secondary: creation date (newest first)

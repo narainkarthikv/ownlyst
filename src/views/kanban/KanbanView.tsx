@@ -15,10 +15,11 @@ import {
   GripVertical,
   Kanban,
 } from 'lucide-react';
-import { Note } from '../../types/Note';
+import type { Note } from '../../models/note.model';
 import NoteModal from '../../components/NoteModal';
 import EmptyState from '../../components/shared/EmptyState';
-import FilterBar, { type FilterState } from '../../components/shared/FilterBar';
+import FilterBar from '../../components/shared/FilterBar';
+import type { FilterState } from '../../models/note-filter.model';
 import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 import {
   PRIORITY_CARD_CLASSES,
@@ -121,12 +122,12 @@ const KanbanCard = memo(
 
             {/* Content */}
             <div className='space-y-3 pr-6 pl-5'>
-              <h4 className='font-bold text-base leading-tight' layout>
+              <motion.h4 className='font-bold text-base leading-tight' layout>
                 {note.title}
-              </h4>
-              <p className='text-sm opacity-80 line-clamp-4' layout>
+              </motion.h4>
+              <motion.p className='text-sm opacity-80 line-clamp-4' layout>
                 {note.content}
-              </p>
+              </motion.p>
 
               {/* Metadata */}
               <div className='flex items-center justify-between text-xs'>

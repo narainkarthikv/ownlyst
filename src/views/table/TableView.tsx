@@ -1,10 +1,11 @@
 import { useState, useMemo, useCallback, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Pin, Edit3, Trash2, Table as TableIcon } from 'lucide-react';
-import { Note } from '../../types/Note';
+import type { Note } from '../../models/note.model';
 import NoteModal from '../../components/NoteModal';
 import EmptyState from '../../components/shared/EmptyState';
-import FilterBar, { type FilterState } from '../../components/shared/FilterBar';
+import FilterBar from '../../components/shared/FilterBar';
+import type { FilterState } from '../../models/note-filter.model';
 import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 import {
   STATUS_BADGE_COLORS,

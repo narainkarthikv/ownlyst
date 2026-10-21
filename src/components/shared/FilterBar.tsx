@@ -14,27 +14,18 @@ import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, SlidersHorizontal, ArrowUpDown, X, Check } from 'lucide-react';
 import { useDebounce } from '../../hooks/useDebounce';
-import type { Note } from '../../models/note.model';
-
-export type SortOption =
-  | 'date-desc'
-  | 'date-asc'
-  | 'title-asc'
-  | 'title-desc'
-  | 'priority-high'
-  | 'priority-low'
-  | 'status';
-
-export type FilterStatus = 'all' | Note['status'];
-export type FilterPriority = 'all' | Note['priority'];
-
-export interface FilterState {
-  search: string;
-  sort: SortOption;
-  status: FilterStatus;
-  priority: FilterPriority;
-  showPinnedOnly: boolean;
-}
+import type {
+  FilterPriority,
+  FilterState,
+  FilterStatus,
+  SortOption,
+} from '../../models/note-filter.model';
+export type {
+  FilterPriority,
+  FilterState,
+  FilterStatus,
+  SortOption,
+} from '../../models/note-filter.model';
 
 interface FilterBarProps {
   /** Current filter state */

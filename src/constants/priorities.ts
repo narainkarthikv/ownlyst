@@ -2,9 +2,10 @@
  * Centralized priority definitions and configurations
  */
 
-export const PRIORITY_VALUES = ['low', 'medium', 'high'] as const;
+import type { NotePriority } from '../models/note.model';
 
-export type NotePriority = (typeof PRIORITY_VALUES)[number];
+export const PRIORITY_VALUES = ['low', 'medium', 'high'] as const satisfies readonly NotePriority[];
+export type { NotePriority };
 
 export const PRIORITY_LABELS: Record<NotePriority, string> = {
   low: 'Low',

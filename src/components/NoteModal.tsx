@@ -14,7 +14,7 @@
 import { useState, useEffect, useCallback, type FormEvent } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Pin, Check, Flag, ListTodo, Tag } from 'lucide-react';
-import type { Note } from '../types/Note';
+import type { Note } from '../models/note.model';
 import { NOTE_STATUSES, NOTE_PRIORITIES } from '../models/enums';
 import { formatDateForInput } from '../utils/dates';
 

@@ -20,7 +20,8 @@ import type { Note } from '../../models/note.model';
 import NoteModal from '../../components/NoteModal';
 import EmptyState from '../../components/shared/EmptyState';
 import NoteCard from './NoteCard';
-import FilterBar, { type FilterState } from '../../components/shared/FilterBar';
+import FilterBar from '../../components/shared/FilterBar';
+import type { FilterState } from '../../models/note-filter.model';
 import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 
 /**
@@ -42,6 +43,9 @@ interface NotesViewProps {
  * Maps color enum values to Tailwind utility classes
  */
 const colorClasses: Record<string, string> = {
+  low: 'bg-blue-100 dark:bg-blue-900/60 border-blue-200 dark:border-blue-600 text-gray-900 dark:text-white shadow-sm',
+  medium: 'bg-amber-200 dark:bg-amber-900/50 border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-100',
+  high: 'bg-rose-200 dark:bg-rose-900/50 border-rose-300 dark:border-rose-700 text-rose-900 dark:text-rose-100',
   indigo:
     'bg-azure-100 dark:bg-azure-900/60 border-azure-200 dark:border-azure-600 text-gray-900 dark:text-white shadow-sm',
   emerald:
@@ -235,7 +239,7 @@ const NotesView = memo(function NotesView({
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 100 }}
               className={`relative rounded-t-2xl sm:rounded-2xl shadow-2xl w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto border-t-2 sm:border-2 ${
-                colorClasses[viewingNote.color]
+                colorClasses[viewingNote.priority]
               }`}>
               {/* Modal Header */}
               <div className='flex items-center justify-between p-6 border-b border-gray-200/50'>

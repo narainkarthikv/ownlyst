@@ -5,7 +5,7 @@
  */
 
 import type { Note } from '../models/note.model';
-import type { FilterState, SortOption } from '../components/shared/FilterBar';
+import type { FilterState, SortOption } from '../models/note-filter.model';
 
 /**
  * Apply search filter to notes

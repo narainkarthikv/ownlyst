@@ -2,9 +2,10 @@
  * Centralized status definitions and configurations
  */
 
-export const STATUS_VALUES = ['todo', 'in-progress', 'done'] as const;
+import type { NoteStatus } from '../models/note.model';
 
-export type NoteStatus = (typeof STATUS_VALUES)[number];
+export const STATUS_VALUES = ['todo', 'in-progress', 'done'] as const satisfies readonly NoteStatus[];
+export type { NoteStatus };
 
 export const STATUS_LABELS: Record<NoteStatus, string> = {
   todo: 'To-Do',

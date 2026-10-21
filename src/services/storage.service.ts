@@ -7,7 +7,11 @@
  */
 
 import type { Note } from '../models/note.model';
-import { normalizeDateFields, serializeNote } from '../models/validation';
+import {
+  normalizeDateFields,
+  serializeNote,
+  validateNote,
+} from '../models/validation';
 
 /**
  * Configuration for storage behavior
@@ -50,22 +54,37 @@ export class StorageService {
         return [];
       }
 
-      const parsed = JSON.parse(stored) as unknown[];
-      // Normalize date strings back to Date objects
-      const notes = parsed.map((note) => normalizeDateFields(note));
+      const parsed: unknown = JSON.parse(stored);
+      if (!Array.isArray(parsed)) {
+        console.warn('[StorageService] Stored notes are not an array');
+        return [];
+      }
 
-      // Deduplicate notes by ID (keep the first occurrence)
       const seen = new Set<string>();
-      return notes.filter((note) => {
-        if (seen.has(note.id)) {
-          console.warn(
-            `[StorageService] Duplicate note ID found: ${note.id}, removing duplicate`
-          );
-          return false;
+      const notes: Note[] = [];
+
+      for (const rawNote of parsed) {
+        try {
+          const note = normalizeDateFields(rawNote);
+          const validation = validateNote(note);
+          if (!validation.isValid) {
+            console.warn('[StorageService] Skipping invalid stored note', validation.errors);
+            continue;
+          }
+          if (seen.has(note.id)) {
+            console.warn(
+              `[StorageService] Duplicate note ID found: ${note.id}, removing duplicate`
+            );
+            continue;
+          }
+          seen.add(note.id);
+          notes.push(note);
+        } catch (error) {
+          console.warn('[StorageService] Skipping malformed stored note', error);
         }
-        seen.add(note.id);
-        return true;
-      });
+      }
+
+      return notes;
     } catch (error) {
       console.error(
         `[StorageService] Error reading notes from localStorage:`,

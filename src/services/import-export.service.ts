@@ -13,8 +13,8 @@ import type {
 } from '../models/user-preferences.model';
 import { EMOTE_AVATARS } from '../constants/emotes';
 import JSZip from 'jszip';
-import { MarkdownUtil } from '../utils/markdown-export.util';
-import { PDFUtil } from '../utils/pdf-export.util';
+import { MarkdownUtil } from '../utils/markdownExport';
+import { PDFUtil } from '../utils/pdfExport';
 
 // Formats: JSON, CSV, MD, PDF
 interface ExportResult {

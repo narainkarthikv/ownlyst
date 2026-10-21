@@ -12,10 +12,11 @@ import {
   BarChart3,
   Map,
 } from 'lucide-react';
-import { Note } from '../../types/Note';
+import type { Note } from '../../models/note.model';
 import NoteModal from '../../components/NoteModal';
 import EmptyState from '../../components/shared/EmptyState';
-import FilterBar, { type FilterState } from '../../components/shared/FilterBar';
+import FilterBar from '../../components/shared/FilterBar';
+import type { FilterState } from '../../models/note-filter.model';
 import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 
 interface RoadmapViewProps {
@@ -222,23 +223,17 @@ export default memo(function RoadmapView({
         (period) =>
           normalizedStart <= period.end && normalizedEnd >= period.start
       );
-      const endIndex =
-        timelinePeriods.findLastIndex?.(
-          (period) =>
-            normalizedStart <= period.end && normalizedEnd >= period.start
-        ) ??
-        (() => {
-          for (let i = timelinePeriods.length - 1; i >= 0; i -= 1) {
-            const period = timelinePeriods[i];
-            if (
-              normalizedStart <= period.end &&
-              normalizedEnd >= period.start
-            ) {
-              return i;
-            }
-          }
-          return -1;
-        })();
+      let endIndex = -1;
+      for (let i = timelinePeriods.length - 1; i >= 0; i -= 1) {
+        const period = timelinePeriods[i];
+        if (
+          normalizedStart <= period.end &&
+          normalizedEnd >= period.start
+        ) {
+          endIndex = i;
+          break;
+        }
+      }
 
       if (startIndex === -1 || endIndex === -1) {
         return null;

@@ -40,7 +40,8 @@ import {
 import type { Note } from '../../models/note.model';
 import NoteModal from '../../components/NoteModal';
 import EmptyState from '../../components/shared/EmptyState';
-import FilterBar, { type FilterState } from '../../components/shared/FilterBar';
+import FilterBar from '../../components/shared/FilterBar';
+import type { FilterState } from '../../models/note-filter.model';
 import { applyFilters, getDefaultFilters } from '../../utils/noteFilters';
 import {
   PRIORITY_CARD_CLASSES,

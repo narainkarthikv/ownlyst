@@ -1,3 +1,6 @@
+import type { NotePriority, NoteStatus } from '../models/note.model';
+export type { NotePriority, NoteStatus } from '../models/note.model';
+
 /**
  * Unified Color System - Priority-Based, Minimal, Consistent
  *
@@ -19,7 +22,6 @@
  * PRIORITY-BASED COLORS - Core visual system
  * Low = Blue, Medium = Amber, High = Red
  */
-export type NotePriority = 'low' | 'medium' | 'high';
 
 /**
  * Priority color classes for note cards and containers
@@ -66,7 +68,6 @@ export const PRIORITY_TEXT_COLORS: Record<NotePriority, string> = {
  * SEMANTIC STATUS COLORS - Communicate task state
  * todo = Blue, in-progress = Amber, done = Green
  */
-export type NoteStatus = 'todo' | 'in-progress' | 'done';
 
 export const STATUS_COLOR_CLASSES: Record<NoteStatus, string> = {
   todo: 'bg-blue-50/80 dark:bg-[rgba(59,130,246,0.18)] border-blue-200 dark:border-[#3B82F6] text-gray-900 dark:text-[#EAF2F6] shadow-sm',
@@ -94,5 +95,3 @@ export const STATUS_TEXT_COLORS: Record<NoteStatus, string> = {
   done: 'text-green-600 dark:text-[#22C55E]',
 };
 
-// Legacy type exports for backward compatibility - to be removed
-export type NoteColor = NotePriority;
